@@ -16,4 +16,6 @@ Route::get('/', function () {
 });
 
 
-Route::get('/auth', 'Controller@auth');
+Route::get('/login', 'Authentication@login');
+
+Route::get('/user', 'Authentication@user');
