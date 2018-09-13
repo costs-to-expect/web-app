@@ -33,8 +33,12 @@ class Authentication extends BaseController
 
             if ($response->getStatusCode() === 200) {
                 $request->session()->put('bearer', json_decode($response->getBody(), true)['token']);
+            } else {
+                $request->session()->flush();
             }
         } catch (ClientException $e) {
+            $request->session()->flush();
+            $request->session()->save();
             dd($e->getCode());
         }
     }
@@ -54,9 +58,7 @@ class Authentication extends BaseController
             $response = $client->get('auth/user');
 
             if ($response->getStatusCode() === 200) {
-                //var_dump(json_decode($response->getBody(), true));
-
-                var_dump($request->session()->isValidId($request->session()->getId()));
+                var_dump($request->session()->get('bearer'));
             }
         } catch (ClientException $e) {
             dd($e->getCode());
