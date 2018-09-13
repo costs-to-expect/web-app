@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('index');
 });
+
+
+Route::get('/login', 'Authentication@login');
+
+Route::get('/user', 'Authentication@user');
