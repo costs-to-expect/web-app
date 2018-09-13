@@ -6,7 +6,6 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Session;
 
 
 class Authentication extends BaseController
@@ -33,11 +32,7 @@ class Authentication extends BaseController
             );
 
             if ($response->getStatusCode() === 200) {
-
-                Session::put('bearer', json_decode($response->getBody(), true)['token']);
-
-
-                var_dump(json_decode($response->getBody(), true)['token']);
+                $request->session()->put('bearer', json_decode($response->getBody(), true)['token']);
             }
         } catch (ClientException $e) {
             dd($e->getCode());
@@ -49,7 +44,7 @@ class Authentication extends BaseController
         $client = new Client([
             'base_uri' => 'https://api.costs-to-expect.com/v1/',
             'headers' => [
-                'Authorization' => 'Bearer ' . Session::get('bearer'),
+                'Authorization' => 'Bearer ' . $request->session()->get('bearer'),
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
@@ -59,7 +54,9 @@ class Authentication extends BaseController
             $response = $client->get('auth/user');
 
             if ($response->getStatusCode() === 200) {
-                var_dump(json_decode($response->getBody(), true));
+                //var_dump(json_decode($response->getBody(), true));
+
+                var_dump($request->session()->isValidId($request->session()->getId()));
             }
         } catch (ClientException $e) {
             dd($e->getCode());
