@@ -7,7 +7,6 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
-
 class Authentication extends BaseController
 {
     public function login(Request $request)
