@@ -7,9 +7,9 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
-class Authentication extends BaseController
+class AuthenticationController extends BaseController
 {
-    public function login(Request $request)
+    public function signIn(Request $request)
     {
         $client = new Client([
             'base_uri' => 'https://api.costs-to-expect.com/v1/',

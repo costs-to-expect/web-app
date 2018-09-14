@@ -13,12 +13,12 @@
     <body>
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-4 mt-lg-5">
+                <div class="col-12 col-md-4 mt-4 mt-lg-4">
                     @yield('content')
 
-                    <h1 class="h3 mb-3">Costs to Expect - Expenses</h1>
+                    <h1 class="h3 mb-3">Costs to Expect - {{ $resource }}</h1>
 
-                    <p class="lead">Sign in below to start adding expenses for a resource.</p>
+                    <p class="lead">Sign in below to start adding expenses for {{ $resource }}.</p>
 
                     <form>
                         <div class="form-group">
