@@ -1,35 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
+    <h1 class="h3 mb-3">{{ $resource_name }}'s recent expenses</h1>
 
     <table class="table">
         <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-        </tr>
+            <tr class="bg-dark text-white d-none d-sm-table-row">
+                <th scope="col">Description</th>
+                <th scope="col">When</th>
+                <th scope="col">Expense</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-        </tr>
+            @foreach ($items as $item)
+            <tr class="d-table-row d-sm-none">
+                <td colspan="4"><strong>{{ $item['description'] }}</strong></td>
+            </tr>
+            <tr class="d-table-row d-sm-none">
+                <td colspan="2">{{ date('dS F Y', strtotime($item['effective_date'])) }}</td>
+                <td>&pound;{{ $item['actualised_total'] }}</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr class="d-none d-sm-table-row">
+                <td><strong>{{ $item['description'] }}</strong></td>
+                <td>{{ date('dS M', strtotime($item['effective_date'])) }}</td>
+                <td>&pound;{{ $item['actualised_total'] }}</td>
+                <td>&nbsp;</td>
+            </tr>
+            @endforeach
         </tbody>
     </table>
 

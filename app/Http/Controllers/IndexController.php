@@ -41,7 +41,7 @@ class IndexController extends BaseController
         ]);
 
         try {
-            $response = $client->get(Config::get('web.config.api_uri_recent'));
+            $response = $client->get(Config::get('web.config.api_uri_recent') . '?limit=5');
 
             if ($response->getStatusCode() === 200) {
                 $items = (json_decode($response->getBody(), true));
@@ -54,6 +54,7 @@ class IndexController extends BaseController
             return view(
                 'recent',
                 [
+                    'resource_name' => Config::get('web.config.api_resource_name'),
                     'items' => $items
                 ]
             );
