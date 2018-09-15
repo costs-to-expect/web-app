@@ -12,6 +12,16 @@ class AuthenticationController extends BaseController
 {
     public function signIn(Request $request)
     {
+        return view(
+            'sign-in',
+            [
+                'resource' => 'Resource name'
+            ]
+        );
+    }
+
+    public function processSignIn(Request $request)
+    {
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
             'headers' => [
@@ -33,14 +43,15 @@ class AuthenticationController extends BaseController
 
             if ($response->getStatusCode() === 200) {
                 $request->session()->put('bearer', json_decode($response->getBody(), true)['token']);
-                //dd(json_decode($response->getBody(), true)['token']);
+                return redirect()->action('IndexController@recent');
             } else {
                 $request->session()->flush();
+                return redirect()->action('AuthenticationController@signIn');
             }
         } catch (ClientException $e) {
             $request->session()->flush();
             $request->session()->save();
-            dd($e->getCode());
+            return redirect()->action('AuthenticationController@signIn');
         }
     }
 }
