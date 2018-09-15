@@ -1,5 +1,5 @@
 <?php
 
 Route::get('/', 'IndexController@index');
-Route::get('/sign-in', 'AuthenticationController@signIn');
-Route::get('/user', 'AuthenticationController@user');
+Route::post('/sign-in', 'AuthenticationController@signIn');
+Route::get('/recent', 'IndexController@recent');
