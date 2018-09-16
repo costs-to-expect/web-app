@@ -6,7 +6,7 @@
 
         <p class="lead">The total sum of each expense category for {{ $resource_name }}.</p>
 
-        <table class="table table-sm">
+        <table class="table table-sm table-hover">
             <caption>Categories summary for {{ $resource_name }}, select a
                 category to see the sub category break down.</caption>
             <thead>
@@ -19,7 +19,7 @@
             <tbody>
                 @foreach ($categories as $category)
                 <tr>
-                    <td><strong>{{ $category['name'] }}</strong></td>
+                    <td><strong><a href="{{ action('IndexController@subCategoriesSummary', ['category_identifier' => $category['id']]) }}">{{ $category['name'] }}</a></strong></td>
                     <td>&pound;{{ $category['total'] }}</td>
                     <td>&nbsp;</td>
                 </tr>

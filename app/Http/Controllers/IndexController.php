@@ -127,4 +127,44 @@ class IndexController extends BaseController
             );
         }
     }
+
+    public function subCategoriesSummary(Request $request, string $category_identifier)
+    {
+        $sub_categories = null;
+        $this->nav_active = 'sub-categories-summary';
+
+        $client = new Client([
+            'base_uri' => Config::get('web.config.api_base_url'),
+            'headers' => [
+                //'Authorization' => 'Bearer ' . $request->session()->get('bearer'),
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        try {
+            $response = $client->get(
+                Config::get('web.config.api_uri_categories_summary') .
+                '/' . $category_identifier . '/sub_categories'
+            );
+
+            if ($response->getStatusCode() === 200) {
+                $sub_categories = (json_decode($response->getBody(), true));
+            }
+        } catch (ClientException $e) {
+            return redirect()->action('IndexController@index');
+        }
+
+        if ($sub_categories !== null) {
+            return view(
+                'sub-categories-summary',
+                [
+                    'display_nav_options' => $this->display_nav_options,
+                    'nav_active' => $this->nav_active,
+                    'resource_name' => Config::get('web.config.api_resource_name'),
+                    'sub_categories' => $sub_categories
+                ]
+            );
+        }
+    }
 }
