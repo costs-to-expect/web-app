@@ -86,4 +86,39 @@ class IndexController extends BaseController
             );
         }
     }
+
+    public function categoriesTco(Request $request)
+    {
+        $tco = null;
+
+        $client = new Client([
+            'base_uri' => Config::get('web.config.api_base_url'),
+            'headers' => [
+                //'Authorization' => 'Bearer ' . $request->session()->get('bearer'),
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        try {
+            $response = $client->get(Config::get('web.config.api_uri_categories_tco'));
+
+            if ($response->getStatusCode() === 200) {
+                $tco = (json_decode($response->getBody(), true));
+            }
+        } catch (ClientException $e) {
+            return redirect()->action('IndexController@index');
+        }
+
+        if ($tco !== null) {
+            return view(
+                'tco-summary',
+                [
+                    'display_nav_options' => $this->display_nav_options,
+                    'resource_name' => Config::get('web.config.api_resource_name'),
+                    'tco' => $tco
+                ]
+            );
+        }
+    }
 }

@@ -14,5 +14,6 @@ Route::group(
     function () {
         Route::get('/recent', 'IndexController@recent');
         Route::get('/categories-summary', 'IndexController@categoriesSummary');
+        Route::get('/tco-summary', 'IndexController@categoriesTco');
     }
 );

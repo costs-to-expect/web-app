@@ -17,6 +17,9 @@ return [
     'api_uri_categories_summary' => 'resource_types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
         env($key_api_resource_id, null) . '/summary/categories',
+    'api_uri_categories_tco' => 'resource_types/' .
+        env($key_api_resource_type_id, null) . '/resources/' .
+        env($key_api_resource_id, null) . '/summary/tco',
 
     'api_resource_name' => env($key_api_resource_name, '[RESOURCE_NAME]'),
 

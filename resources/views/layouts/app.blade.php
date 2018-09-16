@@ -12,7 +12,7 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Costs to Expect</a>
+            <a class="navbar-brand" href="{{ action('IndexController@recent') }}">Costs to Expect</a>
             @if ($display_nav_options) === true)
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -20,14 +20,17 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Total expenses</a>
+                        <a class="nav-link" href="{{ action('IndexController@recent') }}">Recent expenses</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ action('IndexController@categoriesSummary')  }}">Sum per category</a>
+                        <a class="nav-link" href="{{ action('IndexController@categoriesTco') }}">Total expenses</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ action('IndexController@categoriesSummary') }}">Sum per category</a>
+                    </li>
+                    {{--<li class="nav-item">
                         <a class="nav-link" href="#">Categories</a>
-                    </li>
+                    </li>--}}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ action('AuthenticationController@signOut') }}">Sign out</a>
                     </li>
