@@ -12,7 +12,7 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="{{ action('IndexController@recent') }}">Costs to Expect</a>
+            <a class="navbar-brand" href="{{ action('IndexController@recent') }}">Costs-to-Expect.com</a>
             @if ($display_nav_options === true)
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
