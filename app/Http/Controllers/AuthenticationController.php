@@ -20,6 +20,13 @@ class AuthenticationController extends BaseController
         );
     }
 
+    public function signOut(Request $request)
+    {
+        $request->session()->flush();
+        $request->session()->save();
+        return redirect()->action('AuthenticationController@signIn');
+    }
+
     public function processSignIn(Request $request)
     {
         $client = new Client([

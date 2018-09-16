@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="col-12 col-sm-6 col-md-4 mt-4 mt-lg-4">
-        <h1 class="h3 mb-3">Costs to Expect - {{ $resource }}</h1>
+        <h1 class="h3 mb-3">Sign in</h1>
 
         <p class="lead">Sign in below to start adding expenses for {{ $resource }}.</p>
 

@@ -12,13 +12,7 @@ class IndexController extends BaseController
 {
     public function index(Request $request)
     {
-        if ($request->session()->has('bearer') === true) {
-            return redirect()->action('IndexController@recent');
-        } else {
-            $request->session()->flush();
-            $request->session()->save();
-            return redirect()->action('AuthenticationController@signIn');
-        }
+        return redirect()->action('IndexController@recent');
     }
 
     public function recent(Request $request)
