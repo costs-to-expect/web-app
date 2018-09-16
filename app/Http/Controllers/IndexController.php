@@ -21,12 +21,6 @@ class IndexController extends BaseController
     {
         $items = null;
 
-        if ($request->session()->has('bearer') === false) {
-            $request->session()->flush();
-            $request->session()->save();
-            return redirect()->action('IndexController@index');
-        }
-
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
             'headers' => [
@@ -53,6 +47,41 @@ class IndexController extends BaseController
                     'display_nav_options' => $this->display_nav_options,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'items' => $items
+                ]
+            );
+        }
+    }
+
+    public function categoriesSummary(Request $request)
+    {
+        $categories = null;
+
+        $client = new Client([
+            'base_uri' => Config::get('web.config.api_base_url'),
+            'headers' => [
+                //'Authorization' => 'Bearer ' . $request->session()->get('bearer'),
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        try {
+            $response = $client->get(Config::get('web.config.api_uri_categories_summary'));
+
+            if ($response->getStatusCode() === 200) {
+                $categories = (json_decode($response->getBody(), true));
+            }
+        } catch (ClientException $e) {
+            return redirect()->action('IndexController@index');
+        }
+
+        if ($categories !== null) {
+            return view(
+                'categories-summary',
+                [
+                    'display_nav_options' => $this->display_nav_options,
+                    'resource_name' => Config::get('web.config.api_resource_name'),
+                    'categories' => $categories
                 ]
             );
         }

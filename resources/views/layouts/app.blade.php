@@ -23,7 +23,7 @@
                         <a class="nav-link" href="#">Total expenses</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Costs by category</a>
+                        <a class="nav-link" href="{{ action('IndexController@categoriesSummary')  }}">Sum per category</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Categories</a>

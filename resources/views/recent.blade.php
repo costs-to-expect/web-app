@@ -4,7 +4,7 @@
     <div class="col-12 col-sm-12 col-md-8 mt-2 mt-lg-2">
         <h1 class="h3 mb-2">Recent expenses for {{ $resource_name }}</h1>
 
-        <p class="lead">The last 5 expenses that have been entered for {{ $resource_name }}</p>
+        <p class="lead">The last 5 expenses that have been entered for {{ $resource_name }}.</p>
 
         <table class="table table-sm">
             <caption>Recent expenses added for {{ $resource_name }}</caption>
