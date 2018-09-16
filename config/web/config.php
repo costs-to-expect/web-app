@@ -8,6 +8,7 @@ return [
     'api_base_url' => 'https://api.costs-to-expect.com/v1/',
 
     'api_uri_sign_in' => 'auth/login',
+    'api_uri_category' => 'categories',
     'api_uri_resource' => 'resource_types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
         env($key_api_resource_id, null),
