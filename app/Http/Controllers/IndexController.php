@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Config;
 class IndexController extends BaseController
 {
     protected $display_nav_options = true;
+    protected $nav_active = 'recent';
 
     public function index(Request $request)
     {
@@ -45,6 +46,7 @@ class IndexController extends BaseController
                 'recent',
                 [
                     'display_nav_options' => $this->display_nav_options,
+                    'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'items' => $items
                 ]
@@ -55,6 +57,7 @@ class IndexController extends BaseController
     public function categoriesSummary(Request $request)
     {
         $categories = null;
+        $this->nav_active = 'categories-summary';
 
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
@@ -80,6 +83,7 @@ class IndexController extends BaseController
                 'categories-summary',
                 [
                     'display_nav_options' => $this->display_nav_options,
+                    'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'categories' => $categories
                 ]
@@ -90,6 +94,7 @@ class IndexController extends BaseController
     public function categoriesTco(Request $request)
     {
         $tco = null;
+        $this->nav_active = 'tco-summary';
 
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
@@ -115,6 +120,7 @@ class IndexController extends BaseController
                 'tco-summary',
                 [
                     'display_nav_options' => $this->display_nav_options,
+                    'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'tco' => $tco
                 ]

@@ -19,13 +19,13 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
+                    <li class="nav-item @if ($nav_active === 'recent') active @endif">
                         <a class="nav-link" href="{{ action('IndexController@recent') }}">Recent expenses</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item @if ($nav_active === 'tco-summary') active @endif">
                         <a class="nav-link" href="{{ action('IndexController@categoriesTco') }}">Total expenses</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item @if ($nav_active === 'categories-summary') active @endif">
                         <a class="nav-link" href="{{ action('IndexController@categoriesSummary') }}">Sum per category</a>
                     </li>
                     {{--<li class="nav-item">
