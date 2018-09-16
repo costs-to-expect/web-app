@@ -19,8 +19,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item @if ($nav_active === 'add') active @endif">
-                        <a class="nav-link" href="#">Add expense</a>
+                    <li class="nav-item @if ($nav_active === 'add-expense') active @endif">
+                        <a class="nav-link" href="{{ action('IndexController@addExpense') }}">Add expense</a>
                     </li>
                     <li class="nav-item @if ($nav_active === 'recent') active @endif">
                         <a class="nav-link" href="{{ action('IndexController@recent') }}">Recent expenses</a>
@@ -29,7 +29,7 @@
                         <a class="nav-link" href="{{ action('IndexController@categoriesTco') }}">Total expenses</a>
                     </li>
                     <li class="nav-item @if ($nav_active === 'categories-summary') active @endif">
-                        <a class="nav-link" href="{{ action('IndexController@categoriesSummary') }}">Summary per category</a>
+                        <a class="nav-link" href="{{ action('IndexController@categoriesSummary') }}">Summaries</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ action('AuthenticationController@signOut') }}">Sign out</a>
@@ -44,12 +44,12 @@
             </div>
         </div>
         <div class="container">
-            @if ($display_nav_options === true)
+            @if ($display_nav_options === true && $nav_active !== 'add-expense')
                 <div class="col-12 text-right mt-2">
-                    <p><a href="" class="btn btn-sm btn-outline-info">Add expense</a></p>
+                    <p><a href="{{ action('IndexController@addExpense') }}" class="btn btn-sm btn-outline-info">Add expense</a></p>
                 </div>
             @endif
-            <p class="mt-5 mb-3 text-muted text-center">&copy; Dean Blackborough 2018</p>
+            <p class="mt-5 mb-3 text-muted text-center">Copyright &copy; Dean Blackborough {{ date('Y') }}</p>
         </div>
         <script src="{{ asset('node_modules/jquery/dist/jquery.js') }}" defer></script>
         <script src="{{ asset('node_modules/popper.js/dist/umd/popper.js') }}" defer></script>

@@ -18,7 +18,7 @@ class AuthenticationController extends BaseController
             'sign-in',
             [
                 'display_nav_options' => $this->display_nav_options,
-                'resource' => Config::get('web.config.api_resource_name')
+                'resource_name' => Config::get('web.config.api_resource_name'),
             ]
         );
     }
