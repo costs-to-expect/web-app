@@ -13,8 +13,8 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="#">Costs to Expect</a>
-
-            {{--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            @if ($display_nav_options) === true)
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -32,7 +32,8 @@
                         <a class="nav-link" href="{{ action('AuthenticationController@signOut') }}">Sign out</a>
                     </li>
                 </ul>
-            </div>--}}
+            </div>
+            @endif
         </nav>
         <div class="container-fluid">
             <div class="row justify-content-center">

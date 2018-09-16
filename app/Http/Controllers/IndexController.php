@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Config;
 
 class IndexController extends BaseController
 {
+    protected $display_nav_options = true;
+
     public function index(Request $request)
     {
         return redirect()->action('IndexController@recent');
@@ -48,6 +50,7 @@ class IndexController extends BaseController
             return view(
                 'recent',
                 [
+                    'display_nav_options' => $this->display_nav_options,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'items' => $items
                 ]
