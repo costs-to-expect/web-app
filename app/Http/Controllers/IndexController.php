@@ -182,4 +182,18 @@ class IndexController extends BaseController
             );
         }
     }
+
+    public function addExpense(Request $request)
+    {
+        $this->nav_active = 'add-expense';
+
+        return view(
+            'add-expense',
+            [
+                'display_nav_options' => $this->display_nav_options,
+                'nav_active' => $this->nav_active,
+                'resource_name' => Config::get('web.config.api_resource_name')
+            ]
+        );
+    }
 }
