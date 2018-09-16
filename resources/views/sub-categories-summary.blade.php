@@ -6,6 +6,8 @@
 
         <p class="lead">The total sum of expenses in the following sub categories for {{ $resource_name }}.</p>
 
+        <p><a href="{{ action('IndexController@categoriesSummary') }}" class="btn btn-sm btn-outline-info">Return to summary</a></p>
+
         <table class="table table-sm">
             <caption>Partial sub categories summary for {{ $resource_name }}.</caption>
             <thead>
