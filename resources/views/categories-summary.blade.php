@@ -7,7 +7,8 @@
         <p class="lead">The total sum of each expense category for {{ $resource_name }}.</p>
 
         <table class="table table-sm">
-            <caption>Categories summary for {{ $resource_name }}</caption>
+            <caption>Categories summary for {{ $resource_name }}, select a
+                category to see the sub category break down.</caption>
             <thead>
                 <tr class="bg-dark text-white">
                     <th scope="col">Category</th>
