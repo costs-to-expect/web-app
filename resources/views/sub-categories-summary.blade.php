@@ -4,16 +4,22 @@
     <div class="col-12 col-sm-12 col-md-8 mt-2 mt-lg-2">
         <h1 class="h3 mb-2">Expenses for {{ $resource_name }}</h1>
 
-        <p class="lead">The total sum of expenses in the following sub categories for {{ $resource_name }}.</p>
+        <p class="lead">The total sum of expenses in the {{ $category['name'] }}
+            category for {{ $resource_name }}.</p>
+
+        <dl class="row">
+            <dt class="col-sm-3">{{ $category['name'] }}</dt>
+            <dd class="col-sm-9">{{ $category['description'] }}</dd>
+        </dl>
 
         <p><a href="{{ action('IndexController@categoriesSummary') }}" class="btn btn-sm btn-outline-info">Return to summary</a></p>
 
         <table class="table table-sm">
-            <caption>Partial sub categories summary for {{ $resource_name }}.</caption>
+            <caption>Expenses summed by {{ $category['name'] }} sub category.</caption>
             <thead>
                 <tr class="bg-dark text-white">
-                    <th scope="col">Sub category</th>
-                    <th scope="col">Expenses total</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Total</th>
                     <th scope="col">&nbsp;</th>
                 </tr>
             </thead>

@@ -12,7 +12,7 @@
             <thead>
                 <tr class="bg-dark text-white">
                     <th scope="col">Category</th>
-                    <th scope="col">Expenses total</th>
+                    <th scope="col">Total</th>
                     <th scope="col">&nbsp;</th>
                 </tr>
             </thead>

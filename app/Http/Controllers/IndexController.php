@@ -130,8 +130,9 @@ class IndexController extends BaseController
 
     public function subCategoriesSummary(Request $request, string $category_identifier)
     {
+        $category = null;
         $sub_categories = null;
-        $this->nav_active = 'sub-categories-summary';
+        $this->nav_active = 'categories-summary';
 
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
@@ -155,13 +156,27 @@ class IndexController extends BaseController
             return redirect()->action('IndexController@index');
         }
 
-        if ($sub_categories !== null) {
+        try {
+            $response = $client->get(
+                Config::get('web.config.api_uri_category') .
+                '/' . $category_identifier
+            );
+
+            if ($response->getStatusCode() === 200) {
+                $category = (json_decode($response->getBody(), true));
+            }
+        } catch (ClientException $e) {
+            return redirect()->action('IndexController@index');
+        }
+
+        if ($category === null || $sub_categories !== null) {
             return view(
                 'sub-categories-summary',
                 [
                     'display_nav_options' => $this->display_nav_options,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
+                    'category' => $category,
                     'sub_categories' => $sub_categories
                 ]
             );
