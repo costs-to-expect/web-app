@@ -10,14 +10,24 @@ use Illuminate\Support\Facades\Config;
 
 class AuthenticationController extends BaseController
 {
+    protected $display_nav_options = false;
+
     public function signIn(Request $request)
     {
         return view(
             'sign-in',
             [
+                'display_nav_options' => $this->display_nav_options,
                 'resource' => 'Resource name'
             ]
         );
+    }
+
+    public function signOut(Request $request)
+    {
+        $request->session()->flush();
+        $request->session()->save();
+        return redirect()->action('AuthenticationController@signIn');
     }
 
     public function processSignIn(Request $request)

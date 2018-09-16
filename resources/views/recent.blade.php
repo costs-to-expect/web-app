@@ -1,10 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="col-12 col-sm-12 col-md-8 mt-4 mt-lg-4">
-        <h1 class="h3 mb-3">{{ $resource_name }}'s recent expenses</h1>
+    <div class="col-12 col-sm-12 col-md-8 mt-2 mt-lg-2">
+        <h1 class="h3 mb-2">Recent expenses for {{ $resource_name }}</h1>
 
-        <table class="table">
+        <p class="lead">The last 5 expenses that have been entered for {{ $resource_name }}.</p>
+
+        <table class="table table-sm">
+            <caption>Recent expenses added for {{ $resource_name }}</caption>
             <thead>
                 <tr class="bg-dark text-white d-none d-sm-table-row">
                     <th scope="col">Description</th>
