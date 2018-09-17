@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Client;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Config;
@@ -26,14 +25,13 @@ class IndexController extends BaseController
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
             'headers' => [
-                //'Authorization' => 'Bearer ' . $request->session()->get('bearer'),
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
         ]);
 
         try {
-            $response = $client->get(Config::get('web.config.api_uri_recent') . '?limit=5');
+            $response = $client->get(Config::get('web.config.api_uri_items') . '?limit=5');
 
             if ($response->getStatusCode() === 200) {
                 $items = json_decode($response->getBody(), true);
@@ -63,7 +61,6 @@ class IndexController extends BaseController
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
             'headers' => [
-                //'Authorization' => 'Bearer ' . $request->session()->get('bearer'),
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
@@ -100,7 +97,6 @@ class IndexController extends BaseController
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
             'headers' => [
-                //'Authorization' => 'Bearer ' . $request->session()->get('bearer'),
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
@@ -138,7 +134,6 @@ class IndexController extends BaseController
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
             'headers' => [
-                //'Authorization' => 'Bearer ' . $request->session()->get('bearer'),
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
@@ -192,7 +187,6 @@ class IndexController extends BaseController
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
             'headers' => [
-                //'Authorization' => 'Bearer ' . $request->session()->get('bearer'),
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
@@ -200,7 +194,9 @@ class IndexController extends BaseController
 
         try {
             $response = $client->get(
-                Config::get('web.config.api_uri_categories')
+                Config::get('web.config.api_uri_categories') .
+                '/' . Config::get('web.config.api_category_id_essentials') .
+                '/sub_categories'
             );
 
             if ($response->getStatusCode() === 200) {
@@ -231,7 +227,6 @@ class IndexController extends BaseController
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
             'headers' => [
-                //'Authorization' => 'Bearer ' . $request->session()->get('bearer'),
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
@@ -256,5 +251,41 @@ class IndexController extends BaseController
         }
 
         return response()->json($sub_categories, 200);
+    }
+
+    public function processAddExpense(Request $request)
+    {
+        $client = new Client([
+            'base_uri' => Config::get('web.config.api_base_url'),
+            'headers' => [
+                'Authorization' => 'Bearer ' . $request->session()->get('bearer'),
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        try {
+            $response = $client->post(
+                Config::get('web.config.api_uri_sign_in'),
+                [
+                    \GuzzleHttp\RequestOptions::JSON => [
+                        'email' => $request->input('email'),
+                        'password' => $request->input('password')
+                    ]
+                ]
+            );
+
+            if ($response->getStatusCode() === 200) {
+                $request->session()->put('bearer', json_decode($response->getBody(), true)['token']);
+                return redirect()->action('IndexController@recent');
+            } else {
+                $request->session()->flush();
+                return redirect()->action('AuthenticationController@signIn');
+            }
+        } catch (ClientException $e) {
+            $request->session()->flush();
+            $request->session()->save();
+            return redirect()->action('AuthenticationController@signIn');
+        }
     }
 }
