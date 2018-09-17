@@ -20,7 +20,7 @@ class IndexController extends BaseController
 
     public function recent(Request $request)
     {
-        $items = null;
+        $expenses = null;
 
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
@@ -34,20 +34,20 @@ class IndexController extends BaseController
             $response = $client->get(Config::get('web.config.api_uri_items') . '?limit=5');
 
             if ($response->getStatusCode() === 200) {
-                $items = json_decode($response->getBody(), true);
+                $expenses = json_decode($response->getBody(), true);
             }
         } catch (ClientException $e) {
             return redirect()->action('IndexController@index');
         }
 
-        if ($items !== null) {
+        if ($expenses !== null) {
             return view(
                 'recent',
                 [
                     'display_nav_options' => $this->display_nav_options,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
-                    'items' => $items
+                    'expenses' => $expenses
                 ]
             );
         }
@@ -336,6 +336,42 @@ class IndexController extends BaseController
             var_dump($item_category);
             var_dump($item_sub_category);
             die;
+        }
+    }
+
+    public function expense(Request $request, string $expense_identifier)
+    {
+        $expense = null;
+        $this->nav_active = 'expense';
+
+        $client = new Client([
+            'base_uri' => Config::get('web.config.api_base_url'),
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        try {
+            $response = $client->get(Config::get('web.config.api_uri_items') .
+                '/' . $expense_identifier);
+
+            if ($response->getStatusCode() === 200) {
+                $expense = json_decode($response->getBody(), true);
+            }
+        } catch (ClientException $e) {
+            return redirect()->action('IndexController@recent');
+        }
+
+        if ($expense !== null) {
+            return view(
+                'expense',
+                [
+                    'display_nav_options' => $this->display_nav_options,
+                    'nav_active' => $this->nav_active,
+                    'expense' => $expense
+                ]
+            );
         }
     }
 }
