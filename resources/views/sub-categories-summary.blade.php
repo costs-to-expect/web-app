@@ -8,8 +8,8 @@
             category for {{ $resource_name }}.</p>
 
         <dl class="row">
-            <dt class="col-sm-3">{{ $category['name'] }}</dt>
-            <dd class="col-sm-9">{{ $category['description'] }}</dd>
+            <dt class="col-3">{{ $category['name'] }}</dt>
+            <dd class="col-9">{{ $category['description'] }}</dd>
         </dl>
 
         <p><a href="{{ action('IndexController@categoriesSummary') }}" class="btn btn-sm btn-outline-info">Return to summary</a></p>
