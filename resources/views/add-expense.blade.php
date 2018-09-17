@@ -24,13 +24,13 @@
                 <label for="item_date">Category:</label>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-secondary btn-sm active">
-                        <input type="radio" name="options" id="option1" autocomplete="off" checked /> Essential
+                        <input type="radio" name="options" class="category_selector" value="{{ $category_id_essentials }}" autocomplete="off" checked /> Essentials
                     </label>
                     <label class="btn btn-secondary btn-sm">
-                        <input type="radio" name="options" id="option2" autocomplete="off" /> Non-Essential
+                        <input type="radio" name="options" class="category_selector" value="{{ $category_id_non_essentials }}" autocomplete="off" /> Non-Essentials
                     </label>
                     <label class="btn btn-secondary btn-sm">
-                        <input type="radio" name="options" id="option3" autocomplete="off" /> Hobbies and Interests
+                        <input type="radio" name="options" class="category_selector" value="{{ $category_id_hobbies_and_interests }}" autocomplete="off" /> Hobbies and Interests
                     </label>
                 </div>
             </div>

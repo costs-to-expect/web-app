@@ -17,5 +17,6 @@ Route::group(
         Route::get('/sub-categories-summary/{category_identifier}', 'IndexController@subCategoriesSummary');
         Route::get('/tco-summary', 'IndexController@categoriesTco');
         Route::get('/add-expense', 'IndexController@addExpense');
+        Route::get('/sub-categories/{category_identifier}', 'IndexController@subCategories');
     }
 );

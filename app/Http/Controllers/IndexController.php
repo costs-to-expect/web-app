@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Client;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Config;
@@ -35,7 +36,7 @@ class IndexController extends BaseController
             $response = $client->get(Config::get('web.config.api_uri_recent') . '?limit=5');
 
             if ($response->getStatusCode() === 200) {
-                $items = (json_decode($response->getBody(), true));
+                $items = json_decode($response->getBody(), true);
             }
         } catch (ClientException $e) {
             return redirect()->action('IndexController@index');
@@ -72,7 +73,7 @@ class IndexController extends BaseController
             $response = $client->get(Config::get('web.config.api_uri_categories_summary'));
 
             if ($response->getStatusCode() === 200) {
-                $categories = (json_decode($response->getBody(), true));
+                $categories = json_decode($response->getBody(), true);
             }
         } catch (ClientException $e) {
             return redirect()->action('IndexController@index');
@@ -109,7 +110,7 @@ class IndexController extends BaseController
             $response = $client->get(Config::get('web.config.api_uri_categories_tco'));
 
             if ($response->getStatusCode() === 200) {
-                $tco = (json_decode($response->getBody(), true));
+                $tco = json_decode($response->getBody(), true);
             }
         } catch (ClientException $e) {
             return redirect()->action('IndexController@index');
@@ -150,7 +151,7 @@ class IndexController extends BaseController
             );
 
             if ($response->getStatusCode() === 200) {
-                $sub_categories = (json_decode($response->getBody(), true));
+                $sub_categories = json_decode($response->getBody(), true);
             }
         } catch (ClientException $e) {
             return redirect()->action('IndexController@index');
@@ -163,7 +164,7 @@ class IndexController extends BaseController
             );
 
             if ($response->getStatusCode() === 200) {
-                $category = (json_decode($response->getBody(), true));
+                $category = json_decode($response->getBody(), true);
             }
         } catch (ClientException $e) {
             return redirect()->action('IndexController@index');
@@ -186,14 +187,74 @@ class IndexController extends BaseController
     public function addExpense(Request $request)
     {
         $this->nav_active = 'add-expense';
+        $categories = [];
+
+        $client = new Client([
+            'base_uri' => Config::get('web.config.api_base_url'),
+            'headers' => [
+                //'Authorization' => 'Bearer ' . $request->session()->get('bearer'),
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        try {
+            $response = $client->get(
+                Config::get('web.config.api_uri_categories')
+            );
+
+            if ($response->getStatusCode() === 200) {
+                $categories = json_decode($response->getBody(), true);
+            }
+        } catch (ClientException $e) {
+            return redirect()->action('IndexController@index');
+        }
 
         return view(
             'add-expense',
             [
                 'display_nav_options' => $this->display_nav_options,
                 'nav_active' => $this->nav_active,
-                'resource_name' => Config::get('web.config.api_resource_name')
+                'resource_name' => Config::get('web.config.api_resource_name'),
+                'category_id_essentials' => Config::get('web.config.api_category_id_essentials'),
+                'category_id_non_essentials' => Config::get('web.config.api_category_id_non_essentials'),
+                'category_id_hobbies_and_interests' => Config::get('web.config.api_category_id_hobbies_and_interests'),
+                'categories' => $categories
             ]
         );
+    }
+
+    public function subCategories(Request $request, string $category_identifier)
+    {
+        $sub_categories = [];
+
+        $client = new Client([
+            'base_uri' => Config::get('web.config.api_base_url'),
+            'headers' => [
+                //'Authorization' => 'Bearer ' . $request->session()->get('bearer'),
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        try {
+            $response = $client->get(
+                Config::get('web.config.api_uri_categories') .
+                '/' . $category_identifier . '/sub_categories'
+            );
+
+            if ($response->getStatusCode() === 200) {
+                $sub_categories = json_decode($response->getBody(), true);
+            }
+        } catch (ClientException $e) {
+            return response()->json(
+                [
+                    'sub_categories' => $sub_categories
+                ],
+                200
+            );
+        }
+
+        return response()->json($sub_categories, 200);
     }
 }
