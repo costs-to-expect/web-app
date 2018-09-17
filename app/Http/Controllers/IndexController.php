@@ -342,7 +342,7 @@ class IndexController extends BaseController
     public function expense(Request $request, string $expense_identifier)
     {
         $expense = null;
-        $this->nav_active = 'expense';
+        $this->nav_active = 'recent';
 
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),

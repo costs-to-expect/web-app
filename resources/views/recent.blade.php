@@ -27,7 +27,7 @@
                     <td>&nbsp;</td>
                 </tr>
                 <tr class="d-none d-sm-table-row">
-                    <td><strong>{{ $expense['description'] }}</strong></td>
+                    <td><strong><a href="{{ action('IndexController@expense', ['expense_identifier' => $expense['id']]) }}">{{ $expense['description'] }}</a></strong></td>
                     <td>{{ date('dS M', strtotime($expense['effective_date'])) }}</td>
                     <td>&pound;{{ $expense['actualised_total'] }}</td>
                     <td>&nbsp;</td>
