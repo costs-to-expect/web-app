@@ -7,7 +7,7 @@
         <p class="lead">You can add a new expense for {{ $resource_name }} using
             the form below.</p>
 
-        <form method="post" action="{{ action('AuthenticationController@processSignIn') }}">
+        <form method="post" action="{{ action('IndexController@processAddExpense') }}">
             <div class="form-group">
                 <label for="item_description">Description:</label>
                 <input type="text" id="item_description" name="description" class="form-control" placeholder="Expense description" required autofocus />
@@ -24,28 +24,27 @@
                 <label for="item_date">Category:</label>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-secondary btn-sm active">
-                        <input type="radio" name="options" id="option1" autocomplete="off" checked /> Essential
+                        <input type="radio" name="options" class="category_selector" value="{{ $category_id_essentials }}" autocomplete="off" checked /> Essentials
                     </label>
                     <label class="btn btn-secondary btn-sm">
-                        <input type="radio" name="options" id="option2" autocomplete="off" /> Non-Essential
+                        <input type="radio" name="options" class="category_selector" value="{{ $category_id_non_essentials }}" autocomplete="off" /> Non-Essentials
                     </label>
                     <label class="btn btn-secondary btn-sm">
-                        <input type="radio" name="options" id="option3" autocomplete="off" /> Hobbies and Interests
+                        <input type="radio" name="options" class="category_selector" value="{{ $category_id_hobbies_and_interests }}" autocomplete="off" /> Hobbies and Interests
                     </label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="item_sub_category_id">Sub category:</label>
                 <select id="item_sub_category_id" name="sub_category_id" class="form-control" required>
-                    <option>Sub category 1</option>
-                    <option>Sub category 2</option>
-                    <option>Sub category 3</option>
-                    <option>Sub category 4</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="form-group">
                 {{ csrf_field() }}
-                <input type="hidden" name="category_id" />
+                <input type="hidden" id="item_category_id" name="category_id" value="{{ $category_id_essentials }}" />
                 <button class="btn btn-lg btn-primary btn-block mt-3" type="submit">Save</button>
             </div>
         </form>

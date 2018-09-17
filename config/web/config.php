@@ -9,12 +9,13 @@ return [
 
     'api_uri_sign_in' => 'auth/login',
     'api_uri_category' => 'categories',
+    'api_uri_categories' => 'categories',
     'api_uri_resource' => 'resource_types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
         env($key_api_resource_id, null),
-    'api_uri_recent' => 'resource_types/' .
+    'api_uri_items' => 'resource_types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
-        env($key_api_resource_id, null) . '/items/',
+        env($key_api_resource_id, null) . '/items',
     'api_uri_categories_summary' => 'resource_types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
         env($key_api_resource_id, null) . '/summary/categories',
@@ -26,4 +27,8 @@ return [
 
     'api_resource_type_id' => env($key_api_resource_type_id, null),
     'api_resource_id' => env($key_api_resource_id, null),
+
+    'api_category_id_essentials' => '98WLap7Bx3',
+    'api_category_id_non_essentials' => 'RjXM5VJDw6',
+    'api_category_id_hobbies_and_interests' => 'Gwg7zgL316'
 ];
