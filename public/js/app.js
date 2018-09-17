@@ -1,11 +1,15 @@
 $(document).ready(function () {
     $('input.category_selector').change(function () {
 
+        let category_id = $(this).val();
+
+        $('#item_category_id').val(category_id);
+
         $('#item_sub_category_id option').remove();
-        $('#item_sub_category_id').prepend($("<option />").val('').text('Loading....'));
+        $('#item_sub_category_id').prepend($("<option />").val('').text('Loading sub categories....'));
 
         $.getJSON(
-            '/sub-categories' + '/' + $(this).val(),
+            '/sub-categories' + '/' + category_id,
             function (data) {
                 let select = $('#item_sub_category_id');
                 $.each(data, function () {

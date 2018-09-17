@@ -266,26 +266,25 @@ class IndexController extends BaseController
 
         try {
             $response = $client->post(
-                Config::get('web.config.api_uri_sign_in'),
+                Config::get('web.config.api_uri_items'),
                 [
                     \GuzzleHttp\RequestOptions::JSON => [
-                        'email' => $request->input('email'),
-                        'password' => $request->input('password')
+                        'description' => $request->input('description'),
+                        'effective_date' => $request->input('effective_date'),
+                        'total' => $request->input('total')
                     ]
                 ]
             );
 
             if ($response->getStatusCode() === 200) {
-                $request->session()->put('bearer', json_decode($response->getBody(), true)['token']);
-                return redirect()->action('IndexController@recent');
+                var_dump(json_decode($response->getBody(), true));
+                die('200');
             } else {
-                $request->session()->flush();
-                return redirect()->action('AuthenticationController@signIn');
+                var_dump(json_decode($response->getBody(), true));
+                die('Not 200');
             }
         } catch (ClientException $e) {
-            $request->session()->flush();
-            $request->session()->save();
-            return redirect()->action('AuthenticationController@signIn');
+            die('Exception');
         }
     }
 }

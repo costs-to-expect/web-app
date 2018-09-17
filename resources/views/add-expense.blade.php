@@ -7,7 +7,7 @@
         <p class="lead">You can add a new expense for {{ $resource_name }} using
             the form below.</p>
 
-        <form method="post" action="{{ action('AuthenticationController@processSignIn') }}">
+        <form method="post" action="{{ action('IndexController@processAddExpense') }}">
             <div class="form-group">
                 <label for="item_description">Description:</label>
                 <input type="text" id="item_description" name="description" class="form-control" placeholder="Expense description" required autofocus />
@@ -44,7 +44,7 @@
             </div>
             <div class="form-group">
                 {{ csrf_field() }}
-                <input type="hidden" name="category_id" />
+                <input type="hidden" id="item_category_id" name="category_id" value="{{ $category_id_essentials }}" />
                 <button class="btn btn-lg btn-primary btn-block mt-3" type="submit">Save</button>
             </div>
         </form>
