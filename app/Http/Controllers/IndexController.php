@@ -255,6 +255,10 @@ class IndexController extends BaseController
 
     public function processAddExpense(Request $request)
     {
+        $item = null;
+        $item_category = null;
+        $item_sub_category = null;
+
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
             'headers' => [
@@ -276,15 +280,62 @@ class IndexController extends BaseController
                 ]
             );
 
-            if ($response->getStatusCode() === 200) {
-                var_dump(json_decode($response->getBody(), true));
-                die('200');
+            if ($response->getStatusCode() === 201) {
+                $item = json_decode($response->getBody(), true);
             } else {
-                var_dump(json_decode($response->getBody(), true));
-                die('Not 200');
+                die('Not 201, add item');
             }
         } catch (ClientException $e) {
-            die('Exception');
+            die('Failed to add item');
+        }
+
+        try {
+            $response = $client->post(
+                Config::get('web.config.api_uri_items') . '/' . $item['id'] . '/category',
+                [
+                    \GuzzleHttp\RequestOptions::JSON => [
+                        'category_id' => $request->input('category_id')
+                    ]
+                ]
+            );
+
+            if ($response->getStatusCode() === 201) {
+                $item_category = json_decode($response->getBody(), true);
+            } else {
+                die('Not 201, add category');
+            }
+        } catch (ClientException $e) {
+           echo $e->getMessage();
+        }
+
+        try {
+            $response = $client->post(
+                Config::get('web.config.api_uri_items') . '/' .
+                    $item['id'] . '/category/' . $item_category['id'] . '/sub_category',
+                [
+                    \GuzzleHttp\RequestOptions::JSON => [
+                        'sub_category_id' => $request->input('sub_category_id')
+                    ]
+                ]
+            );
+
+            if ($response->getStatusCode() === 201) {
+                $item_sub_category = json_decode($response->getBody(), true);
+            } else {
+                die('Not 201, add sub category');
+            }
+        } catch (ClientException $e) {
+            echo $e->getMessage();
+        }
+
+        if ($item !== null && $item_category !== null && $item_sub_category) {
+            return redirect()->action('IndexController@recent');
+        } else {
+            // Relevant 404 error
+            var_dump($item);
+            var_dump($item_category);
+            var_dump($item_sub_category);
+            die;
         }
     }
 }

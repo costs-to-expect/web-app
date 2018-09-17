@@ -15,7 +15,7 @@ return [
         env($key_api_resource_id, null),
     'api_uri_items' => 'resource_types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
-        env($key_api_resource_id, null) . '/items/',
+        env($key_api_resource_id, null) . '/items',
     'api_uri_categories_summary' => 'resource_types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
         env($key_api_resource_id, null) . '/summary/categories',
@@ -29,6 +29,6 @@ return [
     'api_resource_id' => env($key_api_resource_id, null),
 
     'api_category_id_essentials' => '98WLap7Bx3',
-    'api_category_id_non_essentials' => 'Gwg7zgL316',
-    'api_category_id_hobbies_and_interests' => 'RjXM5VJDw6'
+    'api_category_id_non_essentials' => 'RjXM5VJDw6',
+    'api_category_id_hobbies_and_interests' => 'Gwg7zgL316'
 ];
