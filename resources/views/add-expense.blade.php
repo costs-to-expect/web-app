@@ -45,7 +45,7 @@
             <div class="form-group">
                 {{ csrf_field() }}
                 <input type="hidden" id="item_category_id" name="category_id" value="{{ $category_id_essentials }}" />
-                <button class="btn btn-lg btn-primary btn-block mt-3" type="submit">Save</button>
+                <button class="btn btn-sm btn-primary btn-block mt-3" type="submit">Save</button>
             </div>
         </form>
     </div>
