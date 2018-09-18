@@ -19,6 +19,20 @@
             <dd class="col-8">{{ date('dS F Y', strtotime($expense['effective_date'])) }}</dd>
             <dt class="col-4">Total:</dt>
             <dd class="col-8">&pound;{{ $expense['actualised_total'] }}</dd>
+
+            @if ($category !== null)
+            <dt class="col-4">Category:</dt>
+            <dd class="col-8">{{ $category['category']['name'] }}</dd>
+            <dt class="col-4">Description:</dt>
+            <dd class="col-8"><p>{{ $category['category']['description'] }}</p></dd>
+            @endif
+
+            @if ($sub_category !== null)
+            <dt class="col-4">Sub category:</dt>
+            <dd class="col-8">{{ $sub_category['sub_category']['name'] }}</dd>
+            <dt class="col-4">Description:</dt>
+            <dd class="col-8"><p>{{ $sub_category['sub_category']['description'] }}</p></dd>
+            @endif
         </dl>
     </div>
 @endsection

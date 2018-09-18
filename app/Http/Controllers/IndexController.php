@@ -342,6 +342,8 @@ class IndexController extends BaseController
     public function expense(Request $request, string $expense_identifier)
     {
         $expense = null;
+        $category = null;
+        $sub_category = null;
         $this->nav_active = 'recent';
 
         $client = new Client([
@@ -363,13 +365,39 @@ class IndexController extends BaseController
             return redirect()->action('IndexController@recent');
         }
 
+        try {
+            $response = $client->get(Config::get('web.config.api_uri_items') .
+                '/' . $expense_identifier . '/category');
+
+            if ($response->getStatusCode() === 200) {
+                $category = json_decode($response->getBody(), true);
+            }
+        } catch (ClientException $e) {
+            // Flash message, no category assigned
+        }
+
+        if ($category !== null) {
+            try {
+                $response = $client->get(Config::get('web.config.api_uri_items') .
+                    '/' . $expense_identifier . '/category/' . $category['id'] . '/sub_category');
+
+                if ($response->getStatusCode() === 200) {
+                    $sub_category = json_decode($response->getBody(), true);
+                }
+            } catch (ClientException $e) {
+                // Flash message, no category assigned
+            }
+        }
+
         if ($expense !== null) {
             return view(
                 'expense',
                 [
                     'display_nav_options' => $this->display_nav_options,
                     'nav_active' => $this->nav_active,
-                    'expense' => $expense
+                    'expense' => $expense,
+                    'category' => $category,
+                    'sub_category' => $sub_category
                 ]
             );
         }
