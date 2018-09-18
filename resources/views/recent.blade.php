@@ -17,19 +17,19 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($items as $item)
+                @foreach ($expenses as $expense)
                 <tr class="d-table-row d-sm-none">
-                    <td colspan="4"><strong>{{ $item['description'] }}</strong></td>
+                    <td colspan="4"><strong><a href="{{ action('IndexController@expense', ['expense_identifier' => $expense['id']]) }}" class="text-secondary">{{ $expense['description'] }}</a></strong></td>
                 </tr>
                 <tr class="d-table-row d-sm-none">
-                    <td colspan="2">{{ date('dS F Y', strtotime($item['effective_date'])) }}</td>
-                    <td>&pound;{{ $item['actualised_total'] }}</td>
+                    <td colspan="2">{{ date('dS F Y', strtotime($expense['effective_date'])) }}</td>
+                    <td>&pound;{{ $expense['actualised_total'] }}</td>
                     <td>&nbsp;</td>
                 </tr>
                 <tr class="d-none d-sm-table-row">
-                    <td><strong>{{ $item['description'] }}</strong></td>
-                    <td>{{ date('dS M', strtotime($item['effective_date'])) }}</td>
-                    <td>&pound;{{ $item['actualised_total'] }}</td>
+                    <td><strong><a href="{{ action('IndexController@expense', ['expense_identifier' => $expense['id']]) }}" class="text-secondary">{{ $expense['description'] }}</a></strong></td>
+                    <td>{{ date('dS M', strtotime($expense['effective_date'])) }}</td>
+                    <td>&pound;{{ $expense['actualised_total'] }}</td>
                     <td>&nbsp;</td>
                 </tr>
                 @endforeach

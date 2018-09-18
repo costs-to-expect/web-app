@@ -19,7 +19,7 @@
             <tbody>
                 @foreach ($categories as $category)
                 <tr>
-                    <td><strong><a href="{{ action('IndexController@subCategoriesSummary', ['category_identifier' => $category['id']]) }}">{{ $category['name'] }}</a></strong></td>
+                    <td><strong><a href="{{ action('IndexController@subCategoriesSummary', ['category_identifier' => $category['id']]) }}" class="text-secondary">{{ $category['name'] }}</a></strong></td>
                     <td>&pound;{{ $category['total'] }}</td>
                     <td>&nbsp;</td>
                 </tr>

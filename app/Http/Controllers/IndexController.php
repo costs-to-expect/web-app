@@ -20,7 +20,7 @@ class IndexController extends BaseController
 
     public function recent(Request $request)
     {
-        $items = null;
+        $expenses = null;
 
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
@@ -34,20 +34,20 @@ class IndexController extends BaseController
             $response = $client->get(Config::get('web.config.api_uri_items') . '?limit=5');
 
             if ($response->getStatusCode() === 200) {
-                $items = json_decode($response->getBody(), true);
+                $expenses = json_decode($response->getBody(), true);
             }
         } catch (ClientException $e) {
             return redirect()->action('IndexController@index');
         }
 
-        if ($items !== null) {
+        if ($expenses !== null) {
             return view(
                 'recent',
                 [
                     'display_nav_options' => $this->display_nav_options,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
-                    'items' => $items
+                    'expenses' => $expenses
                 ]
             );
         }
@@ -336,6 +336,70 @@ class IndexController extends BaseController
             var_dump($item_category);
             var_dump($item_sub_category);
             die;
+        }
+    }
+
+    public function expense(Request $request, string $expense_identifier)
+    {
+        $expense = null;
+        $category = null;
+        $sub_category = null;
+        $this->nav_active = 'recent';
+
+        $client = new Client([
+            'base_uri' => Config::get('web.config.api_base_url'),
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        try {
+            $response = $client->get(Config::get('web.config.api_uri_items') .
+                '/' . $expense_identifier);
+
+            if ($response->getStatusCode() === 200) {
+                $expense = json_decode($response->getBody(), true);
+            }
+        } catch (ClientException $e) {
+            return redirect()->action('IndexController@recent');
+        }
+
+        try {
+            $response = $client->get(Config::get('web.config.api_uri_items') .
+                '/' . $expense_identifier . '/category');
+
+            if ($response->getStatusCode() === 200) {
+                $category = json_decode($response->getBody(), true);
+            }
+        } catch (ClientException $e) {
+            // Flash message, no category assigned
+        }
+
+        if ($category !== null) {
+            try {
+                $response = $client->get(Config::get('web.config.api_uri_items') .
+                    '/' . $expense_identifier . '/category/' . $category['id'] . '/sub_category');
+
+                if ($response->getStatusCode() === 200) {
+                    $sub_category = json_decode($response->getBody(), true);
+                }
+            } catch (ClientException $e) {
+                // Flash message, no category assigned
+            }
+        }
+
+        if ($expense !== null) {
+            return view(
+                'expense',
+                [
+                    'display_nav_options' => $this->display_nav_options,
+                    'nav_active' => $this->nav_active,
+                    'expense' => $expense,
+                    'category' => $category,
+                    'sub_category' => $sub_category
+                ]
+            );
         }
     }
 }
