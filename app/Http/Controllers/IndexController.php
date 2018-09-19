@@ -414,4 +414,73 @@ class IndexController extends BaseController
             );
         }
     }
+
+    public function confirmDeleteExpense(Request $request, string $expense_identifier)
+    {
+        $expense = null;
+        $category = null;
+        $sub_category = null;
+        $this->nav_active = 'recent';
+
+        $client = new Client([
+            'base_uri' => Config::get('web.config.api_base_url'),
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        try {
+            $response = $client->get(Config::get('web.config.api_uri_items') .
+                '/' . $expense_identifier);
+
+            if ($response->getStatusCode() === 200) {
+                $expense = json_decode($response->getBody(), true);
+            }
+        } catch (ClientException $e) {
+            return redirect()->action('IndexController@recent');
+        }
+
+        try {
+            $response = $client->get(Config::get('web.config.api_uri_items') .
+                '/' . $expense_identifier . '/category');
+
+            if ($response->getStatusCode() === 200) {
+                $category = json_decode($response->getBody(), true);
+            }
+        } catch (ClientException $e) {
+            // Flash message? can't confirm if category set
+        }
+
+        if ($category !== null) {
+            try {
+                $response = $client->get(Config::get('web.config.api_uri_items') .
+                    '/' . $expense_identifier . '/category/' . $category['id'] . '/sub_category');
+
+                if ($response->getStatusCode() === 200) {
+                    $sub_category = json_decode($response->getBody(), true);
+                }
+            } catch (ClientException $e) {
+                // Flash message? can't confirm if category set
+            }
+        }
+
+        if ($expense !== null) {
+            return view(
+                'delete-expense',
+                [
+                    'display_nav_options' => $this->display_nav_options,
+                    'nav_active' => $this->nav_active,
+                    'expense' => $expense,
+                    'category' => $category,
+                    'sub_category' => $sub_category
+                ]
+            );
+        }
+    }
+
+    public function deleteExpense(Request $request)
+    {
+
+    }
 }

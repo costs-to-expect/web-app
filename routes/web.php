@@ -20,5 +20,9 @@ Route::group(
         Route::get('/sub-categories/{category_identifier}', 'IndexController@subCategories');
         Route::get('/expense/{expense_identifier}', 'IndexController@expense');
         Route::post('/add-expense', 'IndexController@processAddExpense');
+        Route::get('/confirm-delete-expense/{expense_identifier}', 'IndexController@confirmDeleteExpense');
+        Route::post('/delete-expense', 'IndexController@deleteExpense');
+
+        // POST For delete, all three ids and the confirm check.
     }
 );
