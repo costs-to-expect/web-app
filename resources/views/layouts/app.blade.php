@@ -46,7 +46,7 @@
         <div class="container">
             @if ($display_nav_options === true && $nav_active !== 'add-expense')
                 <div class="col-12 text-right mt-2">
-                    <p><a href="{{ action('IndexController@addExpense') }}" class="btn btn-sm btn-outline-info">Add expense</a></p>
+                    <p><a href="{{ action('IndexController@addExpense') }}" class="btn btn-sm btn-outline-success">Add new expense</a></p>
                 </div>
             @endif
             <p class="mt-5 mb-3 text-muted text-center">Copyright &copy; Dean Blackborough {{ date('Y') }}</p>

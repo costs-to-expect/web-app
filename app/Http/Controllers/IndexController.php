@@ -47,7 +47,9 @@ class IndexController extends BaseController
                     'display_nav_options' => $this->display_nav_options,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
-                    'expenses' => $expenses
+                    'expenses' => $expenses,
+                    'status' => $request->session()->get('status'),
+                    'status_line' => $request->session()->get('status-line')
                 ]
             );
         }
@@ -283,10 +285,14 @@ class IndexController extends BaseController
             if ($response->getStatusCode() === 201) {
                 $item = json_decode($response->getBody(), true);
             } else {
-                die('Not 201, add item');
+                // Check for 422 (validation) and then display below for general errors
+                $request->session()->flash('status', 'expense-not-added-item');
+                return redirect()->action('IndexController@recent');
             }
         } catch (ClientException $e) {
-            die('Failed to add item');
+            $request->session()->flash('status', 'api-error');
+            $request->session()->flash('status-line', __LINE__);
+            return redirect()->action('IndexController@recent');
         }
 
         try {
@@ -302,10 +308,14 @@ class IndexController extends BaseController
             if ($response->getStatusCode() === 201) {
                 $item_category = json_decode($response->getBody(), true);
             } else {
-                die('Not 201, add category');
+                // Check for 422 (validation) and then display below for general errors
+                $request->session()->flash('status', 'expense-not-added-item-category');
+                return redirect()->action('IndexController@recent');
             }
         } catch (ClientException $e) {
-           echo $e->getMessage();
+            $request->session()->flash('status', 'api-error');
+            $request->session()->flash('status-line', __LINE__);
+            return redirect()->action('IndexController@recent');
         }
 
         try {
@@ -322,24 +332,92 @@ class IndexController extends BaseController
             if ($response->getStatusCode() === 201) {
                 $item_sub_category = json_decode($response->getBody(), true);
             } else {
-                die('Not 201, add sub category');
+                // Check for 422 (validation) and then display below for general errors
+                $request->session()->flash('status', 'expense-not-added-item-sub-category');
+                return redirect()->action('IndexController@recent');
             }
         } catch (ClientException $e) {
-            echo $e->getMessage();
+            $request->session()->flash('status', 'api-error');
+            $request->session()->flash('status-line', __LINE__);
+            return redirect()->action('IndexController@recent');
         }
 
-        if ($item !== null && $item_category !== null && $item_sub_category) {
+        if ($item !== null && $item_category !== null && $item_sub_category !== null) {
+            $request->session()->flash('status', 'expense-added');
             return redirect()->action('IndexController@recent');
         } else {
-            // Relevant 404 error
-            var_dump($item);
-            var_dump($item_category);
-            var_dump($item_sub_category);
-            die;
+            $request->session()->flash('status', 'expense-not-added');
+            return redirect()->action('IndexController@recent');
         }
     }
 
     public function expense(Request $request, string $expense_identifier)
+    {
+        $expense = null;
+        $category = null;
+        $sub_category = null;
+        $status = null;
+        $this->nav_active = 'recent';
+
+        $client = new Client([
+            'base_uri' => Config::get('web.config.api_base_url'),
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        try {
+            $response = $client->get(Config::get('web.config.api_uri_items') .
+                '/' . $expense_identifier);
+
+            if ($response->getStatusCode() === 200) {
+                $expense = json_decode($response->getBody(), true);
+            }
+        } catch (ClientException $e) {
+            return redirect()->action('IndexController@recent');
+        }
+
+        try {
+            $response = $client->get(Config::get('web.config.api_uri_items') .
+                '/' . $expense_identifier . '/category');
+
+            if ($response->getStatusCode() === 200) {
+                $category = json_decode($response->getBody(), true);
+            }
+        } catch (ClientException $e) {
+            $status = 'category-not-assigned';
+        }
+
+        if ($category !== null) {
+            try {
+                $response = $client->get(Config::get('web.config.api_uri_items') .
+                    '/' . $expense_identifier . '/category/' . $category['id'] . '/sub_category');
+
+                if ($response->getStatusCode() === 200) {
+                    $sub_category = json_decode($response->getBody(), true);
+                }
+            } catch (ClientException $e) {
+                $status = 'sub-category-not-assigned';
+            }
+        }
+
+        if ($expense !== null) {
+            return view(
+                'expense',
+                [
+                    'display_nav_options' => $this->display_nav_options,
+                    'nav_active' => $this->nav_active,
+                    'expense' => $expense,
+                    'category' => $category,
+                    'sub_category' => $sub_category,
+                    'status' => $status
+                ]
+            );
+        }
+    }
+
+    public function confirmDeleteExpense(Request $request, string $expense_identifier)
     {
         $expense = null;
         $category = null;
@@ -373,7 +451,7 @@ class IndexController extends BaseController
                 $category = json_decode($response->getBody(), true);
             }
         } catch (ClientException $e) {
-            // Flash message, no category assigned
+            // Flash message? can't confirm if category set
         }
 
         if ($category !== null) {
@@ -385,13 +463,13 @@ class IndexController extends BaseController
                     $sub_category = json_decode($response->getBody(), true);
                 }
             } catch (ClientException $e) {
-                // Flash message, no category assigned
+                // Flash message? can't confirm if category set
             }
         }
 
         if ($expense !== null) {
             return view(
-                'expense',
+                'delete-expense',
                 [
                     'display_nav_options' => $this->display_nav_options,
                     'nav_active' => $this->nav_active,
@@ -401,5 +479,10 @@ class IndexController extends BaseController
                 ]
             );
         }
+    }
+
+    public function deleteExpense(Request $request)
+    {
+
     }
 }

@@ -15,7 +15,7 @@
         <p><a href="{{ action('IndexController@categoriesSummary') }}" class="btn btn-sm btn-outline-info">Return to summary</a></p>
 
         <table class="table table-sm">
-            <caption>Expenses summed by {{ $category['name'] }} sub category.</caption>
+            <caption>Expenses summed by {{ $category['name'] }} category.</caption>
             <thead>
                 <tr class="bg-dark text-white">
                     <th scope="col">Category</th>

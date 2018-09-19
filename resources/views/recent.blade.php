@@ -6,6 +6,39 @@
 
         <p class="lead">The last 5 expenses that have been entered for {{ $resource_name }}.</p>
 
+        @if ($status !== null)
+            @if ($status === 'expense-added')
+                <div class="alert alert-success" role="alert">
+                    Your expense has been added, it should be in the list below.
+                </div>
+            @endif
+            @if ($status === 'expense-not-added')
+                <div class="alert alert-danger" role="alert">
+                    Unable to add the expense, contact administrator!
+                </div>
+            @endif
+            @if ($status === 'api-error')
+                <div class="alert alert-danger" role="alert">
+                    Encountered a problem contacting the API, contact the administrator with error code: {{ $status_line }}!
+                </div>
+            @endif
+            @if ($status === 'expense-not-added-item')
+                <div class="alert alert-warning" role="alert">
+                    Unable to add the expense item, try again and contact administrator if it fails.
+                </div>
+            @endif
+            @if ($status === 'expense-not-added-item-category')
+                <div class="alert alert-info" role="alert">
+                    Unable to add the category for the new expense, assign via edit.
+                </div>
+            @endif
+            @if ($status === 'expense-not-added-item-sub-category')
+                <div class="alert alert-info" role="alert">
+                    Unable to add the sub category for the new expense, assign via edit.
+                </div>
+            @endif
+        @endif
+
         <table class="table table-sm">
             <caption>Recent expenses added for {{ $resource_name }}</caption>
             <thead>
