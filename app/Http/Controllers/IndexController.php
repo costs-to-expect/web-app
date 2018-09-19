@@ -417,11 +417,16 @@ class IndexController extends BaseController
         }
     }
 
-    public function confirmDeleteExpense(Request $request, string $expense_identifier)
+    public function deleteExpense(Request $request, string $expense_identifier)
     {
         $expense = null;
         $category = null;
         $sub_category = null;
+
+        $expense_identifier_id = null;
+        $expense_category_identifier_id = null;
+        $expense_sub_category_identifier_id = null;
+
         $this->nav_active = 'recent';
 
         $client = new Client([
@@ -438,6 +443,7 @@ class IndexController extends BaseController
 
             if ($response->getStatusCode() === 200) {
                 $expense = json_decode($response->getBody(), true);
+                $expense_identifier_id = $expense['id'];
             }
         } catch (ClientException $e) {
             return redirect()->action('IndexController@recent');
@@ -449,9 +455,10 @@ class IndexController extends BaseController
 
             if ($response->getStatusCode() === 200) {
                 $category = json_decode($response->getBody(), true);
+                $expense_category_identifier_id = $category['id'];
             }
         } catch (ClientException $e) {
-            // Flash message? can't confirm if category set
+            // Do nothing, not relevant
         }
 
         if ($category !== null) {
@@ -461,9 +468,10 @@ class IndexController extends BaseController
 
                 if ($response->getStatusCode() === 200) {
                     $sub_category = json_decode($response->getBody(), true);
+                    $expense_sub_category_identifier_id = $sub_category['id'];
                 }
             } catch (ClientException $e) {
-                // Flash message? can't confirm if category set
+                // Do nothing, not relevant
             }
         }
 
@@ -475,13 +483,16 @@ class IndexController extends BaseController
                     'nav_active' => $this->nav_active,
                     'expense' => $expense,
                     'category' => $category,
-                    'sub_category' => $sub_category
+                    'sub_category' => $sub_category,
+                    'expense_identifier_id' => $expense_identifier_id,
+                    'expense_category_identifier_id' => $expense_category_identifier_id,
+                    'expense_sub_category_identifier_id' => $expense_sub_category_identifier_id
                 ]
             );
         }
     }
 
-    public function deleteExpense(Request $request)
+    public function processDeleteExpense(Request $request)
     {
 
     }

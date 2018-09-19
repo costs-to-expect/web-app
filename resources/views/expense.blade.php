@@ -49,6 +49,6 @@
         </dl>
     </div>
     <div class="col-12 text-left">
-        <p><a href="{{ action('IndexController@confirmDeleteExpense', ['expense_identifier' => $expense['id']]) }}" class="btn btn-sm btn-outline-danger">Delete expense</a></p>
+        <p><a href="{{ action('IndexController@deleteExpense', ['expense_identifier' => $expense['id']]) }}" class="btn btn-sm btn-outline-danger">Delete expense</a></p>
     </div>
 @endsection
