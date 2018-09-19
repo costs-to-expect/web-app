@@ -12,13 +12,26 @@
                 <label for="item_description">Description:</label>
                 <input type="text" id="item_description" name="description" class="form-control form-control-sm" placeholder="Expense description" required autofocus />
             </div>
-            <div class="form-group">
-                <label for="item_date">Effective date:</label>
-                <input type="date" id="item_date" name="effective_date" class="form-control form-control-sm" required />
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label for="item_date">Effective date:</label>
+                    <input type="date" id="item_date" name="effective_date" class="form-control form-control-sm" required />
+                </div>
+                <div class="form-group col-6">
+                    <label for="item_total">Total: &pound;</label>
+                    <input type="number" name="total" id="item_total" class="form-control form-control-sm" min="0.00" max="10000.00" step="0.01" placeholder="2.50" required />
+                </div>
             </div>
-            <div class="form-group">
-                <label for="item_total">Total:</label>
-                <input type="number" name="total" id="item_total" class="form-control form-control-sm" min="0.00" max="10000.00" step="0.01" placeholder="2.50" required />
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label for="item_date">Allocation: %</label>
+                    <input type="number" name="total" id="item_total" class="form-control form-control-sm" min="0.00" max="100" step="1" placeholder="100" value="100" required />
+                </div>
+                <div class="form-group col-6">
+                    - <a href="#" class="text-info" data-allocation="25">25%</a><br />
+                    - <a href="#" class="text-info" data-allocation="33">33%</a><br />
+                    - <a href="#" class="text-info" data-allocation="50">50%</a><br />
+                </div>
             </div>
             <div class="form-group">
                 <label for="item_date">Category:</label>
