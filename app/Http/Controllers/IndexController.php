@@ -356,6 +356,7 @@ class IndexController extends BaseController
         $expense = null;
         $category = null;
         $sub_category = null;
+        $status = null;
         $this->nav_active = 'recent';
 
         $client = new Client([
@@ -385,7 +386,7 @@ class IndexController extends BaseController
                 $category = json_decode($response->getBody(), true);
             }
         } catch (ClientException $e) {
-            // Flash message, no category assigned
+            $status = 'category-not-assigned';
         }
 
         if ($category !== null) {
@@ -397,7 +398,7 @@ class IndexController extends BaseController
                     $sub_category = json_decode($response->getBody(), true);
                 }
             } catch (ClientException $e) {
-                // Flash message, no category assigned
+                $status = 'sub-category-not-assigned';
             }
         }
 
@@ -409,7 +410,8 @@ class IndexController extends BaseController
                     'nav_active' => $this->nav_active,
                     'expense' => $expense,
                     'category' => $category,
-                    'sub_category' => $sub_category
+                    'sub_category' => $sub_category,
+                    'status' => $status
                 ]
             );
         }

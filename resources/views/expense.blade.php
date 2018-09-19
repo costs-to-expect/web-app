@@ -6,6 +6,19 @@
 
         <p class="lead">Expense details.</p>
 
+        @if ($status !== null)
+            @if ($status === 'category-not-assigned')
+                <div class="alert alert-info" role="alert">
+                    A category is not assigned to this expense.
+                </div>
+            @endif
+            @if ($status === 'sub-category-not-assigned')
+                <div class="alert alert-info" role="alert">
+                    A sub category is not assigned to this expense.
+                </div>
+            @endif
+        @endif
+
         <p><a href="{{ action('IndexController@recent') }}" class="btn btn-sm btn-outline-info">Return to recent</a></p>
 
         <dl class="row">
