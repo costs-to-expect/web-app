@@ -10,15 +10,15 @@
         <form method="post" action="{{ action('IndexController@processAddExpense') }}">
             <div class="form-group">
                 <label for="item_description">Description:</label>
-                <input type="text" id="item_description" name="description" class="form-control" placeholder="Expense description" required autofocus />
+                <input type="text" id="item_description" name="description" class="form-control form-control-sm" placeholder="Expense description" required autofocus />
             </div>
             <div class="form-group">
                 <label for="item_date">Effective date:</label>
-                <input type="date" id="item_date" name="effective_date" class="form-control" required />
+                <input type="date" id="item_date" name="effective_date" class="form-control form-control-sm" required />
             </div>
             <div class="form-group">
                 <label for="item_total">Total:</label>
-                <input type="number" name="total" id="item_total" class="form-control" min="0.00" max="10000.00" step="0.01" placeholder="2.50" required />
+                <input type="number" name="total" id="item_total" class="form-control form-control-sm" min="0.00" max="10000.00" step="0.01" placeholder="2.50" required />
             </div>
             <div class="form-group">
                 <label for="item_date">Category:</label>
@@ -36,7 +36,7 @@
             </div>
             <div class="form-group">
                 <label for="item_sub_category_id">Sub category:</label>
-                <select id="item_sub_category_id" name="sub_category_id" class="form-control" required>
+                <select id="item_sub_category_id" name="sub_category_id" class="form-control form-control-sm" required>
                     @foreach ($categories as $category)
                         <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
                     @endforeach
