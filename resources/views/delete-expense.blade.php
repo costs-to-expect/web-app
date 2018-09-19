@@ -42,7 +42,7 @@
                 <input type="hidden" name="expense_identifier_id" value="{{ $expense_identifier_id }}" />
                 <input type="hidden" name="expense_category_identifier_id" value="{{ $expense_category_identifier_id }}" />
                 <input type="hidden" name="expense_sub_category_identifier_id" value="{{ $expense_sub_category_identifier_id }}" />
-                <button class="btn btn-sm btn-danger" type="submit">Delete expense</button>
+                <button class="btn btn-sm btn-danger" type="submit">Confirm delete expense</button>
             </div>
         </form>
     </div>

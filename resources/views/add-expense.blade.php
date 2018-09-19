@@ -24,13 +24,16 @@
             </div>
             <div class="form-row">
                 <div class="form-group col-6">
-                    <label for="item_date">Allocation: %</label>
-                    <input type="number" name="total" id="item_total" class="form-control form-control-sm" min="0.00" max="100" step="1" placeholder="100" value="100" required />
+                    <label for="item_allocation">Allocation: %</label>
+                    <input type="number" name="allocation" id="item_allocation" class="form-control form-control-sm" min="0" max="100" step="1" placeholder="100" value="100" required />
                 </div>
-                <div class="form-group col-6">
-                    - <a href="#" class="text-info" data-allocation="25">25%</a><br />
-                    - <a href="#" class="text-info" data-allocation="33">33%</a><br />
-                    - <a href="#" class="text-info" data-allocation="50">50%</a><br />
+                <div class="form-group col-1">
+                    &nbsp;
+                </div>
+                <div class="form-group col-5">
+                    - <a href="#" class="set-allocation text-info" data-allocation="25">25%</a><br />
+                    - <a href="#" class="set-allocation text-info" data-allocation="33">33%</a><br />
+                    - <a href="#" class="set-allocation text-info" data-allocation="50">50%</a>
                 </div>
             </div>
             <div class="form-group">
@@ -58,7 +61,7 @@
             <div class="form-group">
                 {{ csrf_field() }}
                 <input type="hidden" id="item_category_id" name="category_id" value="{{ $category_id_essentials }}" />
-                <button class="btn btn-sm btn-primary btn-block mt-3" type="submit">Save</button>
+                <button class="btn btn-primary btn-block mt-3" type="submit">Save</button>
             </div>
         </form>
     </div>
