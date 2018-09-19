@@ -36,12 +36,12 @@
         </dl>
     </div>
     <div class="col-12 text-left mt-2">
-        <form method="post" action="{{ action('IndexController@deleteExpense') }}">
+        <form method="post" action="{{ action('IndexController@processDeleteExpense') }}">
             <div class="form-group">
                 {{ csrf_field() }}
-                <input type="hidden" id="item_category_id" name="expense_identifier" value="" />
-                <input type="hidden" id="item_category_id" name="expense_category_identifier" value="" />
-                <input type="hidden" id="item_category_id" name="expense_sub_category_identifier" value="" />
+                <input type="hidden" name="expense_identifier_id" value="{{ $expense_identifier_id }}" />
+                <input type="hidden" name="expense_category_identifier_id" value="{{ $expense_category_identifier_id }}" />
+                <input type="hidden" name="expense_sub_category_identifier_id" value="{{ $expense_sub_category_identifier_id }}" />
                 <button class="btn btn-sm btn-danger" type="submit">Delete expense</button>
             </div>
         </form>

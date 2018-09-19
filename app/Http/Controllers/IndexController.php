@@ -417,11 +417,16 @@ class IndexController extends BaseController
         }
     }
 
-    public function confirmDeleteExpense(Request $request, string $expense_identifier)
+    public function deleteExpense(Request $request, string $expense_identifier)
     {
         $expense = null;
         $category = null;
         $sub_category = null;
+
+        $expense_identifier_id = null;
+        $expense_category_identifier_id = null;
+        $expense_sub_category_identifier_id = null;
+
         $this->nav_active = 'recent';
 
         $client = new Client([
@@ -438,6 +443,7 @@ class IndexController extends BaseController
 
             if ($response->getStatusCode() === 200) {
                 $expense = json_decode($response->getBody(), true);
+                $expense_identifier_id = $expense['id'];
             }
         } catch (ClientException $e) {
             return redirect()->action('IndexController@recent');
@@ -449,9 +455,10 @@ class IndexController extends BaseController
 
             if ($response->getStatusCode() === 200) {
                 $category = json_decode($response->getBody(), true);
+                $expense_category_identifier_id = $category['id'];
             }
         } catch (ClientException $e) {
-            // Flash message? can't confirm if category set
+            // Do nothing, not relevant
         }
 
         if ($category !== null) {
@@ -461,9 +468,10 @@ class IndexController extends BaseController
 
                 if ($response->getStatusCode() === 200) {
                     $sub_category = json_decode($response->getBody(), true);
+                    $expense_sub_category_identifier_id = $sub_category['id'];
                 }
             } catch (ClientException $e) {
-                // Flash message? can't confirm if category set
+                // Do nothing, not relevant
             }
         }
 
@@ -475,14 +483,91 @@ class IndexController extends BaseController
                     'nav_active' => $this->nav_active,
                     'expense' => $expense,
                     'category' => $category,
-                    'sub_category' => $sub_category
+                    'sub_category' => $sub_category,
+                    'expense_identifier_id' => $expense_identifier_id,
+                    'expense_category_identifier_id' => $expense_category_identifier_id,
+                    'expense_sub_category_identifier_id' => $expense_sub_category_identifier_id
                 ]
             );
         }
     }
 
-    public function deleteExpense(Request $request)
+    public function processDeleteExpense(Request $request)
     {
+        $client = new Client([
+            'base_uri' => Config::get('web.config.api_base_url'),
+            'headers' => [
+                'Authorization' => 'Bearer ' . $request->session()->get('bearer'),
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
 
+        $deleted_sub_category = false;
+        $deleted_category = false;
+        $deleted_expense = false;
+
+        $expense_identifier = $request->input('expense_identifier_id');
+        $expense_category_identifier = $request->input('expense_category_identifier_id');
+        $expense_sub_category_identifier = $request->input('expense_sub_category_identifier_id');
+
+        if ($expense_sub_category_identifier !== null) {
+            try {
+                $response = $client->delete(
+                    Config::get('web.config.api_uri_items') . '/' .
+                        $expense_identifier . '/category/' . $expense_category_identifier .
+                        '/sub_category/' . $expense_sub_category_identifier
+                );
+
+                if ($response->getStatusCode() === 204) {
+                    $deleted_sub_category = true;
+                }
+            } catch (ClientException $e) {
+                // Ignore for now until logging added
+            }
+        } else {
+            $deleted_sub_category = true;
+        }
+
+        if ($deleted_sub_category === true && $expense_category_identifier !== null) {
+            try {
+                $response = $client->delete(
+                    Config::get('web.config.api_uri_items') . '/' .
+                        $expense_identifier . '/category/' . $expense_category_identifier
+                );
+
+                if ($response->getStatusCode() === 204) {
+                    $deleted_category = true;
+                }
+            } catch (ClientException $e) {
+                // Ignore for now until logging added
+            }
+        } else {
+            $deleted_category = true;
+        }
+
+        if ($deleted_category === true && $expense_identifier !== null) {
+            try {
+                $response = $client->delete(
+                    Config::get('web.config.api_uri_items') . '/' . $expense_identifier
+                );
+
+                if ($response->getStatusCode() === 204) {
+                    $deleted_expense = true;
+                }
+            } catch (ClientException $e) {
+                // Ignore for now until logging added
+            }
+        } else {
+            $deleted_expense = true;
+        }
+
+        if ($deleted_expense === true && $deleted_category === true && $deleted_sub_category === true) {
+            $request->session()->flash('status', 'expense-deleted');
+            return redirect()->action('IndexController@recent');
+        } else {
+            $request->session()->flash('status', 'expense-not-deleted');
+            return redirect()->action('IndexController@expense', ['expense_identifier' => $expense_identifier]);
+        }
     }
 }
