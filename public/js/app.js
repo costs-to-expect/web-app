@@ -19,4 +19,9 @@ $(document).ready(function () {
             }
         );
     });
+
+    $('a.set-allocation').click(function () {
+        $('#item_allocation').val($(this).data("allocation"));
+        return false;
+    });
 });
