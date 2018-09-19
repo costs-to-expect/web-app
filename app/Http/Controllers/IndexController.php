@@ -494,6 +494,80 @@ class IndexController extends BaseController
 
     public function processDeleteExpense(Request $request)
     {
+        $client = new Client([
+            'base_uri' => Config::get('web.config.api_base_url'),
+            'headers' => [
+                'Authorization' => 'Bearer ' . $request->session()->get('bearer'),
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
 
+        $deleted_sub_category = false;
+        $deleted_category = false;
+        $deleted_expense = false;
+
+        $expense_identifier = $request->input('expense_identifier_id');
+        $expense_category_identifier = $request->input('expense_category_identifier_id');
+        $expense_sub_category_identifier = $request->input('expense_sub_category_identifier_id');
+
+        if ($expense_sub_category_identifier !== null) {
+            try {
+                $response = $client->delete(
+                    Config::get('web.config.api_uri_items') . '/' .
+                        $expense_identifier . '/category/' . $expense_category_identifier .
+                        '/sub_category/' . $expense_sub_category_identifier
+                );
+
+                if ($response->getStatusCode() === 204) {
+                    $deleted_sub_category = true;
+                }
+            } catch (ClientException $e) {
+                // Ignore for now until logging added
+            }
+        } else {
+            $deleted_sub_category = true;
+        }
+
+        if ($deleted_sub_category === true && $expense_category_identifier !== null) {
+            try {
+                $response = $client->delete(
+                    Config::get('web.config.api_uri_items') . '/' .
+                        $expense_identifier . '/category/' . $expense_category_identifier
+                );
+
+                if ($response->getStatusCode() === 204) {
+                    $deleted_category = true;
+                }
+            } catch (ClientException $e) {
+                // Ignore for now until logging added
+            }
+        } else {
+            $deleted_category = true;
+        }
+
+        if ($deleted_category === true && $expense_identifier !== null) {
+            try {
+                $response = $client->delete(
+                    Config::get('web.config.api_uri_items') . '/' . $expense_identifier
+                );
+
+                if ($response->getStatusCode() === 204) {
+                    $deleted_expense = true;
+                }
+            } catch (ClientException $e) {
+                // Ignore for now until logging added
+            }
+        } else {
+            $deleted_expense = true;
+        }
+
+        if ($deleted_expense === true && $deleted_category === true && $deleted_sub_category === true) {
+            $request->session()->flash('status', 'expense-deleted');
+            return redirect()->action('IndexController@recent');
+        } else {
+            $request->session()->flash('status', 'expense-not-deleted');
+            return redirect()->action('IndexController@expense', ['expense_identifier' => $expense_identifier]);
+        }
     }
 }

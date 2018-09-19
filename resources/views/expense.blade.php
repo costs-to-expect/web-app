@@ -17,6 +17,11 @@
                     A sub category is not assigned to this expense.
                 </div>
             @endif
+            @if ($status === 'expense-not-deleted')
+                <div class="alert alert-warning" role="alert">
+                    Unable to add the expense, contact administrator!
+                </div>
+            @endif
         @endif
 
         <p><a href="{{ action('IndexController@recent') }}" class="btn btn-sm btn-outline-info">Return to recent</a></p>

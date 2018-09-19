@@ -37,6 +37,11 @@
                     Unable to add the sub category for the new expense, assign via edit.
                 </div>
             @endif
+            @if ($status === 'expense-deleted')
+                <div class="alert alert-success" role="alert">
+                    The expense has been deleted.
+                </div>
+            @endif
         @endif
 
         <table class="table table-sm">
