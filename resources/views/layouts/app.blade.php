@@ -52,7 +52,10 @@
                     <p><a href="{{ action('IndexController@addExpense') }}" class="btn btn-sm btn-outline-success">Add new expense</a></p>
                 </div>
             @endif
-            <p class="mt-5 mb-3 text-muted text-center">Copyright &copy; Dean Blackborough {{ date('Y') }}</p>
+            <p class="mt-5 mb-3 text-muted text-center">
+                Copyright &copy; Dean Blackborough {{ date('Y') }}<br />
+                <small>{{ $version["number"] . ' - ' .  $version["date"] }}</small>
+            </p>
         </div>
         <script src="{{ asset('node_modules/jquery/dist/jquery.js') }}" defer></script>
         <script src="{{ asset('node_modules/popper.js/dist/umd/popper.js') }}" defer></script>

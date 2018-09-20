@@ -30,5 +30,8 @@ return [
 
     'api_category_id_essentials' => '98WLap7Bx3',
     'api_category_id_non_essentials' => 'RjXM5VJDw6',
-    'api_category_id_hobbies_and_interests' => 'Gwg7zgL316'
+    'api_category_id_hobbies_and_interests' => 'Gwg7zgL316',
+
+    'version' => 'v1.00.0',
+    'release_date' => '20th September 2018'
 ];

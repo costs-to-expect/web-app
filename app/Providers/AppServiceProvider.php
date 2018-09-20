@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +14,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        View()->composer('layouts.app', function($view) {
+            $view->with(
+                'version',
+                [
+                    'number' => Config::get('web.config.version'),
+                    'date' => Config::get('web.config.release_date')
+                ]
+            );
+        });
     }
 
     /**
