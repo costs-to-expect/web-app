@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="col-12 col-sm-12 col-md-8 mt-2 mt-lg-2">
-        <h1 class="h3 mb-2">Summary</h1>
+        <h1 class="h3 mb-2">Summaries</h1>
 
         <p class="lead">Categories summary for {{ $resource_name }}, select a
             category to see the sub category break down.</p>
@@ -19,7 +19,7 @@
             <tbody>
                 @foreach ($categories as $category)
                 <tr>
-                    <td><strong><a href="{{ action('IndexController@subCategoriesSummary', ['category_identifier' => $category['id']]) }}" class="text-secondary">{{ $category['name'] }}</a></strong></td>
+                    <td><strong><a href="{{ action('IndexController@subCategoriesSummary', ['category_identifier' => $category['id']]) }}" class="text-info">{{ $category['name'] }}</a></strong></td>
                     <td>&pound;{{ $category['total'] }}</td>
                     <td>&nbsp;</td>
                 </tr>
