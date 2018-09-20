@@ -22,7 +22,5 @@ Route::group(
         Route::post('/add-expense', 'IndexController@processAddExpense');
         Route::get('/delete-expense/{expense_identifier}', 'IndexController@deleteExpense');
         Route::post('/delete-expense', 'IndexController@processDeleteExpense');
-
-        // POST For delete, all three ids and the confirm check.
     }
 );
