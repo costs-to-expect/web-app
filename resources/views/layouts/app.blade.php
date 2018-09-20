@@ -10,6 +10,8 @@
 
         <link href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.css') }}" rel="stylesheet">
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon-32x32.png') }}" />
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
