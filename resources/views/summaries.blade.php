@@ -2,7 +2,9 @@
 
 @section('content')
     <div class="col-12 col-sm-12 col-md-8 mt-2 mt-lg-2">
-        <h1 class="h3 mb-2">Summaries</h1>
+        <h1 class="display-4">Summaries</h1>
+
+        <h3>Categories</h3>
 
         <p class="lead">Categories summary for {{ $resource_name }}, select a
             category to see the sub category break down.</p>

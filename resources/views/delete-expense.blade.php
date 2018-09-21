@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="col-12 col-sm-12 col-md-8 mt-2 mt-lg-2">
-        <h1 class="h3 mb-2">Delete</h1>
+        <h1 class="display-4">Delete</h1>
 
         <p class="lead">Are you sure you want to delete this expense?</p>
 

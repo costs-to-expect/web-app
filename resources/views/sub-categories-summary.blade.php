@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="col-12 col-sm-12 col-md-8 mt-2 mt-lg-2">
-        <h1 class="h3 mb-2">Summaries</h1>
+        <h1 class="display-4">Summaries</h1>
 
         <p class="lead">The total sum of expenses in the {{ $category['name'] }}
             category for {{ $resource_name }}.</p>
@@ -12,7 +12,7 @@
             <dd class="col-9">{{ $category['description'] }}</dd>
         </dl>
 
-        <p><a href="{{ action('IndexController@summaries') }}" class="btn btn-sm btn-outline-info">Return to summary</a></p>
+        <p><a href="{{ action('IndexController@summaries') }}" class="btn btn-sm btn-outline-info">Return to summaries</a></p>
 
         <table class="table table-sm">
             <caption>Expenses summed by {{ $category['name'] }} category.</caption>
