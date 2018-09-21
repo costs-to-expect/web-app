@@ -583,4 +583,44 @@ class IndexController extends BaseController
             return redirect()->action('IndexController@expense', ['expense_identifier' => $expense_identifier]);
         }
     }
+
+    public function monthsSummary(Request $request, string $year_identifier)
+    {
+        $months = null;
+        $this->nav_active = 'summaries';
+
+        $client = new Client([
+            'base_uri' => Config::get('web.config.api_base_url'),
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        try {
+            $response = $client->get(
+                Config::get('web.config.api_uri_years_summary') .
+                '/' . $year_identifier . '/months'
+            );
+
+            if ($response->getStatusCode() === 200) {
+                $months = json_decode($response->getBody(), true);
+            }
+        } catch (ClientException $e) {
+            return redirect()->action('IndexController@index');
+        }
+
+        if ($months !== null) {
+            return view(
+                'months-summary',
+                [
+                    'display_nav_options' => $this->display_nav_options,
+                    'nav_active' => $this->nav_active,
+                    'resource_name' => Config::get('web.config.api_resource_name'),
+                    'months' => $months,
+                    'year' => $year_identifier
+                ]
+            );
+        }
+    }
 }

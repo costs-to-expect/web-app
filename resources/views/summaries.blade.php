@@ -46,7 +46,7 @@
             <tbody>
             @foreach ($years as $year)
                 <tr>
-                    <td><strong><a href="{{ action('IndexController@subCategoriesSummary', ['category_identifier' => $year['id']]) }}" class="text-info">{{ $year['year'] }}</a></strong></td>
+                    <td><strong><a href="{{ action('IndexController@monthsSummary', ['year_identifier' => $year['id']]) }}" class="text-info">{{ $year['year'] }}</a></strong></td>
                     <td>&pound;{{ $year['total'] }}</td>
                     <td>&nbsp;</td>
                 </tr>
