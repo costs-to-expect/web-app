@@ -2,6 +2,11 @@
 
 Full changelog for the costs to expect web app.
 
+## 2018-09-21 - v1.01.0
+
+* Added years and months summary views.
+* Updated the layout of titles.
+
 ## 2018-09-20 - v1.00.0
 
 Initial release of the Web app for the Costs to Expect API, allows 
