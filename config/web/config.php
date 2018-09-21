@@ -22,6 +22,9 @@ return [
     'api_uri_categories_tco' => 'resource_types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
         env($key_api_resource_id, null) . '/summary/tco',
+    'api_uri_years_summary' => 'resource_types/' .
+        env($key_api_resource_type_id, null) . '/resources/' .
+        env($key_api_resource_id, null) . '/summary/years',
 
     'api_resource_name' => env($key_api_resource_name, '[RESOURCE_NAME]'),
 
@@ -32,6 +35,6 @@ return [
     'api_category_id_non_essentials' => 'RjXM5VJDw6',
     'api_category_id_hobbies_and_interests' => 'Gwg7zgL316',
 
-    'version' => 'v1.00.0',
-    'release_date' => '20th September 2018'
+    'version' => 'v1.01.0',
+    'release_date' => '21st September 2018'
 ];

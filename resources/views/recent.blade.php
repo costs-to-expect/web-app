@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="col-12 col-sm-12 col-md-8 mt-2 mt-lg-2">
-        <h1 class="h3 mb-2">Recent expenses</h1>
+        <h1 class="display-4">Recent</h1>
 
         <p class="lead">The last 5 expenses that have been entered for {{ $resource_name }}.</p>
 
