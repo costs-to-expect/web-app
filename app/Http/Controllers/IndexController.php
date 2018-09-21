@@ -58,6 +58,7 @@ class IndexController extends BaseController
     public function summaries(Request $request)
     {
         $categories = null;
+        $years = null;
         $this->nav_active = 'summaries';
 
         $client = new Client([
@@ -78,6 +79,16 @@ class IndexController extends BaseController
             return redirect()->action('IndexController@index');
         }
 
+        try {
+            $response = $client->get(Config::get('web.config.api_uri_years_summary'));
+
+            if ($response->getStatusCode() === 200) {
+                $years = json_decode($response->getBody(), true);
+            }
+        } catch (ClientException $e) {
+            return redirect()->action('IndexController@index');
+        }
+
         if ($categories !== null) {
             return view(
                 'summaries',
@@ -85,7 +96,8 @@ class IndexController extends BaseController
                     'display_nav_options' => $this->display_nav_options,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
-                    'categories' => $categories
+                    'categories' => $categories,
+                    'years' => $years
                 ]
             );
         }
