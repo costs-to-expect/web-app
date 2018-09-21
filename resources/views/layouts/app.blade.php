@@ -31,8 +31,8 @@
                     <li class="nav-item @if ($nav_active === 'tco-summary') active @endif">
                         <a class="nav-link" href="{{ action('IndexController@categoriesTco') }}">Total expenses</a>
                     </li>
-                    <li class="nav-item @if ($nav_active === 'categories-summary') active @endif">
-                        <a class="nav-link" href="{{ action('IndexController@categoriesSummary') }}">Summaries</a>
+                    <li class="nav-item @if ($nav_active === 'summaries') active @endif">
+                        <a class="nav-link" href="{{ action('IndexController@summaries') }}">Summaries</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ action('AuthenticationController@signOut') }}">Sign out</a>

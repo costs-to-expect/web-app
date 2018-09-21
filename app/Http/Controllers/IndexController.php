@@ -55,10 +55,10 @@ class IndexController extends BaseController
         }
     }
 
-    public function categoriesSummary(Request $request)
+    public function summaries(Request $request)
     {
         $categories = null;
-        $this->nav_active = 'categories-summary';
+        $this->nav_active = 'summaries';
 
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
@@ -80,7 +80,7 @@ class IndexController extends BaseController
 
         if ($categories !== null) {
             return view(
-                'categories-summary',
+                'summaries',
                 [
                     'display_nav_options' => $this->display_nav_options,
                     'nav_active' => $this->nav_active,
@@ -131,7 +131,7 @@ class IndexController extends BaseController
     {
         $category = null;
         $sub_categories = null;
-        $this->nav_active = 'categories-summary';
+        $this->nav_active = 'summaries';
 
         $client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
