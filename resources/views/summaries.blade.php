@@ -23,7 +23,7 @@
                 <tr>
                     <td><strong><a href="{{ action('IndexController@subCategoriesSummary', ['category_identifier' => $category['id']]) }}" class="text-info">{{ $category['name'] }}</a></strong></td>
                     <td>&pound;{{ $category['total'] }}</td>
-                    <td><a href="{{ action('IndexController@expenses', ['category' => $category['id']]) }}" class="text-info">**</a></td>
+                    <td><a href="{{ action('IndexController@expenses', ['category' => $category['id']]) }}" class="text-info"><i class="fas fa-list"></i></a></td>
                 </tr>
                 @endforeach
             </tbody>
@@ -48,7 +48,7 @@
                 <tr>
                     <td><strong><a href="{{ action('IndexController@monthsSummary', ['year_identifier' => $year['id']]) }}" class="text-info">{{ $year['year'] }}</a></strong></td>
                     <td>&pound;{{ $year['total'] }}</td>
-                    <td><a href="{{ action('IndexController@expenses', ['year' => $year['id']]) }}" class="text-info">**</a></td>
+                    <td><a href="{{ action('IndexController@expenses', ['year' => $year['id']]) }}" class="text-info"><i class="fas fa-list"></i></a></td>
                 </tr>
             @endforeach
             </tbody>

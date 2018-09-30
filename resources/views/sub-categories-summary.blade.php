@@ -28,7 +28,7 @@
                 <tr>
                     <td><strong>{{ $sub_category['name'] }}</strong></td>
                     <td>&pound;{{ $sub_category['total'] }}</td>
-                    <td><a href="{{ action('IndexController@expenses', ['category' => $category['id'], 'sub_category' => $sub_category['id']]) }}" class="text-info">**</a></td>
+                    <td><a href="{{ action('IndexController@expenses', ['category' => $category['id'], 'sub_category' => $sub_category['id']]) }}" class="text-info"><i class="fas fa-list"></i></a></td>
                 </tr>
                 @endforeach
             </tbody>
