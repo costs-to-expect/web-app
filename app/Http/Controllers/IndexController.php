@@ -639,4 +639,39 @@ class IndexController extends BaseController
             ]
         );
     }
+
+    public function expenses(Request $request)
+    {
+        $expenses = null;
+
+        $client = new Client([
+            'base_uri' => Config::get('web.config.api_base_url'),
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        try {
+            $response = $client->get(Config::get('web.config.api_uri_items') . '?limit=5');
+
+            if ($response->getStatusCode() === 200) {
+                $expenses = json_decode($response->getBody(), true);
+            }
+        } catch (ClientException $e) {
+            return redirect()->action('IndexController@index');
+        }
+
+        if ($expenses !== null) {
+            return view(
+                'expenses',
+                [
+                    'display_nav_options' => $this->display_nav_options,
+                    'nav_active' => $this->nav_active,
+                    'resource_name' => Config::get('web.config.api_resource_name'),
+                    'expenses' => $expenses
+                ]
+            );
+        }
+    }
 }
