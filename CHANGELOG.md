@@ -1,6 +1,11 @@
-# Changelog
+# Version history
 
 Full changelog for the costs to expect web app.
+
+## 2018-xx-xx - v1.02.0
+
+* Added a version history within the app, parses CHANGELOG.
+* Added link to personal site.
 
 ## 2018-09-21 - v1.01.0
 

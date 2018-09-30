@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Config;
+use League\CommonMark\CommonMarkConverter;
 
 class IndexController extends BaseController
 {
@@ -626,6 +627,16 @@ class IndexController extends BaseController
 
     public function versionHistory()
     {
-        
+        $converter = new CommonMarkConverter();
+        $html = $converter->convertToHtml(file_get_contents('../CHANGELOG.md'));
+
+        return view(
+            'version-history',
+            [
+                'display_nav_options' => $this->display_nav_options,
+                'nav_active' => 'version-history',
+                'version_history' => $html
+            ]
+        );
     }
 }
