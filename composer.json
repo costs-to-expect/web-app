@@ -6,11 +6,12 @@
     "type": "project",
     "require": {
         "php": "^7.2",
+        "ext-json": "*",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
-        "ext-json": "*"
+        "league/commonmark": "^0.18.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

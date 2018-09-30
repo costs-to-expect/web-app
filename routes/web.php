@@ -23,5 +23,7 @@ Route::group(
         Route::post('/add-expense', 'IndexController@processAddExpense');
         Route::get('/delete-expense/{expense_identifier}', 'IndexController@deleteExpense');
         Route::post('/delete-expense', 'IndexController@processDeleteExpense');
+        Route::get('/version-history', 'IndexController@versionHistory');
+        Route::get('/expenses', 'IndexController@expenses');
     }
 );

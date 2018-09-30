@@ -12,6 +12,7 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon-32x32.png') }}" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -34,6 +35,9 @@
                     <li class="nav-item @if ($nav_active === 'summaries') active @endif">
                         <a class="nav-link" href="{{ action('IndexController@summaries') }}">Summaries</a>
                     </li>
+                    <li class="nav-item @if ($nav_active === 'version-history') active @endif">
+                        <a class="nav-link" href="{{ action('IndexController@versionHistory') }}">Version history</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ action('AuthenticationController@signOut') }}">Sign out</a>
                     </li>
@@ -53,8 +57,8 @@
                 </div>
             @endif
             <p class="mt-5 mb-3 text-muted text-center">
-                Copyright &copy; Dean Blackborough {{ date('Y') }}<br />
-                <small>{{ $version["number"] . ' - ' .  $version["date"] }}</small>
+                Copyright &copy; <a href="https://www.deanblackborough.com">Dean Blackborough</a> {{ date('Y') }}<br />
+                <small><a href="{{ action('IndexController@versionHistory') }}">{{ $version["number"] . ' - ' .  $version["date"] }}</a></small>
             </p>
         </div>
         <script src="{{ asset('node_modules/jquery/dist/jquery.js') }}" defer></script>

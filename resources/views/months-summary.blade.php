@@ -23,7 +23,7 @@
                 <tr>
                     <td><strong>{{ $month['month'] }}</strong></td>
                     <td>&pound;{{ $month['total'] }}</td>
-                    <td>&nbsp;</td>
+                    <td><a href="{{ action('IndexController@expenses', ['year' => $year, 'month' => $month['id']]) }}" class="text-info"><i class="fas fa-list"></i></a></td>
                 </tr>
                 @endforeach
             </tbody>
