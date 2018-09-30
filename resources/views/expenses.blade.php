@@ -7,6 +7,8 @@
         <p class="lead">The last 5 expenses that have been entered for {{ $resource_name }},
             list filtering, {{ $filtering }}</p>
 
+        <p><a href="{{ action('IndexController@summaries') }}" class="btn btn-sm btn-outline-info">Return to summaries</a></p>
+
         <table class="table table-sm">
             <caption>Filtered recent expenses added for {{ $resource_name }}</caption>
             <thead>
