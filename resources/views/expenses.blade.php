@@ -5,7 +5,7 @@
         <h1 class="display-4">Expenses</h1>
 
         <p class="lead">The last 5 expenses that have been entered for {{ $resource_name }},
-            list filtering, [][][][]</p>
+            list filtering, {{ $filtering }}</p>
 
         <table class="table table-sm">
             <caption>Filtered recent expenses added for {{ $resource_name }}</caption>

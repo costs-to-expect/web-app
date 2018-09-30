@@ -652,8 +652,65 @@ class IndexController extends BaseController
             ],
         ]);
 
+        $allowed = ['year', 'month', 'category', 'sub_category'];
+        $request_parameters = [];
+        $filtering = [];
+        $parameters = $request->all();
+
+        foreach ($parameters as $parameter => $value) {
+            if (
+                in_array($parameter, $allowed) === true &&
+                $value !== null
+            ) {
+                switch ($parameter) {
+                    case 'year':
+                        $filtering[] = 'Year: ' . $value;
+                        break;
+                    case 'month':
+                        $filtering[] = 'Month: ' . date("F", mktime(0, 0, 0, $value, 10));
+                        break;
+                    case 'category':
+                        try {
+                            $response = $client->get(
+                                Config::get('web.config.api_uri_category') .
+                                '/' . $value
+                            );
+
+                            if ($response->getStatusCode() === 200) {
+                                $filtering[] .= 'Category: ' . json_decode($response->getBody(), true)['name'];
+                            }
+                        } catch (ClientException $e) {
+                            // Do nothing for now
+                        }
+                        break;
+                    case 'sub_category':
+                        try {
+                            $response = $client->get(
+                                Config::get('web.config.api_uri_category') .
+                                '/' . $request_parameters['category'] . '/sub_categories/' . $value
+                            );
+
+                            if ($response->getStatusCode() === 200) {
+                                $filtering[] .= 'Sub category: ' . json_decode($response->getBody(), true)['name'];
+                            }
+                        } catch (ClientException $e) {
+                            // Do nothing for now
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                $request_parameters[$parameter] = $value;
+            }
+        }
+
+        $uri = Config::get('web.config.api_uri_items') . '?limit=5';
+        foreach ($request_parameters as $parameter => $value) {
+            $uri .= '&' . $parameter . '=' . $value;
+        }
         try {
-            $response = $client->get(Config::get('web.config.api_uri_items') . '?limit=5');
+            $response = $client->get($uri);
 
             if ($response->getStatusCode() === 200) {
                 $expenses = json_decode($response->getBody(), true);
@@ -669,7 +726,8 @@ class IndexController extends BaseController
                     'display_nav_options' => $this->display_nav_options,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
-                    'expenses' => $expenses
+                    'expenses' => $expenses,
+                    'filtering' => implode(', ', $filtering)
                 ]
             );
         }
