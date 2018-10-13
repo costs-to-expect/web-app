@@ -34,7 +34,7 @@
             <dt class="col-4">Allocation:</dt>
             <dd class="col-8">{{ $expense['percentage'] }}%</dd>
             <dt class="col-4">Effective:</dt>
-            <dd class="col-8">{{ date('dS F Y', strtotime($expense['effective_date'])) }}</dd>
+            <dd class="col-8">{{ date('jS F Y', strtotime($expense['effective_date'])) }}</dd>
             <dt class="col-4">Total:</dt>
             <dd class="col-8">&pound;{{ $expense['actualised_total'] }}</dd>
 
