@@ -7,7 +7,7 @@
         <p class="lead">The total sum of expenses in {{ $year }}
             for {{ $resource_name }}.</p>
 
-        <p><a href="{{ action('IndexController@summaries') }}" class="btn btn-sm btn-outline-info">Return to summaries</a></p>
+        <p><a href="{{ action('SummaryController@summaries') }}" class="btn btn-sm btn-outline-info">Return to summaries</a></p>
 
         <table class="table table-sm">
             <caption>Expenses summed by {{ $year }} month.</caption>
@@ -23,7 +23,7 @@
                 <tr>
                     <td><strong>{{ $month['month'] }}</strong></td>
                     <td>&pound;{{ $month['total'] }}</td>
-                    <td><a href="{{ action('IndexController@expenses', ['year' => $year, 'month' => $month['id']]) }}" class="text-info"><i class="fas fa-list"></i></a></td>
+                    <td><a href="{{ action('ExpenseController@expenses', ['year' => $year, 'month' => $month['id']]) }}" class="text-info"><i class="fas fa-list"></i></a></td>
                 </tr>
                 @endforeach
             </tbody>

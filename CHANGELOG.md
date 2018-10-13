@@ -2,6 +2,11 @@
 
 Full changelog for the costs to expect web app.
 
+## 2018-10-13 - v1.02.1
+
+* Added an Api helper class to handle GET requests to the API.
+* Split up the Index controller, actions grouped accordingly.
+
 ## 2018-09-30 - v1.02.0
 
 * Added a version history within the app, parses CHANGELOG.

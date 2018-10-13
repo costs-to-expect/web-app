@@ -35,6 +35,6 @@ return [
     'api_category_id_non_essentials' => 'RjXM5VJDw6',
     'api_category_id_hobbies_and_interests' => 'Gwg7zgL316',
 
-    'version' => 'v1.02.0',
-    'release_date' => '30th September 2018'
+    'version' => 'v1.02.1',
+    'release_date' => '13th October 2018'
 ];

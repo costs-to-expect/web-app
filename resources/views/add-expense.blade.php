@@ -7,7 +7,7 @@
         <p class="lead">You can add a new expense for {{ $resource_name }} using
             the form below.</p>
 
-        <form method="post" action="{{ action('IndexController@processAddExpense') }}">
+        <form method="post" action="{{ action('ProcessController@processAddExpense') }}">
             <div class="form-group">
                 <label for="item_description">Description:</label>
                 <input type="text" id="item_description" name="description" class="form-control form-control-sm" placeholder="Expense description" required autofocus />
@@ -57,7 +57,7 @@
             <div class="form-group">
                 <label for="item_sub_category_id">Sub category:</label>
                 <select id="item_sub_category_id" name="sub_category_id" class="form-control form-control-sm" required>
-                    @foreach ($categories as $category)
+                    @foreach ($sub_categories as $category)
                         <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
                     @endforeach
                 </select>
