@@ -24,16 +24,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item @if ($nav_active === 'add-expense') active @endif">
-                        <a class="nav-link" href="{{ action('IndexController@addExpense') }}">Add expense</a>
+                        <a class="nav-link" href="{{ action('ExpenseController@addExpense') }}">Add expense</a>
                     </li>
                     <li class="nav-item @if ($nav_active === 'recent') active @endif">
                         <a class="nav-link" href="{{ action('IndexController@recent') }}">Recent expenses</a>
                     </li>
                     <li class="nav-item @if ($nav_active === 'tco-summary') active @endif">
-                        <a class="nav-link" href="{{ action('IndexController@categoriesTco') }}">Total expenses</a>
+                        <a class="nav-link" href="{{ action('SummaryController@categoriesTco') }}">Total expenses</a>
                     </li>
                     <li class="nav-item @if ($nav_active === 'summaries') active @endif">
-                        <a class="nav-link" href="{{ action('IndexController@summaries') }}">Summaries</a>
+                        <a class="nav-link" href="{{ action('SummaryController@summaries') }}">Summaries</a>
                     </li>
                     <li class="nav-item @if ($nav_active === 'version-history') active @endif">
                         <a class="nav-link" href="{{ action('IndexController@versionHistory') }}">Version history</a>
@@ -53,7 +53,7 @@
         <div class="container">
             @if ($display_nav_options === true && $nav_active !== 'add-expense')
                 <div class="col-12 text-right mt-2">
-                    <p><a href="{{ action('IndexController@addExpense') }}" class="btn btn-sm btn-outline-success">Add new expense</a></p>
+                    <p><a href="{{ action('ExpenseController@addExpense') }}" class="btn btn-sm btn-outline-success">Add new expense</a></p>
                 </div>
             @endif
             <p class="mt-5 mb-3 text-muted text-center">
