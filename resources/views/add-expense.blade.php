@@ -57,7 +57,7 @@
             <div class="form-group">
                 <label for="item_sub_category_id">Sub category:</label>
                 <select id="item_sub_category_id" name="sub_category_id" class="form-control form-control-sm" required>
-                    @foreach ($categories as $category)
+                    @foreach ($sub_categories as $category)
                         <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
                     @endforeach
                 </select>

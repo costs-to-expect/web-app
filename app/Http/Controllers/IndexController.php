@@ -130,29 +130,13 @@ class IndexController extends BaseController
     public function addExpense(Request $request)
     {
         $this->nav_active = 'add-expense';
-        $categories = [];
 
-        $client = new Client([
-            'base_uri' => Config::get('web.config.api_base_url'),
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-            ],
-        ]);
-
-        try {
-            $response = $client->get(
-                Config::get('web.config.api_uri_categories') .
-                '/' . Config::get('web.config.api_category_id_essentials') .
-                '/sub_categories'
-            );
-
-            if ($response->getStatusCode() === 200) {
-                $categories = json_decode($response->getBody(), true);
-            }
-        } catch (ClientException $e) {
-            return redirect()->action('IndexController@index');
-        }
+        $sub_categories = Api::public()->get(
+            Config::get('web.config.api_uri_categories') .
+            '/' . Config::get('web.config.api_category_id_essentials') .
+            '/sub_categories',
+            'IndexController@index'
+        );
 
         return view(
             'add-expense',
@@ -163,40 +147,18 @@ class IndexController extends BaseController
                 'category_id_essentials' => Config::get('web.config.api_category_id_essentials'),
                 'category_id_non_essentials' => Config::get('web.config.api_category_id_non_essentials'),
                 'category_id_hobbies_and_interests' => Config::get('web.config.api_category_id_hobbies_and_interests'),
-                'categories' => $categories
+                'sub_categories' => $sub_categories
             ]
         );
     }
 
     public function subCategories(Request $request, string $category_identifier)
     {
-        $sub_categories = [];
-
-        $client = new Client([
-            'base_uri' => Config::get('web.config.api_base_url'),
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-            ],
-        ]);
-
-        try {
-            $response = $client->get(
-                Config::get('web.config.api_uri_categories') .
-                '/' . $category_identifier . '/sub_categories'
-            );
-
-            if ($response->getStatusCode() === 200) {
-                $sub_categories = json_decode($response->getBody(), true);
-            }
-        } catch (ClientException $e) {
-            return response()->json(
-                [
-                    'sub_categories' => $sub_categories
-                ],
-                200
-            );
-        }
+        $sub_categories = Api::public()->get(
+            Config::get('web.config.api_uri_categories') .
+            '/' . $category_identifier . '/sub_categories',
+            'IndexController@index'
+        );
 
         return response()->json($sub_categories, 200);
     }
@@ -268,7 +230,7 @@ class IndexController extends BaseController
         try {
             $response = $client->post(
                 Config::get('web.config.api_uri_items') . '/' .
-                    $item['id'] . '/category/' . $item_category['id'] . '/sub_category',
+                $item['id'] . '/category/' . $item_category['id'] . '/sub_category',
                 [
                     \GuzzleHttp\RequestOptions::JSON => [
                         'sub_category_id' => $request->input('sub_category_id')
@@ -306,48 +268,37 @@ class IndexController extends BaseController
         $status = null;
         $this->nav_active = 'recent';
 
-        $client = new Client([
-            'base_uri' => Config::get('web.config.api_base_url'),
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-            ],
-        ]);
+        $expense = Api::public()->get(
+            Config::get('web.config.api_uri_items') . '/' .
+            $expense_identifier,
+            'IndexController@index'
+        );
 
-        try {
-            $response = $client->get(Config::get('web.config.api_uri_items') .
-                '/' . $expense_identifier);
+        $category = Api::public()->get(
+            Config::get('web.config.api_uri_items') . '/' .
+            $expense_identifier . '/category',
+            'IndexController@index'
+        );
 
-            if ($response->getStatusCode() === 200) {
-                $expense = json_decode($response->getBody(), true);
-            }
-        } catch (ClientException $e) {
-            return redirect()->action('IndexController@recent');
-        }
-
-        try {
-            $response = $client->get(Config::get('web.config.api_uri_items') .
-                '/' . $expense_identifier . '/category');
-
-            if ($response->getStatusCode() === 200) {
-                $category = json_decode($response->getBody(), true);
-            }
-        } catch (ClientException $e) {
+        if ($category === null) {
             $status = 'category-not-assigned';
         }
 
         if ($category !== null) {
-            try {
-                $response = $client->get(Config::get('web.config.api_uri_items') .
-                    '/' . $expense_identifier . '/category/' . $category['id'] . '/sub_category');
+            $sub_category = Api::public()->get(
+                Config::get('web.config.api_uri_items') . '/' .
+                $expense_identifier . '/category/' . $category['id'] .
+                '/sub_category',
+                'IndexController@index'
+            );
 
-                if ($response->getStatusCode() === 200) {
-                    $sub_category = json_decode($response->getBody(), true);
-                }
-            } catch (ClientException $e) {
+            if ($sub_category === null) {
                 $status = 'sub-category-not-assigned';
             }
+        } else {
+            $sub_category = null;
         }
+
 
         if ($expense !== null) {
             return view(
@@ -376,49 +327,36 @@ class IndexController extends BaseController
 
         $this->nav_active = 'recent';
 
-        $client = new Client([
-            'base_uri' => Config::get('web.config.api_base_url'),
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-            ],
-        ]);
+        $expense = Api::public()->get(
+            Config::get('web.config.api_uri_items') . '/' .
+            $expense_identifier,
+            'IndexController@index'
+        );
 
-        try {
-            $response = $client->get(Config::get('web.config.api_uri_items') .
-                '/' . $expense_identifier);
-
-            if ($response->getStatusCode() === 200) {
-                $expense = json_decode($response->getBody(), true);
-                $expense_identifier_id = $expense['id'];
-            }
-        } catch (ClientException $e) {
-            return redirect()->action('IndexController@recent');
+        if ($expense !== null) {
+            $expense_identifier_id = $expense['id'];
         }
 
-        try {
-            $response = $client->get(Config::get('web.config.api_uri_items') .
-                '/' . $expense_identifier . '/category');
+        $category = Api::public()->get(
+            Config::get('web.config.api_uri_items') . '/' .
+            $expense_identifier . '/category',
+            'IndexController@index'
+        );
 
-            if ($response->getStatusCode() === 200) {
-                $category = json_decode($response->getBody(), true);
-                $expense_category_identifier_id = $category['id'];
-            }
-        } catch (ClientException $e) {
-            // Do nothing, not relevant
+        if ($category !== null) {
+            $expense_category_identifier_id = $category['id'];
         }
 
         if ($category !== null) {
-            try {
-                $response = $client->get(Config::get('web.config.api_uri_items') .
-                    '/' . $expense_identifier . '/category/' . $category['id'] . '/sub_category');
+            $sub_category = Api::public()->get(
+                Config::get('web.config.api_uri_items') . '/' .
+                $expense_identifier . '/category/' . $category['id'] .
+                '/sub_category',
+                'IndexController@index'
+            );
 
-                if ($response->getStatusCode() === 200) {
-                    $sub_category = json_decode($response->getBody(), true);
-                    $expense_sub_category_identifier_id = $sub_category['id'];
-                }
-            } catch (ClientException $e) {
-                // Do nothing, not relevant
+            if ($sub_category !== null) {
+                $expense_sub_category_identifier_id = $sub_category['id'];
             }
         }
 
@@ -462,8 +400,8 @@ class IndexController extends BaseController
             try {
                 $response = $client->delete(
                     Config::get('web.config.api_uri_items') . '/' .
-                        $expense_identifier . '/category/' . $expense_category_identifier .
-                        '/sub_category/' . $expense_sub_category_identifier
+                    $expense_identifier . '/category/' . $expense_category_identifier .
+                    '/sub_category/' . $expense_sub_category_identifier
                 );
 
                 if ($response->getStatusCode() === 204) {
@@ -480,7 +418,7 @@ class IndexController extends BaseController
             try {
                 $response = $client->delete(
                     Config::get('web.config.api_uri_items') . '/' .
-                        $expense_identifier . '/category/' . $expense_category_identifier
+                    $expense_identifier . '/category/' . $expense_category_identifier
                 );
 
                 if ($response->getStatusCode() === 204) {
@@ -523,26 +461,11 @@ class IndexController extends BaseController
         $months = null;
         $this->nav_active = 'summaries';
 
-        $client = new Client([
-            'base_uri' => Config::get('web.config.api_base_url'),
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-            ],
-        ]);
-
-        try {
-            $response = $client->get(
-                Config::get('web.config.api_uri_years_summary') .
-                '/' . $year_identifier . '/months'
-            );
-
-            if ($response->getStatusCode() === 200) {
-                $months = json_decode($response->getBody(), true);
-            }
-        } catch (ClientException $e) {
-            return redirect()->action('IndexController@index');
-        }
+        $months = Api::public()->get(
+            Config::get('web.config.api_uri_years_summary') .
+            '/' . $year_identifier . '/months',
+            'IndexController@index'
+        );
 
         if ($months !== null) {
             return view(
@@ -577,14 +500,6 @@ class IndexController extends BaseController
     {
         $expenses = null;
 
-        $client = new Client([
-            'base_uri' => Config::get('web.config.api_base_url'),
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-            ],
-        ]);
-
         $allowed = ['year', 'month', 'category', 'sub_category'];
         $request_parameters = [];
         $filtering = [];
@@ -603,17 +518,15 @@ class IndexController extends BaseController
                         $filtering[] = 'Month: ' . date("F", mktime(0, 0, 0, $value, 10));
                         break;
                     case 'category':
-                        try {
-                            $response = $client->get(
-                                Config::get('web.config.api_uri_category') .
-                                '/' . $value
-                            );
 
-                            if ($response->getStatusCode() === 200) {
-                                $filtering[] .= 'Category: ' . json_decode($response->getBody(), true)['name'];
-                            }
-                        } catch (ClientException $e) {
-                            // Do nothing for now
+                        $category = Api::public()->get(
+                            Config::get('web.config.api_uri_category') .
+                            '/' . $value,
+                            'IndexController@index'
+                        );
+
+                        if ($category !== null) {
+                            $filtering[] .= $category['name'];
                         }
                         break;
                     case 'sub_category':
@@ -642,15 +555,8 @@ class IndexController extends BaseController
         foreach ($request_parameters as $parameter => $value) {
             $uri .= '&' . $parameter . '=' . $value;
         }
-        try {
-            $response = $client->get($uri);
 
-            if ($response->getStatusCode() === 200) {
-                $expenses = json_decode($response->getBody(), true);
-            }
-        } catch (ClientException $e) {
-            return redirect()->action('IndexController@index');
-        }
+        $expenses = Api::public()->get($uri,'IndexController@index');
 
         if ($expenses !== null) {
             return view(
