@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Request\Api;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Config;
-use League\CommonMark\CommonMarkConverter;
 
 class ProcessController extends BaseController
 {
