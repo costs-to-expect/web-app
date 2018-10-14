@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Request\Api;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -19,86 +20,39 @@ class ProcessController extends BaseController
         $item_category = null;
         $item_sub_category = null;
 
-        $client = new Client([
-            'base_uri' => Config::get('web.config.api_base_url'),
-            'headers' => [
-                'Authorization' => 'Bearer ' . $request->session()->get('bearer'),
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
+        $item = Api::protected()->post(
+            Config::get('web.config.api_uri_items'),
+            [
+                'description' => $request->input('description'),
+                'effective_date' => $request->input('effective_date'),
+                'total' => $request->input('total'),
+                'percentage' => $request->input('allocation')
             ],
-        ]);
+            'IndexController@recent',
+            'expense-not-added-item'
+        );
 
-        try {
-            $response = $client->post(
-                Config::get('web.config.api_uri_items'),
-                [
-                    \GuzzleHttp\RequestOptions::JSON => [
-                        'description' => $request->input('description'),
-                        'effective_date' => $request->input('effective_date'),
-                        'total' => $request->input('total'),
-                        'percentage' => $request->input('allocation')
-                    ]
-                ]
-            );
-
-            if ($response->getStatusCode() === 201) {
-                $item = json_decode($response->getBody(), true);
-            } else {
-                // Check for 422 (validation) and then display below for general errors
-                $request->session()->flash('status', 'expense-not-added-item');
-                return redirect()->action('IndexController@recent');
-            }
-        } catch (ClientException $e) {
-            $request->session()->flash('status', 'api-error');
-            $request->session()->flash('status-line', __LINE__);
-            return redirect()->action('IndexController@recent');
-        }
-
-        try {
-            $response = $client->post(
+        if ($item !== null) {
+            $item_category = Api::protected()->post(
                 Config::get('web.config.api_uri_items') . '/' . $item['id'] . '/category',
                 [
-                    \GuzzleHttp\RequestOptions::JSON => [
-                        'category_id' => $request->input('category_id')
-                    ]
-                ]
+                    'category_id' => $request->input('category_id')
+                ],
+                'IndexController@recent',
+                'expense-not-added-item-category'
             );
-
-            if ($response->getStatusCode() === 201) {
-                $item_category = json_decode($response->getBody(), true);
-            } else {
-                // Check for 422 (validation) and then display below for general errors
-                $request->session()->flash('status', 'expense-not-added-item-category');
-                return redirect()->action('IndexController@recent');
-            }
-        } catch (ClientException $e) {
-            $request->session()->flash('status', 'api-error');
-            $request->session()->flash('status-line', __LINE__);
-            return redirect()->action('IndexController@recent');
         }
 
-        try {
-            $response = $client->post(
+        if ($item !== null && $item_category !== null) {
+            $item_sub_category = Api::protected()->post(
                 Config::get('web.config.api_uri_items') . '/' .
                 $item['id'] . '/category/' . $item_category['id'] . '/sub_category',
                 [
-                    \GuzzleHttp\RequestOptions::JSON => [
-                        'sub_category_id' => $request->input('sub_category_id')
-                    ]
-                ]
+                    'sub_category_id' => $request->input('sub_category_id')
+                ],
+                'IndexController@recent',
+                'expense-not-added-item-sub-category'
             );
-
-            if ($response->getStatusCode() === 201) {
-                $item_sub_category = json_decode($response->getBody(), true);
-            } else {
-                // Check for 422 (validation) and then display below for general errors
-                $request->session()->flash('status', 'expense-not-added-item-sub-category');
-                return redirect()->action('IndexController@recent');
-            }
-        } catch (ClientException $e) {
-            $request->session()->flash('status', 'api-error');
-            $request->session()->flash('status-line', __LINE__);
-            return redirect()->action('IndexController@recent');
         }
 
         if ($item !== null && $item_category !== null && $item_sub_category !== null) {

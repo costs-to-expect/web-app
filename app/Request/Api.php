@@ -28,7 +28,16 @@ class Api
      */
     public static function protected(): Api
     {
+        self::$client = new Client([
+            'base_uri' => Config::get('web.config.api_base_url'),
+            'headers' => [
+                'Authorization' => 'Bearer ' . request()->session()->get('bearer'),
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
 
+        return new static();
     }
 
     /**
@@ -52,12 +61,12 @@ class Api
     /**
      * Make a GET request to the API
      *
-     * @param string $uri URI to make GET request ro
+     * @param string $uri URI to make GET request to
      * @param string $redirectAction Action to redirect to upon client exception
      *
      * @return mixed
      */
-    public static function get($uri, $redirectAction)
+    public static function get(string $uri, string $redirectAction)
     {
         $content = null;
 
@@ -70,6 +79,46 @@ class Api
         } catch (ClientException $e) {
             redirect()->action($redirectAction)->send();
             exit;
+        }
+
+        return $content;
+    }
+
+    /**
+     * Make a POST request to the API
+     *
+     * @param string $uri URI to make POST request to
+     * @param array $payload Payload to POST to the API
+     * @param string $redirectAction Action to redirect to upon client exception
+     * @param string $flash_status Status to store in flash session upon error
+     *
+     * @return mixed
+     */
+    public static function post(
+        string $uri,
+        array $payload,
+        string $redirectAction,
+        string $flash_status
+    ) {
+        $content = null;
+
+        try {
+            $response = self::$client->post(
+                $uri,
+                [\GuzzleHttp\RequestOptions::JSON => $payload]
+            );
+
+            if ($response->getStatusCode() === 201) {
+                $content = json_decode($response->getBody(), true);
+            } else {
+                // Check for 422 (validation) and then display below for general errors
+                request()->session()->flash('status', $flash_status);
+                return redirect()->action($redirectAction);
+            }
+        } catch (ClientException $e) {
+            request()->session()->flash('status', 'api-error');
+            request()->session()->flash('status-line', __LINE__);
+            return redirect()->action($redirectAction);
         }
 
         return $content;
