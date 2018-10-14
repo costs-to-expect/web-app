@@ -5,6 +5,7 @@ Full changelog for the costs to expect web app.
 ## 2018-xx-xx - v1.02.x
 
 * Fixed day formatting, no longer display a leading zero on the day.
+* Added post support to new Api helper class.
 
 ## 2018-10-13 - v1.02.1
 
