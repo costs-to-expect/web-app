@@ -22,7 +22,8 @@ class Api
     private static $client = null;
 
     /**
-     * Set up a protected connection to the Costs to Expect API
+     * Set up a protected connection to the Costs to Expect API, return for
+     * POST and DELETE
      *
      * @return Api
      */
@@ -122,5 +123,29 @@ class Api
         }
 
         return $content;
+    }
+
+    /**
+     * Make a DELETE request to the API
+     *
+     * @param string $uri URI to make GET request to
+     *
+     * @return bool
+     */
+    public static function delete(string $uri): bool
+    {
+        $result = false;
+
+        try {
+            $response = self::$client->delete($uri);
+
+            if ($response->getStatusCode() === 204) {
+                $result = true;
+            }
+        } catch (ClientException $e) {
+            // Ignore for now, fix in an update
+        }
+
+        return $result;
     }
 }
