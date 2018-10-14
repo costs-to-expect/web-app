@@ -2,6 +2,13 @@
 
 Full changelog for the costs to expect web app.
 
+## 2018-10-14 - v1.02.2
+
+* Fixed day formatting, no longer display a leading zero on the day.
+* Added post support to new Api helper class.
+* Added delete support to new Api helper class.
+* Added two sub categories, Friend Birthday and Leisure.
+
 ## 2018-10-13 - v1.02.1
 
 * Added an Api helper class to handle GET requests to the API.
