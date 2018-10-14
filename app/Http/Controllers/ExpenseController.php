@@ -216,7 +216,7 @@ class ExpenseController extends BaseController
             }
         }
 
-        $uri = Config::get('web.config.api_uri_items') . '?limit=5';
+        $uri = Config::get('web.config.api_uri_items') . '?limit=50';
         foreach ($request_parameters as $parameter => $value) {
             $uri .= '&' . $parameter . '=' . $value;
         }
@@ -231,7 +231,8 @@ class ExpenseController extends BaseController
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'expenses' => $expenses,
-                    'filtering' => implode(', ', $filtering)
+                    'filtering' => implode(', ', $filtering),
+                    'count' => count($expenses)
                 ]
             );
         }
