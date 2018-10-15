@@ -79,11 +79,10 @@ class Api
      * Make a GET request to the API
      *
      * @param string $uri URI to make GET request to
-     * @param string $redirectAction Action to redirect to upon client exception
      *
      * @return mixed
      */
-    public static function get(string $uri, string $redirectAction = null): ?array
+    public static function get(string $uri): ?array
     {
         $content = null;
 
@@ -101,7 +100,7 @@ class Api
             }
         } catch (ClientException $e) {
             if (self::$redirect_exception !== null) {
-                redirect()->action($redirectAction)->send();
+                redirect()->action(self::$redirect_exception)->send();
                 exit;
             }
         }

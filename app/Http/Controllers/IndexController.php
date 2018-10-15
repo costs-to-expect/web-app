@@ -41,11 +41,12 @@ class IndexController extends BaseController
 
     public function subCategories(Request $request, string $category_identifier)
     {
-        $sub_categories = Api::public()->get(
-            Config::get('web.config.api_uri_categories') .
-            '/' . $category_identifier . '/sub_categories',
-            'IndexController@index'
-        );
+        $sub_categories = Api::public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(
+                Config::get('web.config.api_uri_categories') .
+                '/' . $category_identifier . '/sub_categories'
+            );
 
         return response()->json($sub_categories, 200);
     }
