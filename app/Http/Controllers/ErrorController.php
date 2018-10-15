@@ -20,4 +20,15 @@ class ErrorController extends BaseController
             ]
         );
     }
+
+    public function exception(Request $request)
+    {
+        return view(
+            'error-exception',
+            [
+                'display_nav_options' => $this->display_nav_options,
+                'nav_active' => $this->nav_active
+            ]
+        );
+    }
 }

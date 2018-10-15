@@ -27,5 +27,6 @@ Route::group(
         Route::get('/expenses', 'ExpenseController@expenses');
         Route::get('/expenses', 'ExpenseController@expenses');
         Route::get('/error-request-status', 'ErrorController@requestStatus');
+        Route::get('/error-exception', 'ErrorController@exception');
     }
 );
