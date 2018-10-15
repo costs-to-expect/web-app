@@ -22,6 +22,16 @@ class Api
     private static $client = null;
 
     /**
+     * @var string Controller and action to redirect to upon expected failure
+     */
+    private static $redirect_failure = null;
+
+    /**
+     * @var string Controller and action to redirect to upon exception
+     */
+    private static $redirect_exception = null;
+
+    /**
      * Set up a protected connection to the Costs to Expect API, return for
      * POST and DELETE
      *
@@ -29,6 +39,9 @@ class Api
      */
     public static function protected(): Api
     {
+        self::$redirect_failure = null;
+        self::$redirect_exception = null;
+
         self::$client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
             'headers' => [
@@ -38,7 +51,7 @@ class Api
             ],
         ]);
 
-        return new static();
+        return new Api();
     }
 
     /**
@@ -48,6 +61,9 @@ class Api
      */
     public static function public(): Api
     {
+        self::$redirect_failure = null;
+        self::$redirect_exception = null;
+
         self::$client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
             'headers' => [
@@ -56,7 +72,7 @@ class Api
             ],
         ]);
 
-        return new static();
+        return new Api();
     }
 
     /**
@@ -67,15 +83,23 @@ class Api
      *
      * @return mixed
      */
-    public static function get(string $uri, string $redirectAction)
+    public static function get(string $uri, string $redirectAction = null): ?array
     {
         $content = null;
 
         try {
             $response = self::$client->get($uri);
 
-            if ($response->getStatusCode() === 200) {
+            if ($response->getStatusCode() === 201) {
                 $content = json_decode($response->getBody(), true);
+            } else {
+                if (self::$redirect_failure !== null) {
+
+                    // Log error
+
+                    redirect()->action(self::$redirect_failure)->send();
+                    exit;
+                }
             }
         } catch (ClientException $e) {
             redirect()->action($redirectAction)->send();
@@ -100,7 +124,7 @@ class Api
         array $payload,
         string $redirectAction,
         string $flash_status
-    ) {
+    ): ?array {
         $content = null;
 
         try {
@@ -147,5 +171,33 @@ class Api
         }
 
         return $result;
+    }
+
+    /**
+     * Set the action to redirect upon expected failure
+     *
+     * @param string $redirectAction Redirect action for redirect()->action()
+     *
+     * @return Api
+     */
+    public static function redirectOnFailure(string $redirectAction): Api
+    {
+        self::$redirect_failure = $redirectAction;
+
+        return new Api;
+    }
+
+    /**
+     * Set the action to redirect upon exception
+     *
+     * @param string $redirectAction Redirect action for redirect()->action()
+     *
+     * @return Api
+     */
+    public static function redirectOnException(string $redirectAction): Api
+    {
+        self::$redirect_exception = $redirectAction;
+
+        return new Api;
     }
 }

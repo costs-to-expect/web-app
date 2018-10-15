@@ -20,10 +20,9 @@ class IndexController extends BaseController
 
     public function recent(Request $request)
     {
-        $expenses = Api::public()->get(
-            Config::get('web.config.api_uri_items') . '?limit=5',
-            'IndexController@index'
-        );
+        $expenses = Api::public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(Config::get('web.config.api_uri_items') . '?limit=5');
 
         if ($expenses !== null) {
             return view(

@@ -25,5 +25,7 @@ Route::group(
         Route::post('/delete-expense', 'ProcessController@processDeleteExpense');
         Route::get('/version-history', 'IndexController@versionHistory');
         Route::get('/expenses', 'ExpenseController@expenses');
+        Route::get('/expenses', 'ExpenseController@expenses');
+        Route::get('/error-request-status', 'ErrorController@requestStatus');
     }
 );
