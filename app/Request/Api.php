@@ -40,7 +40,7 @@ class Api
     public static function protected(): Api
     {
         self::$redirect_failure = null;
-        self::$redirect_exception = null;
+        self::$redirect_exception = 'ErrorController@error-exception';
 
         self::$client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
@@ -62,7 +62,7 @@ class Api
     public static function public(): Api
     {
         self::$redirect_failure = null;
-        self::$redirect_exception = null;
+        self::$redirect_exception = 'ErrorController@error-exception';
 
         self::$client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
@@ -90,20 +90,20 @@ class Api
         try {
             $response = self::$client->get($uri);
 
-            if ($response->getStatusCode() === 201) {
+            if ($response->getStatusCode() === 200) {
                 $content = json_decode($response->getBody(), true);
             } else {
                 if (self::$redirect_failure !== null) {
-
-                    // Log error
-
+                    // Log error by posting to API
                     redirect()->action(self::$redirect_failure)->send();
                     exit;
                 }
             }
         } catch (ClientException $e) {
-            redirect()->action($redirectAction)->send();
-            exit;
+            if (self::$redirect_exception !== null) {
+                redirect()->action($redirectAction)->send();
+                exit;
+            }
         }
 
         return $content;
@@ -114,16 +114,14 @@ class Api
      *
      * @param string $uri URI to make POST request to
      * @param array $payload Payload to POST to the API
-     * @param string $redirectAction Action to redirect to upon client exception
-     * @param string $flash_status Status to store in flash session upon error
+     * @param string $flash_error_status Status to store in flash session upon error
      *
      * @return mixed
      */
     public static function post(
         string $uri,
         array $payload,
-        string $redirectAction,
-        string $flash_status
+        string $flash_error_status
     ): ?array {
         $content = null;
 
@@ -136,14 +134,26 @@ class Api
             if ($response->getStatusCode() === 201) {
                 $content = json_decode($response->getBody(), true);
             } else {
-                // Check for 422 (validation) and then display below for general errors
-                request()->session()->flash('status', $flash_status);
-                return redirect()->action($redirectAction);
+
+                // Switch to check for 422 (Validation error)
+
+                if (self::$redirect_failure !== null) {
+                    // Log error by posting to API
+                    redirect()->action(self::$redirect_failure)->send();
+                    exit;
+                } else {
+                    request()->session()->flash('status', $flash_error_status);
+                    redirect()->action(self::$redirect_failure)->send();
+                    exit;
+                }
             }
         } catch (ClientException $e) {
-            request()->session()->flash('status', 'api-error');
-            request()->session()->flash('status-line', __LINE__);
-            return redirect()->action($redirectAction);
+            if (self::$redirect_exception !== null) {
+                request()->session()->flash('status', 'api-error');
+                request()->session()->flash('status-line', __LINE__);
+                redirect()->action(self::$redirect_exception)->send();
+                exit;
+            }
         }
 
         return $content;
@@ -165,9 +175,18 @@ class Api
 
             if ($response->getStatusCode() === 204) {
                 $result = true;
+            } else {
+                if (self::$redirect_failure !== null) {
+                    // Log error by posting to API
+                    redirect()->action(self::$redirect_failure)->send();
+                    exit;
+                }
             }
         } catch (ClientException $e) {
-            // Ignore for now, fix in an update
+            if (self::$redirect_exception !== null) {
+                redirect()->action(self::$redirect_exception)->send();
+                exit;
+            }
         }
 
         return $result;
