@@ -2,7 +2,7 @@
 
 Full changelog for the costs to expect web app.
 
-## 2018-xx-xx - v1.02.3
+## 2018-10-18 - v1.02.3
 
 * Quick hack to remove filtering on filtered lists, default to requesting 50, need to add support for OPTIONS requests.
 * Updated API Request helper, added methods to define redirects for request error and client exceptions.
