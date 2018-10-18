@@ -9,48 +9,48 @@ use Illuminate\Support\Facades\Config;
 
 class ProcessController extends BaseController
 {
-    protected $display_nav_options = true;
-    protected $nav_active = 'recent';
-
     public function processAddExpense(Request $request)
     {
         $item = null;
         $item_category = null;
         $item_sub_category = null;
 
-        $item = Api::protected()->post(
-            Config::get('web.config.api_uri_items'),
-            [
-                'description' => $request->input('description'),
-                'effective_date' => $request->input('effective_date'),
-                'total' => $request->input('total'),
-                'percentage' => $request->input('allocation')
-            ],
-            'IndexController@recent',
-            'expense-not-added-item'
-        );
+        $item = Api::protected()
+            ->redirectOnFailure('IndexController@recent')
+            ->post(
+                Config::get('web.config.api_uri_items'),
+                [
+                    'description' => $request->input('description'),
+                    'effective_date' => $request->input('effective_date'),
+                    'total' => $request->input('total'),
+                    'percentage' => $request->input('allocation')
+                ],
+                'expense-not-added-item'
+            );
 
         if ($item !== null) {
-            $item_category = Api::protected()->post(
-                Config::get('web.config.api_uri_items') . '/' . $item['id'] . '/category',
-                [
-                    'category_id' => $request->input('category_id')
-                ],
-                'IndexController@recent',
-                'expense-not-added-item-category'
-            );
+            $item_category = Api::protected()
+                ->redirectOnFailure('IndexController@recent')
+                ->post(
+                    Config::get('web.config.api_uri_items') . '/' . $item['id'] . '/category',
+                    [
+                        'category_id' => $request->input('category_id')
+                    ],
+                    'expense-not-added-item-category'
+                );
         }
 
         if ($item !== null && $item_category !== null) {
-            $item_sub_category = Api::protected()->post(
-                Config::get('web.config.api_uri_items') . '/' .
-                $item['id'] . '/category/' . $item_category['id'] . '/sub_category',
-                [
-                    'sub_category_id' => $request->input('sub_category_id')
-                ],
-                'IndexController@recent',
-                'expense-not-added-item-sub-category'
-            );
+            $item_sub_category = Api::protected()
+                ->redirectOnFailure('IndexController@recent')
+                ->post(
+                    Config::get('web.config.api_uri_items') . '/' .
+                    $item['id'] . '/category/' . $item_category['id'] . '/sub_category',
+                    [
+                        'sub_category_id' => $request->input('sub_category_id')
+                    ],
+                    'expense-not-added-item-sub-category'
+                );
         }
 
         if ($item !== null && $item_category !== null && $item_sub_category !== null) {

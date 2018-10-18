@@ -4,8 +4,8 @@
     <div class="col-12 col-sm-12 col-md-8 mt-2 mt-lg-2">
         <h1 class="display-4">Expenses</h1>
 
-        <p class="lead">The last 5 expenses that have been entered for {{ $resource_name }},
-            list filtering, {{ $filtering }}</p>
+        <p class="lead">The last {{ $count }} expenses that have been entered
+            for {{ $resource_name }}, list filtering, {{ $filtering }}</p>
 
         <p><a href="{{ action('SummaryController@summaries') }}" class="btn btn-sm btn-outline-info">Return to summaries</a></p>
 

@@ -9,24 +9,27 @@ use Illuminate\Support\Facades\Config;
 
 class ExpenseController extends BaseController
 {
-    protected $display_nav_options = true;
+    protected $display_navigation = true;
+    protected $display_add_expense = true;
     protected $nav_active = 'recent';
 
     public function addExpense(Request $request)
     {
         $this->nav_active = 'add-expense';
 
-        $sub_categories = Api::public()->get(
-            Config::get('web.config.api_uri_categories') .
-            '/' . Config::get('web.config.api_category_id_essentials') .
-            '/sub_categories',
-            'IndexController@index'
-        );
+        $sub_categories = Api::public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(
+                Config::get('web.config.api_uri_categories') .
+                '/' . Config::get('web.config.api_category_id_essentials') .
+                '/sub_categories'
+            );
 
         return view(
             'add-expense',
             [
-                'display_nav_options' => $this->display_nav_options,
+                'display_navigation' => $this->display_navigation,
+                'display_add_expense' => false,
                 'nav_active' => $this->nav_active,
                 'resource_name' => Config::get('web.config.api_resource_name'),
                 'category_id_essentials' => Config::get('web.config.api_category_id_essentials'),
@@ -45,29 +48,32 @@ class ExpenseController extends BaseController
         $status = null;
         $this->nav_active = 'recent';
 
-        $expense = Api::public()->get(
-            Config::get('web.config.api_uri_items') . '/' .
-            $expense_identifier,
-            'IndexController@index'
-        );
+        $expense = Api::public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(
+                Config::get('web.config.api_uri_items') . '/' .
+                $expense_identifier
+            );
 
-        $category = Api::public()->get(
-            Config::get('web.config.api_uri_items') . '/' .
-            $expense_identifier . '/category',
-            'IndexController@index'
-        );
+        $category = Api::public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(
+                Config::get('web.config.api_uri_items') . '/' .
+                $expense_identifier . '/category'
+            );
 
         if ($category === null) {
             $status = 'category-not-assigned';
         }
 
         if ($category !== null) {
-            $sub_category = Api::public()->get(
-                Config::get('web.config.api_uri_items') . '/' .
-                $expense_identifier . '/category/' . $category['id'] .
-                '/sub_category',
-                'IndexController@index'
-            );
+            $sub_category = Api::public()
+                ->redirectOnFailure('ErrorController@requestStatus')
+                ->get(
+                    Config::get('web.config.api_uri_items') . '/' .
+                    $expense_identifier . '/category/' . $category['id'] .
+                    '/sub_category'
+                );
 
             if ($sub_category === null) {
                 $status = 'sub-category-not-assigned';
@@ -81,7 +87,8 @@ class ExpenseController extends BaseController
             return view(
                 'expense',
                 [
-                    'display_nav_options' => $this->display_nav_options,
+                    'display_navigation' => $this->display_navigation,
+                    'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'expense' => $expense,
                     'category' => $category,
@@ -104,33 +111,36 @@ class ExpenseController extends BaseController
 
         $this->nav_active = 'recent';
 
-        $expense = Api::public()->get(
-            Config::get('web.config.api_uri_items') . '/' .
-            $expense_identifier,
-            'IndexController@index'
-        );
+        $expense = Api::public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(
+                Config::get('web.config.api_uri_items') . '/' .
+                $expense_identifier
+            );
 
         if ($expense !== null) {
             $expense_identifier_id = $expense['id'];
         }
 
-        $category = Api::public()->get(
-            Config::get('web.config.api_uri_items') . '/' .
-            $expense_identifier . '/category',
-            'IndexController@index'
-        );
+        $category = Api::public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(
+                Config::get('web.config.api_uri_items') . '/' .
+                $expense_identifier . '/category'
+            );
 
         if ($category !== null) {
             $expense_category_identifier_id = $category['id'];
         }
 
         if ($category !== null) {
-            $sub_category = Api::public()->get(
-                Config::get('web.config.api_uri_items') . '/' .
-                $expense_identifier . '/category/' . $category['id'] .
-                '/sub_category',
-                'IndexController@index'
-            );
+            $sub_category = Api::public()
+                ->redirectOnFailure('ErrorController@requestStatus')
+                ->get(
+                    Config::get('web.config.api_uri_items') . '/' .
+                    $expense_identifier . '/category/' . $category['id'] .
+                    '/sub_category'
+                );
 
             if ($sub_category !== null) {
                 $expense_sub_category_identifier_id = $sub_category['id'];
@@ -141,7 +151,8 @@ class ExpenseController extends BaseController
             return view(
                 'delete-expense',
                 [
-                    'display_nav_options' => $this->display_nav_options,
+                    'display_navigation' => $this->display_navigation,
+                    'display_add_expense' => false,
                     'nav_active' => $this->nav_active,
                     'expense' => $expense,
                     'category' => $category,
@@ -186,23 +197,25 @@ class ExpenseController extends BaseController
                             );
                         break;
                     case 'category':
-                        $category = Api::public()->get(
-                            Config::get('web.config.api_uri_category') .
-                            '/' . $value,
-                            'IndexController@index'
-                        );
+                        $category = Api::public()
+                            ->redirectOnFailure('ErrorController@requestStatus')
+                            ->get(
+                                Config::get('web.config.api_uri_category') .
+                                '/' . $value
+                            );
 
                         if ($category !== null) {
                             $filtering[] .= 'Category: ' . $category['name'];
                         }
                         break;
                     case 'sub_category':
-                        $sub_category = Api::public()->get(
-                            Config::get('web.config.api_uri_category') .
-                            '/' . $request_parameters['category'] .
-                            '/sub_categories/' . $value,
-                            'IndexController@index'
-                        );
+                        $sub_category = Api::public()
+                            ->redirectOnFailure('ErrorController@requestStatus')
+                            ->get(
+                                Config::get('web.config.api_uri_category') .
+                                '/' . $request_parameters['category'] .
+                                '/sub_categories/' . $value
+                            );
 
                         if ($sub_category !== null) {
                             $filtering[] .= 'Sub category: ' . $sub_category['name'];
@@ -216,22 +229,26 @@ class ExpenseController extends BaseController
             }
         }
 
-        $uri = Config::get('web.config.api_uri_items') . '?limit=5';
+        $uri = Config::get('web.config.api_uri_items') . '?limit=50';
         foreach ($request_parameters as $parameter => $value) {
             $uri .= '&' . $parameter . '=' . $value;
         }
 
-        $expenses = Api::public()->get($uri, 'IndexController@index');
+        $expenses = Api::public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get($uri);
 
         if ($expenses !== null) {
             return view(
                 'expenses',
                 [
-                    'display_nav_options' => $this->display_nav_options,
+                    'display_navigation' => $this->display_navigation,
+                    'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'expenses' => $expenses,
-                    'filtering' => implode(', ', $filtering)
+                    'filtering' => implode(', ', $filtering),
+                    'count' => count($expenses)
                 ]
             );
         }

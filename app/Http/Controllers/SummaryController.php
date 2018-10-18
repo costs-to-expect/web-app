@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Config;
 
 class SummaryController extends BaseController
 {
-    protected $display_nav_options = true;
+    protected $display_navigation = true;
+    protected $display_add_expense = true;
     protected $nav_active = 'recent';
 
     public function monthsSummary(Request $request, string $year_identifier)
@@ -17,17 +18,19 @@ class SummaryController extends BaseController
         $months = null;
         $this->nav_active = 'summaries';
 
-        $months = Api::public()->get(
-            Config::get('web.config.api_uri_years_summary') .
-            '/' . $year_identifier . '/months',
-            'IndexController@index'
-        );
+        $months = Api::public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(
+                Config::get('web.config.api_uri_years_summary') .
+                '/' . $year_identifier . '/months'
+            );
 
         if ($months !== null) {
             return view(
                 'months-summary',
                 [
-                    'display_nav_options' => $this->display_nav_options,
+                    'display_navigation' => $this->display_navigation,
+                    'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'months' => $months,
@@ -43,21 +46,24 @@ class SummaryController extends BaseController
         $years = null;
         $this->nav_active = 'summaries';
 
-        $categories = Api::public()->get(
-            Config::get('web.config.api_uri_categories_summary'),
-            'IndexController@index'
-        );
+        $categories = Api::public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(
+                Config::get('web.config.api_uri_categories_summary')
+            );
 
-        $years = Api::public()->get(
-            Config::get('web.config.api_uri_years_summary'),
-            'IndexController@index'
-        );
+        $years = Api::public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(
+                Config::get('web.config.api_uri_years_summary')
+            );
 
         if ($categories !== null && $years !== null) {
             return view(
                 'summaries',
                 [
-                    'display_nav_options' => $this->display_nav_options,
+                    'display_navigation' => $this->display_navigation,
+                    'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'categories' => $categories,
@@ -73,23 +79,26 @@ class SummaryController extends BaseController
         $sub_categories = null;
         $this->nav_active = 'summaries';
 
-        $category = Api::public()->get(
-            Config::get('web.config.api_uri_category') . '/' .
-            $category_identifier,
-            'IndexController@index'
-        );
+        $category = Api::public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(
+                Config::get('web.config.api_uri_category') . '/' .
+                $category_identifier
+            );
 
-        $sub_categories = Api::public()->get(
-            Config::get('web.config.api_uri_categories_summary') .
-            '/' . $category_identifier . '/sub_categories',
-            'IndexController@index'
-        );
+        $sub_categories = Api::public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(
+                Config::get('web.config.api_uri_categories_summary') .
+                '/' . $category_identifier . '/sub_categories'
+            );
 
         if ($category === null || $sub_categories !== null) {
             return view(
                 'sub-categories-summary',
                 [
-                    'display_nav_options' => $this->display_nav_options,
+                    'display_navigation' => $this->display_navigation,
+                    'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'category' => $category,
@@ -104,16 +113,18 @@ class SummaryController extends BaseController
         $tco = null;
         $this->nav_active = 'tco-summary';
 
-        $tco = Api::public()->get(
-            Config::get('web.config.api_uri_categories_tco'),
-            'IndexController@index'
-        );
+        $tco = Api::public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(
+                Config::get('web.config.api_uri_categories_tco')
+            );
 
         if ($tco !== null) {
             return view(
                 'tco-summary',
                 [
-                    'display_nav_options' => $this->display_nav_options,
+                    'display_navigation' => $this->display_navigation,
+                    'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'tco' => $tco

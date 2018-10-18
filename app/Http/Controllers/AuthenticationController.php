@@ -10,14 +10,16 @@ use Illuminate\Support\Facades\Config;
 
 class AuthenticationController extends BaseController
 {
-    protected $display_nav_options = false;
+    protected $display_navigation = false;
+    protected $display_add_expense = false;
 
     public function signIn(Request $request)
     {
         return view(
             'sign-in',
             [
-                'display_nav_options' => $this->display_nav_options,
+                'display_navigation' => $this->display_navigation,
+                'display_add_expense' => $this->display_add_expense,
                 'resource_name' => Config::get('web.config.api_resource_name'),
             ]
         );

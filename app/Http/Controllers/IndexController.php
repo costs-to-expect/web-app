@@ -10,7 +10,8 @@ use League\CommonMark\CommonMarkConverter;
 
 class IndexController extends BaseController
 {
-    protected $display_nav_options = true;
+    protected $display_navigation = true;
+    protected $display_add_expense = true;
     protected $nav_active = 'recent';
 
     public function index(Request $request)
@@ -20,16 +21,16 @@ class IndexController extends BaseController
 
     public function recent(Request $request)
     {
-        $expenses = Api::public()->get(
-            Config::get('web.config.api_uri_items') . '?limit=5',
-            'IndexController@index'
-        );
+        $expenses = Api::public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(Config::get('web.config.api_uri_items') . '?limit=10');
 
         if ($expenses !== null) {
             return view(
                 'recent',
                 [
-                    'display_nav_options' => $this->display_nav_options,
+                    'display_navigation' => $this->display_navigation,
+                    'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'expenses' => $expenses,
@@ -42,11 +43,12 @@ class IndexController extends BaseController
 
     public function subCategories(Request $request, string $category_identifier)
     {
-        $sub_categories = Api::public()->get(
-            Config::get('web.config.api_uri_categories') .
-            '/' . $category_identifier . '/sub_categories',
-            'IndexController@index'
-        );
+        $sub_categories = Api::public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(
+                Config::get('web.config.api_uri_categories') .
+                '/' . $category_identifier . '/sub_categories'
+            );
 
         return response()->json($sub_categories, 200);
     }
@@ -59,7 +61,8 @@ class IndexController extends BaseController
         return view(
             'version-history',
             [
-                'display_nav_options' => $this->display_nav_options,
+                'display_navigation' => $this->display_navigation,
+                'display_add_expense' => $this->display_add_expense,
                 'nav_active' => 'version-history',
                 'version_history' => $html
             ]

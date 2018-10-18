@@ -2,6 +2,13 @@
 
 Full changelog for the costs to expect web app.
 
+## 2018-10-18 - v1.02.3
+
+* Quick hack to remove filtering on filtered lists, default to requesting 50, need to add support for OPTIONS requests.
+* Updated API Request helper, added methods to define redirects for request error and client exceptions.
+* Recent shows the last 10 expenses entered.
+* Minor updates to view files, separate control over navigation and control over add expense button.
+
 ## 2018-10-14 - v1.02.2
 
 * Fixed day formatting, no longer display a leading zero on the day.
