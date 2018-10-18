@@ -10,7 +10,8 @@ use League\CommonMark\CommonMarkConverter;
 
 class IndexController extends BaseController
 {
-    protected $display_nav_options = true;
+    protected $display_navigation = true;
+    protected $display_add_expense = true;
     protected $nav_active = 'recent';
 
     public function index(Request $request)
@@ -22,13 +23,14 @@ class IndexController extends BaseController
     {
         $expenses = Api::public()
             ->redirectOnFailure('ErrorController@requestStatus')
-            ->get(Config::get('web.config.api_uri_items') . '?limit=5');
+            ->get(Config::get('web.config.api_uri_items') . '?limit=10');
 
         if ($expenses !== null) {
             return view(
                 'recent',
                 [
-                    'display_nav_options' => $this->display_nav_options,
+                    'display_navigation' => $this->display_navigation,
+                    'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'expenses' => $expenses,
@@ -59,7 +61,8 @@ class IndexController extends BaseController
         return view(
             'version-history',
             [
-                'display_nav_options' => $this->display_nav_options,
+                'display_navigation' => $this->display_navigation,
+                'display_add_expense' => $this->display_add_expense,
                 'nav_active' => 'version-history',
                 'version_history' => $html
             ]

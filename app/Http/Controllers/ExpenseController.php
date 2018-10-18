@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Config;
 
 class ExpenseController extends BaseController
 {
-    protected $display_nav_options = true;
+    protected $display_navigation = true;
+    protected $display_add_expense = true;
     protected $nav_active = 'recent';
 
     public function addExpense(Request $request)
@@ -27,7 +28,8 @@ class ExpenseController extends BaseController
         return view(
             'add-expense',
             [
-                'display_nav_options' => $this->display_nav_options,
+                'display_navigation' => $this->display_navigation,
+                'display_add_expense' => false,
                 'nav_active' => $this->nav_active,
                 'resource_name' => Config::get('web.config.api_resource_name'),
                 'category_id_essentials' => Config::get('web.config.api_category_id_essentials'),
@@ -85,7 +87,8 @@ class ExpenseController extends BaseController
             return view(
                 'expense',
                 [
-                    'display_nav_options' => $this->display_nav_options,
+                    'display_navigation' => $this->display_navigation,
+                    'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'expense' => $expense,
                     'category' => $category,
@@ -148,7 +151,8 @@ class ExpenseController extends BaseController
             return view(
                 'delete-expense',
                 [
-                    'display_nav_options' => $this->display_nav_options,
+                    'display_navigation' => $this->display_navigation,
+                    'display_add_expense' => false,
                     'nav_active' => $this->nav_active,
                     'expense' => $expense,
                     'category' => $category,
@@ -238,7 +242,8 @@ class ExpenseController extends BaseController
             return view(
                 'expenses',
                 [
-                    'display_nav_options' => $this->display_nav_options,
+                    'display_navigation' => $this->display_navigation,
+                    'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'expenses' => $expenses,

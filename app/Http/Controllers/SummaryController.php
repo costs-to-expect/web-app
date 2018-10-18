@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Config;
 
 class SummaryController extends BaseController
 {
-    protected $display_nav_options = true;
+    protected $display_navigation = true;
+    protected $display_add_expense = true;
     protected $nav_active = 'recent';
 
     public function monthsSummary(Request $request, string $year_identifier)
@@ -28,7 +29,8 @@ class SummaryController extends BaseController
             return view(
                 'months-summary',
                 [
-                    'display_nav_options' => $this->display_nav_options,
+                    'display_navigation' => $this->display_navigation,
+                    'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'months' => $months,
@@ -60,7 +62,8 @@ class SummaryController extends BaseController
             return view(
                 'summaries',
                 [
-                    'display_nav_options' => $this->display_nav_options,
+                    'display_navigation' => $this->display_navigation,
+                    'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'categories' => $categories,
@@ -94,7 +97,8 @@ class SummaryController extends BaseController
             return view(
                 'sub-categories-summary',
                 [
-                    'display_nav_options' => $this->display_nav_options,
+                    'display_navigation' => $this->display_navigation,
+                    'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'category' => $category,
@@ -119,7 +123,8 @@ class SummaryController extends BaseController
             return view(
                 'tco-summary',
                 [
-                    'display_nav_options' => $this->display_nav_options,
+                    'display_navigation' => $this->display_navigation,
+                    'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'tco' => $tco

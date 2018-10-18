@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Config;
 
 class ProcessController extends BaseController
 {
-    protected $display_nav_options = true;
-    protected $nav_active = 'recent';
-
     public function processAddExpense(Request $request)
     {
         $item = null;

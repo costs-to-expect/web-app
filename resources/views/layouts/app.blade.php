@@ -17,7 +17,7 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="{{ action('IndexController@recent') }}">Costs-to-Expect.com</a>
-            @if ($display_nav_options === true)
+            @if ($display_navigation === true)
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -51,7 +51,7 @@
             </div>
         </div>
         <div class="container">
-            @if ($display_nav_options === true && $nav_active !== 'add-expense')
+            @if ($display_add_expense === true && $nav_active !== 'add-expense')
                 <div class="col-12 text-right mt-2">
                     <p><a href="{{ action('ExpenseController@addExpense') }}" class="btn btn-sm btn-outline-success">Add new expense</a></p>
                 </div>
