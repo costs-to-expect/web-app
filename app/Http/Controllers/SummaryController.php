@@ -18,7 +18,8 @@ class SummaryController extends BaseController
         $months = null;
         $this->nav_active = 'summaries';
 
-        $months = Api::public()
+        $months = Api::getInstance()
+            ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
                 Config::get('web.config.api_uri_years_summary') .
@@ -46,13 +47,15 @@ class SummaryController extends BaseController
         $years = null;
         $this->nav_active = 'summaries';
 
-        $categories = Api::public()
+        $categories = Api::getInstance()
+            ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
                 Config::get('web.config.api_uri_categories_summary')
             );
 
-        $years = Api::public()
+        $years = Api::getInstance()
+            ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
                 Config::get('web.config.api_uri_years_summary')
@@ -79,14 +82,16 @@ class SummaryController extends BaseController
         $sub_categories = null;
         $this->nav_active = 'summaries';
 
-        $category = Api::public()
+        $category = Api::getInstance()
+            ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
                 Config::get('web.config.api_uri_category') . '/' .
                 $category_identifier
             );
 
-        $sub_categories = Api::public()
+        $sub_categories = Api::getInstance()
+            ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
                 Config::get('web.config.api_uri_categories_summary') .
@@ -113,7 +118,8 @@ class SummaryController extends BaseController
         $tco = null;
         $this->nav_active = 'tco-summary';
 
-        $tco = Api::public()
+        $tco = Api::getInstance()
+            ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
                 Config::get('web.config.api_uri_categories_tco')

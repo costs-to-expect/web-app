@@ -21,7 +21,8 @@ class IndexController extends BaseController
 
     public function recent(Request $request)
     {
-        $expenses = Api::public()
+        $expenses = Api::getInstance()
+            ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(Config::get('web.config.api_uri_items') . '?limit=10');
 
@@ -43,7 +44,8 @@ class IndexController extends BaseController
 
     public function subCategories(Request $request, string $category_identifier)
     {
-        $sub_categories = Api::public()
+        $sub_categories = Api::getInstance()
+            ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
                 Config::get('web.config.api_uri_categories') .

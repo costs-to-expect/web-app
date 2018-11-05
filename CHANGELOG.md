@@ -2,6 +2,12 @@
 
 Full changelog for the costs to expect web app.
 
+## 2018-11-05 - v1.03.0
+
+* The filtered expenses view now shows all expenses if less than 50, otherwise the first 50.
+* Updated API helper, added the ability to make a HEAD request and pull out headers.
+* Updated API helper, added getInstance(), not a correctly implemented singleton. 
+
 ## 2018-10-18 - v1.02.3
 
 * Quick hack to remove filtering on filtered lists, default to requesting 50, need to add support for OPTIONS requests.

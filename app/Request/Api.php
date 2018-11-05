@@ -32,6 +32,25 @@ class Api
     private static $redirect_exception = null;
 
     /**
+     * @var Api
+     */
+    private static $instance;
+
+    /**
+     * Generate a new instance or return existing
+     *
+     * @return Api
+     */
+    public static function getInstance()
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new static();
+        }
+
+        return self::$instance;
+    }
+
+    /**
      * Set up a protected connection to the Costs to Expect API, return for
      * POST and DELETE
      *
@@ -51,7 +70,7 @@ class Api
             ],
         ]);
 
-        return new Api();
+        return new static();
     }
 
     /**
@@ -72,7 +91,7 @@ class Api
             ],
         ]);
 
-        return new Api();
+        return new static();
     }
 
     /**
@@ -106,6 +125,70 @@ class Api
         }
 
         return $content;
+    }
+
+    /**
+     * Fetch pagination headers
+     *
+     * @param array $returned_headers Headers returned from HEAD request
+     * @param array $params Params to fetch from headers
+     * @param array $headers Headers array to populate
+     */
+    private static function fetchHeaderParams($returned_headers, $params, &$headers)
+    {
+        foreach ($params as $param) {
+            if (
+                array_key_exists($param, $returned_headers) &&
+                array_key_exists(0, $returned_headers[$param])
+            ) {
+                $headers[$param] = $returned_headers[$param][0];
+            }
+        }
+    }
+
+    /**
+     * Make a HEAD request to the API
+     *
+     * @param string $uri URI to make HEAD request to
+     *
+     * @return mixed
+     */
+    public static function head(string $uri): ?array
+    {
+        $headers = null;
+
+        try {
+            $response = self::$client->head($uri);
+
+            if ($response->getStatusCode() === 200) {
+                $returned_headers = $response->getHeaders();
+
+                $headers = [];
+                self::fetchHeaderParams(
+                    $returned_headers,
+                    [
+                        'X-Total-Count',
+                        'X-Count',
+                        'X-Link-Previous',
+                        'X-Link-Next'
+                    ],
+                    $headers
+                );
+            } else {
+                if (self::$redirect_failure !== null) {
+                    // Log error by posting to API
+                    redirect()->action(self::$redirect_failure)->send();
+                    exit;
+                }
+            }
+        } catch (ClientException $e) {
+            if (self::$redirect_exception !== null) {
+                redirect()->action(self::$redirect_exception)->send();
+                exit;
+            }
+        }
+
+        return $headers;
     }
 
     /**
@@ -202,7 +285,7 @@ class Api
     {
         self::$redirect_failure = $redirectAction;
 
-        return new Api;
+        return new static();
     }
 
     /**
@@ -216,6 +299,6 @@ class Api
     {
         self::$redirect_exception = $redirectAction;
 
-        return new Api;
+        return new static();
     }
 }

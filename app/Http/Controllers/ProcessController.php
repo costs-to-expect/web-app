@@ -15,7 +15,8 @@ class ProcessController extends BaseController
         $item_category = null;
         $item_sub_category = null;
 
-        $item = Api::protected()
+        $item = Api::getInstance()
+            ->protected()
             ->redirectOnFailure('IndexController@recent')
             ->post(
                 Config::get('web.config.api_uri_items'),
@@ -29,7 +30,8 @@ class ProcessController extends BaseController
             );
 
         if ($item !== null) {
-            $item_category = Api::protected()
+            $item_category = Api::getInstance()
+                ->protected()
                 ->redirectOnFailure('IndexController@recent')
                 ->post(
                     Config::get('web.config.api_uri_items') . '/' . $item['id'] . '/category',
@@ -41,7 +43,8 @@ class ProcessController extends BaseController
         }
 
         if ($item !== null && $item_category !== null) {
-            $item_sub_category = Api::protected()
+            $item_sub_category = Api::getInstance()
+                ->protected()
                 ->redirectOnFailure('IndexController@recent')
                 ->post(
                     Config::get('web.config.api_uri_items') . '/' .
@@ -73,25 +76,31 @@ class ProcessController extends BaseController
         $expense_sub_category_identifier = $request->input('expense_sub_category_identifier_id');
 
         if ($expense_sub_category_identifier !== null) {
-            $deleted_sub_category = Api::protected()->delete(
-                Config::get('web.config.api_uri_items') . '/' .
-                $expense_identifier . '/category/' . $expense_category_identifier .
-                '/sub_category/' . $expense_sub_category_identifier
-            );
+            $deleted_sub_category = Api::getInstance()
+                ->protected()
+                ->delete(
+                    Config::get('web.config.api_uri_items') . '/' .
+                    $expense_identifier . '/category/' . $expense_category_identifier .
+                    '/sub_category/' . $expense_sub_category_identifier
+                );
         }
 
         if ($deleted_sub_category === true && $expense_category_identifier !== null) {
-            $deleted_category = Api::protected()->delete(
-                Config::get('web.config.api_uri_items') . '/' .
-                $expense_identifier . '/category/' . $expense_category_identifier
-            );
+            $deleted_category = Api::getInstance()
+                ->protected()
+                ->delete(
+                    Config::get('web.config.api_uri_items') . '/' .
+                    $expense_identifier . '/category/' . $expense_category_identifier
+                );
         }
 
         if ($deleted_category === true && $expense_identifier !== null) {
-            $deleted_expense = Api::protected()->delete(
-                Config::get('web.config.api_uri_items') . '/' .
-                $expense_identifier
-            );
+            $deleted_expense = Api::getInstance()
+                ->protected()
+                ->delete(
+                    Config::get('web.config.api_uri_items') . '/' .
+                    $expense_identifier
+                );
         }
 
         if ($deleted_expense === true && $deleted_category === true && $deleted_sub_category === true) {

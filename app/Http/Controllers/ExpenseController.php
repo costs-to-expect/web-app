@@ -17,7 +17,8 @@ class ExpenseController extends BaseController
     {
         $this->nav_active = 'add-expense';
 
-        $sub_categories = Api::public()
+        $sub_categories = Api::getInstance()
+            ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
                 Config::get('web.config.api_uri_categories') .
@@ -48,14 +49,16 @@ class ExpenseController extends BaseController
         $status = null;
         $this->nav_active = 'recent';
 
-        $expense = Api::public()
+        $expense = Api::getInstance()
+            ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
                 Config::get('web.config.api_uri_items') . '/' .
                 $expense_identifier
             );
 
-        $category = Api::public()
+        $category = Api::getInstance()
+            ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
                 Config::get('web.config.api_uri_items') . '/' .
@@ -67,7 +70,8 @@ class ExpenseController extends BaseController
         }
 
         if ($category !== null) {
-            $sub_category = Api::public()
+            $sub_category = Api::getInstance()
+                ->public()
                 ->redirectOnFailure('ErrorController@requestStatus')
                 ->get(
                     Config::get('web.config.api_uri_items') . '/' .
@@ -111,7 +115,8 @@ class ExpenseController extends BaseController
 
         $this->nav_active = 'recent';
 
-        $expense = Api::public()
+        $expense = Api::getInstance()
+            ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
                 Config::get('web.config.api_uri_items') . '/' .
@@ -122,7 +127,8 @@ class ExpenseController extends BaseController
             $expense_identifier_id = $expense['id'];
         }
 
-        $category = Api::public()
+        $category = Api::getInstance()
+            ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
                 Config::get('web.config.api_uri_items') . '/' .
@@ -134,7 +140,8 @@ class ExpenseController extends BaseController
         }
 
         if ($category !== null) {
-            $sub_category = Api::public()
+            $sub_category = Api::getInstance()
+                ->public()
                 ->redirectOnFailure('ErrorController@requestStatus')
                 ->get(
                     Config::get('web.config.api_uri_items') . '/' .
@@ -197,7 +204,8 @@ class ExpenseController extends BaseController
                             );
                         break;
                     case 'category':
-                        $category = Api::public()
+                        $category = Api::getInstance()
+                            ->public()
                             ->redirectOnFailure('ErrorController@requestStatus')
                             ->get(
                                 Config::get('web.config.api_uri_category') .
@@ -209,7 +217,8 @@ class ExpenseController extends BaseController
                         }
                         break;
                     case 'sub_category':
-                        $sub_category = Api::public()
+                        $sub_category = Api::getInstance()
+                            ->public()
                             ->redirectOnFailure('ErrorController@requestStatus')
                             ->get(
                                 Config::get('web.config.api_uri_category') .
@@ -229,14 +238,30 @@ class ExpenseController extends BaseController
             }
         }
 
-        $uri = Config::get('web.config.api_uri_items') . '?limit=50';
+        $uri = Config::get('web.config.api_uri_items') . '?';
+        $i = 0;
         foreach ($request_parameters as $parameter => $value) {
-            $uri .= '&' . $parameter . '=' . $value;
+            $uri .= ($i === 0 ? null : '&')  . $parameter . '=' . $value;
+            $i++;
         }
 
-        $expenses = Api::public()
+        $headers = Api::getInstance()
+            ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
-            ->get($uri);
+            ->head($uri);
+
+        $limit = 50;
+        if (
+            array_key_exists('X-Total-Count', $headers) === true &&
+            intval($headers['X-Total-Count']) < 50
+        ) {
+            $limit = intval($headers['X-Total-Count']);
+        }
+
+        $expenses = Api::getInstance()
+            ->public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get($uri . '&limit=' . $limit);
 
         if ($expenses !== null) {
             return view(
@@ -248,7 +273,7 @@ class ExpenseController extends BaseController
                     'resource_name' => Config::get('web.config.api_resource_name'),
                     'expenses' => $expenses,
                     'filtering' => implode(', ', $filtering),
-                    'count' => count($expenses)
+                    'limit' => $limit
                 ]
             );
         }
