@@ -4,6 +4,7 @@ Full changelog for the costs to expect web app.
 
 ## 2018-11-xx - v1.03.0
 
+* The filtered expenses view now shows all expenses if less than 50, otherwise the first 50.
 * Updated API helper, added ability to make a HEAD request and pull out headers.
 * Updated API helper, added getInstance(), not a correctly implemented singleton. 
 
