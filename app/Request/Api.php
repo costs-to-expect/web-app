@@ -95,6 +95,43 @@ class Api
     }
 
     /**
+     * Catch the unexpected error and then log an error with the API
+     *
+     * @param $method
+     * @param $expected_status_code
+     * @param $returned_status_code
+     * @param $request_uri
+     *
+     * @return void
+     */
+    protected static function catchError(
+        $method,
+        $expected_status_code,
+        $returned_status_code,
+        $request_uri
+    ): void {
+        if (self::$redirect_failure !== null) {
+            try {
+                self::postError(
+                    $method,
+                    $expected_status_code,
+                    $returned_status_code,
+                    $request_uri
+                );
+            } catch (\Exception $e) {
+                redirect()->action(self::$redirect_exception)->send();
+                exit;
+            }
+
+            redirect()->action(self::$redirect_failure)->send();
+            exit;
+        } else {
+            redirect()->action(self::$redirect_exception)->send();
+            exit;
+        }
+    }
+
+    /**
      * Make a GET request to the API
      *
      * @param string $uri URI to make GET request to
@@ -111,17 +148,16 @@ class Api
             if ($response->getStatusCode() === 200) {
                 $content = json_decode($response->getBody(), true);
             } else {
-                if (self::$redirect_failure !== null) {
-                    // Log error by posting to API
-                    redirect()->action(self::$redirect_failure)->send();
-                    exit;
-                }
+                self::catchError(
+                    'GET',
+                    200,
+                    $response->getStatusCode(),
+                    $uri
+                );
             }
         } catch (ClientException $e) {
-            if (self::$redirect_exception !== null) {
-                redirect()->action(self::$redirect_exception)->send();
-                exit;
-            }
+            redirect()->action(self::$redirect_exception)->send();
+            exit;
         }
 
         return $content;
@@ -252,7 +288,7 @@ class Api
      * @return mixed
      * @throws \Exception
      */
-    public static function postError(
+    protected static function postError(
         string $method,
         int $expected_status_code,
         int $returned_status_code,
