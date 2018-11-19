@@ -1,6 +1,11 @@
 # Version history
 
-Full changelog for the costs to expect web app.
+Full changelog for the Costs to Expect web app.
+
+## 2018-11-xx - v1.03.x
+
+* Removed API category ids from config file, defined in env file.
+* Remove database connection details from env.example, no local database.
 
 ## 2018-11-05 - v1.03.0
 
