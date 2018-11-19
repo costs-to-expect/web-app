@@ -242,6 +242,45 @@ class Api
     }
 
     /**
+     * POST an error to the API, errors on failure, no need to POST and error when you cant POST an error
+     *
+     * @param string $method
+     * @param integer $expected_status_code
+     * @param integer $returned_status_code
+     * @param string $request_uri
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function postError(
+        string $method,
+        int $expected_status_code,
+        int $returned_status_code,
+        string $request_uri
+    ): void {
+
+        try {
+            $response = self::$client->post(
+                'request/error-log',
+                [
+                    \GuzzleHttp\RequestOptions::JSON => [
+                        'method' => $method,
+                        'expected_status_code' => $expected_status_code,
+                        'returned_status_code' => $returned_status_code,
+                        'request_uri' => $request_uri
+                    ]
+                ]
+            );
+
+            if ($response->getStatusCode() !== 201) {
+                throw new \Exception('Unable to POST error to Costs to Expect API');
+            }
+        } catch (ClientException $e) {
+            throw new \Exception('Unable to POST error to Costs to Expect API');
+        }
+    }
+
+    /**
      * Make a DELETE request to the API
      *
      * @param string $uri URI to make GET request to
