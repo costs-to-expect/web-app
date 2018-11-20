@@ -333,11 +333,12 @@ class Api
             if ($response->getStatusCode() === 204) {
                 $result = true;
             } else {
-                if (self::$redirect_failure !== null) {
-                    // Log error by posting to API
-                    redirect()->action(self::$redirect_failure)->send();
-                    exit;
-                }
+                self::catchError(
+                    'DELETE',
+                    204,
+                    $response->getStatusCode(),
+                    $uri
+                );
             }
         } catch (ClientException $e) {
             if (self::$redirect_exception !== null) {
