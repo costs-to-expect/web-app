@@ -211,11 +211,12 @@ class Api
                     $headers
                 );
             } else {
-                if (self::$redirect_failure !== null) {
-                    // Log error by posting to API
-                    redirect()->action(self::$redirect_failure)->send();
-                    exit;
-                }
+                self::catchError(
+                    'HEAD',
+                    200,
+                    $response->getStatusCode(),
+                    $uri
+                );
             }
         } catch (ClientException $e) {
             if (self::$redirect_exception !== null) {
@@ -256,9 +257,12 @@ class Api
                 // Switch to check for 422 (Validation error)
 
                 if (self::$redirect_failure !== null) {
-                    // Log error by posting to API
-                    redirect()->action(self::$redirect_failure)->send();
-                    exit;
+                    self::catchError(
+                        'POST',
+                        201,
+                        $response->getStatusCode(),
+                        $uri
+                    );
                 } else {
                     request()->session()->flash('status', $flash_error_status);
                     redirect()->action(self::$redirect_failure)->send();
