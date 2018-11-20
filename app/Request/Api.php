@@ -59,7 +59,7 @@ class Api
     public static function protected(): Api
     {
         self::$redirect_failure = null;
-        self::$redirect_exception = 'ErrorController@error-exception';
+        self::$redirect_exception = 'ErrorController@exception';
 
         self::$client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
@@ -81,7 +81,7 @@ class Api
     public static function public(): Api
     {
         self::$redirect_failure = null;
-        self::$redirect_exception = 'ErrorController@error-exception';
+        self::$redirect_exception = 'ErrorController@exception';
 
         self::$client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
@@ -92,6 +92,43 @@ class Api
         ]);
 
         return new static();
+    }
+
+    /**
+     * Catch the unexpected error and then log an error with the API
+     *
+     * @param $method
+     * @param $expected_status_code
+     * @param $returned_status_code
+     * @param $request_uri
+     *
+     * @return void
+     */
+    protected static function catchError(
+        $method,
+        $expected_status_code,
+        $returned_status_code,
+        $request_uri
+    ): void {
+        if (self::$redirect_failure !== null) {
+            try {
+                self::postError(
+                    $method,
+                    $expected_status_code,
+                    $returned_status_code,
+                    $request_uri
+                );
+            } catch (\Exception $e) {
+                redirect()->action(self::$redirect_exception)->send();
+                exit;
+            }
+
+            redirect()->action(self::$redirect_failure)->send();
+            exit;
+        } else {
+            redirect()->action(self::$redirect_exception)->send();
+            exit;
+        }
     }
 
     /**
@@ -111,17 +148,16 @@ class Api
             if ($response->getStatusCode() === 200) {
                 $content = json_decode($response->getBody(), true);
             } else {
-                if (self::$redirect_failure !== null) {
-                    // Log error by posting to API
-                    redirect()->action(self::$redirect_failure)->send();
-                    exit;
-                }
+                self::catchError(
+                    'GET',
+                    200,
+                    $response->getStatusCode(),
+                    $uri
+                );
             }
         } catch (ClientException $e) {
-            if (self::$redirect_exception !== null) {
-                redirect()->action(self::$redirect_exception)->send();
-                exit;
-            }
+            redirect()->action(self::$redirect_exception)->send();
+            exit;
         }
 
         return $content;
@@ -175,11 +211,12 @@ class Api
                     $headers
                 );
             } else {
-                if (self::$redirect_failure !== null) {
-                    // Log error by posting to API
-                    redirect()->action(self::$redirect_failure)->send();
-                    exit;
-                }
+                self::catchError(
+                    'HEAD',
+                    200,
+                    $response->getStatusCode(),
+                    $uri
+                );
             }
         } catch (ClientException $e) {
             if (self::$redirect_exception !== null) {
@@ -220,9 +257,12 @@ class Api
                 // Switch to check for 422 (Validation error)
 
                 if (self::$redirect_failure !== null) {
-                    // Log error by posting to API
-                    redirect()->action(self::$redirect_failure)->send();
-                    exit;
+                    self::catchError(
+                        'POST',
+                        201,
+                        $response->getStatusCode(),
+                        $uri
+                    );
                 } else {
                     request()->session()->flash('status', $flash_error_status);
                     redirect()->action(self::$redirect_failure)->send();
@@ -242,6 +282,45 @@ class Api
     }
 
     /**
+     * POST an error to the API, errors on failure, no need to POST and error when you cant POST an error
+     *
+     * @param string $method
+     * @param integer $expected_status_code
+     * @param integer $returned_status_code
+     * @param string $request_uri
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    protected static function postError(
+        string $method,
+        int $expected_status_code,
+        int $returned_status_code,
+        string $request_uri
+    ): void {
+
+        try {
+            $response = self::$client->post(
+                'request/error-log',
+                [
+                    \GuzzleHttp\RequestOptions::JSON => [
+                        'method' => $method,
+                        'expected_status_code' => $expected_status_code,
+                        'returned_status_code' => $returned_status_code,
+                        'request_uri' => $request_uri
+                    ]
+                ]
+            );
+
+            if ($response->getStatusCode() !== 201) {
+                throw new \Exception('Unable to POST error to Costs to Expect API');
+            }
+        } catch (ClientException $e) {
+            throw new \Exception('Unable to POST error to Costs to Expect API');
+        }
+    }
+
+    /**
      * Make a DELETE request to the API
      *
      * @param string $uri URI to make GET request to
@@ -258,11 +337,12 @@ class Api
             if ($response->getStatusCode() === 204) {
                 $result = true;
             } else {
-                if (self::$redirect_failure !== null) {
-                    // Log error by posting to API
-                    redirect()->action(self::$redirect_failure)->send();
-                    exit;
-                }
+                self::catchError(
+                    'DELETE',
+                    204,
+                    $response->getStatusCode(),
+                    $uri
+                );
             }
         } catch (ClientException $e) {
             if (self::$redirect_exception !== null) {

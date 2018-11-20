@@ -5,12 +5,10 @@
         <h1>Oops! <small>Unexpected response from API</small></h1>
 
         <p class="lead">The API returned an unexpected status code, the request
-            that caused the error and the status code have been logged*, please
-            try again.
+            that caused this error and the returned status code have been logged,
+            please try again.</p>
 
-        <p>If you continue to experience the issue please contact
-            the administrator.</p>
-
-        <p><small>* This is a lie until I make a small change to the API.</small></p>
+        <p class="lead">If you continue to experience the issue please contact the
+            developer, or log an issue on <a href="https://github.com/costs-to-expect/web-app/issues">GitHub</a>.</p>
     </div>
 @endsection
