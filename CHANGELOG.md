@@ -2,10 +2,11 @@
 
 Full changelog for the Costs to Expect web app.
 
-## 2018-11-xx - v1.03.x
+## 2018-11-20 - v1.03.1
 
 * Removed API category ids from config file, defined in env file.
 * Remove database connection details from env.example, no local database.
+* Updated API helper, logs an error if an unexpected error code is returned from API.
 
 ## 2018-11-05 - v1.03.0
 
