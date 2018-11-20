@@ -59,7 +59,7 @@ class Api
     public static function protected(): Api
     {
         self::$redirect_failure = null;
-        self::$redirect_exception = 'ErrorController@error-exception';
+        self::$redirect_exception = 'ErrorController@exception';
 
         self::$client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),
@@ -81,7 +81,7 @@ class Api
     public static function public(): Api
     {
         self::$redirect_failure = null;
-        self::$redirect_exception = 'ErrorController@error-exception';
+        self::$redirect_exception = 'ErrorController@exception';
 
         self::$client = new Client([
             'base_uri' => Config::get('web.config.api_base_url'),

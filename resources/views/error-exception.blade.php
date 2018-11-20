@@ -5,11 +5,9 @@
         <h1>Oops! <small>Exception</small></h1>
 
         <p class="lead">There was an error with the application, the error has
-            been logged*, please try again.
+            been logged, please try again.</p>
 
-        <p>If you continue to experience the issue please contact
+        <p class="lead">If you continue to experience the issue please contact
             the administrator.</p>
-
-        <p><small>* This is a lie until I make a small change to the API.</small></p>
     </div>
 @endsection
