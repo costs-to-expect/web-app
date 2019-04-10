@@ -48,7 +48,7 @@ class ProcessController extends BaseController
                 ->redirectOnFailure('IndexController@recent')
                 ->post(
                     Config::get('web.config.api_uri_items') . '/' .
-                    $item['id'] . '/category/' . $item_category['id'] . '/sub_category',
+                    $item['id'] . '/category/' . $item_category['id'] . '/subcategory',
                     [
                         'sub_category_id' => $request->input('sub_category_id')
                     ],
@@ -81,7 +81,7 @@ class ProcessController extends BaseController
                 ->delete(
                     Config::get('web.config.api_uri_items') . '/' .
                     $expense_identifier . '/category/' . $expense_category_identifier .
-                    '/sub_category/' . $expense_sub_category_identifier
+                    '/subcategory/' . $expense_sub_category_identifier
                 );
         }
 

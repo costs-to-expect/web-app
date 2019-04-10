@@ -95,7 +95,7 @@ class SummaryController extends BaseController
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
                 Config::get('web.config.api_uri_categories_summary') .
-                '/' . $category_identifier . '/sub_categories'
+                '/' . $category_identifier . '/subcategories'
             );
 
         if ($category === null || $sub_categories !== null) {

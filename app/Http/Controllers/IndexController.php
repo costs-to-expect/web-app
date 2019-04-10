@@ -49,7 +49,7 @@ class IndexController extends BaseController
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
                 Config::get('web.config.api_uri_categories') .
-                '/' . $category_identifier . '/sub_categories'
+                '/' . $category_identifier . '/subcategories'
             );
 
         return response()->json($sub_categories, 200);
