@@ -19,7 +19,7 @@ Route::group(
         Route::get('/months-summary/{year_identifier}', 'SummaryController@monthsSummary');
         Route::get('/add-expense', 'ExpenseController@addExpense');
         Route::get('/sub-categories/{category_identifier}', 'IndexController@subCategories');
-        Route::get('/expense/{expense_identifier}', 'ExpenseController@expense');
+        Route::get('/expense/{resource_id}/{expense_identifier}', 'ExpenseController@expense');
         Route::post('/add-expense', 'ProcessController@processAddExpense');
         Route::get('/delete-expense/{expense_identifier}', 'ExpenseController@deleteExpense');
         Route::post('/delete-expense', 'ProcessController@processDeleteExpense');

@@ -61,10 +61,10 @@ class ProcessController extends BaseController
 
         if ($item !== null && $item_category !== null && $item_sub_category !== null) {
             $request->session()->flash('status', 'expense-added');
-            return redirect()->action('IndexController@recent');
+            return redirect()->action('IndexController@recent', ['resource_id' => $request->input('resource_id')]);
         } else {
             $request->session()->flash('status', 'expense-not-added');
-            return redirect()->action('IndexController@recent');
+            return redirect()->action('IndexController@recent', ['resource_id' => $request->input('resource_id')]);
         }
     }
 

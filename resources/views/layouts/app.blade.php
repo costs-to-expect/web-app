@@ -23,6 +23,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
+                    @foreach ($children as $child)
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ action('IndexController@recent', ['resource_id'=>$child['id']]) }}">Switch to {{ $child['name'] }}</a>
+                        </li>
+                    @endforeach
                     <li class="nav-item @if ($nav_active === 'add-expense') active @endif">
                         <a class="nav-link" href="{{ action('ExpenseController@addExpense') }}">Add expense</a>
                     </li>

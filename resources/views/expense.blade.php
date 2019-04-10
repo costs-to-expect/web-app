@@ -24,7 +24,7 @@
             @endif
         @endif
 
-        <p><a href="{{ action('IndexController@recent') }}" class="btn btn-sm btn-outline-info">Return to recent</a></p>
+        <p><a href="{{ action('IndexController@recent', ['resource_id' => $resource['id']]) }}" class="btn btn-sm btn-outline-info">Return to recent</a></p>
 
         <dl class="row">
             <dt class="col-4">Description:</dt>
