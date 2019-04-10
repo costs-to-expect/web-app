@@ -19,8 +19,7 @@ class AuthenticationController extends BaseController
             'sign-in',
             [
                 'display_navigation' => $this->display_navigation,
-                'display_add_expense' => $this->display_add_expense,
-                'resource_name' => Config::get('web.config.api_resource_name'),
+                'display_add_expense' => $this->display_add_expense
             ]
         );
     }

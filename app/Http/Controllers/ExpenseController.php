@@ -32,7 +32,6 @@ class ExpenseController extends BaseController
                 'display_navigation' => $this->display_navigation,
                 'display_add_expense' => false,
                 'nav_active' => $this->nav_active,
-                'resource_name' => Config::get('web.config.api_resource_name'),
                 'category_id_essentials' => Config::get('web.config.api_category_id_essentials'),
                 'category_id_non_essentials' => Config::get('web.config.api_category_id_non_essentials'),
                 'category_id_hobbies_and_interests' => Config::get('web.config.api_category_id_hobbies_and_interests'),
@@ -270,7 +269,6 @@ class ExpenseController extends BaseController
                     'display_navigation' => $this->display_navigation,
                     'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
-                    'resource_name' => Config::get('web.config.api_resource_name'),
                     'expenses' => $expenses,
                     'filtering' => implode(', ', $filtering),
                     'limit' => $limit

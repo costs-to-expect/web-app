@@ -5,7 +5,7 @@
         <h1 class="display-4">Summaries</h1>
 
         <p class="lead">The total sum of expenses in the {{ $category['name'] }}
-            category for {{ $resource_name }}.</p>
+            category for the selected child.</p>
 
         <dl class="row">
             <dt class="col-3">{{ $category['name'] }}</dt>

@@ -33,7 +33,6 @@ class IndexController extends BaseController
                     'display_navigation' => $this->display_navigation,
                     'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
-                    'resource_name' => Config::get('web.config.api_resource_name'),
                     'expenses' => $expenses,
                     'status' => $request->session()->get('status'),
                     'status_line' => $request->session()->get('status-line')

@@ -33,7 +33,6 @@ class SummaryController extends BaseController
                     'display_navigation' => $this->display_navigation,
                     'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
-                    'resource_name' => Config::get('web.config.api_resource_name'),
                     'months' => $months,
                     'year' => $year_identifier
                 ]
@@ -68,7 +67,6 @@ class SummaryController extends BaseController
                     'display_navigation' => $this->display_navigation,
                     'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
-                    'resource_name' => Config::get('web.config.api_resource_name'),
                     'categories' => $categories,
                     'years' => $years
                 ]
@@ -105,7 +103,6 @@ class SummaryController extends BaseController
                     'display_navigation' => $this->display_navigation,
                     'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
-                    'resource_name' => Config::get('web.config.api_resource_name'),
                     'category' => $category,
                     'sub_categories' => $sub_categories
                 ]
@@ -132,7 +129,6 @@ class SummaryController extends BaseController
                     'display_navigation' => $this->display_navigation,
                     'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
-                    'resource_name' => Config::get('web.config.api_resource_name'),
                     'tco' => $tco
                 ]
             );

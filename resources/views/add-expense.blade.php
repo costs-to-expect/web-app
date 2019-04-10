@@ -4,8 +4,8 @@
     <div class="col-12 col-sm-6 col-md-4 mt-2 mt-lg-2">
         <h1 class="display-4">Add expense</h1>
 
-        <p class="lead">You can add a new expense for {{ $resource_name }} using
-            the form below.</p>
+        <p class="lead">You can add a new expense for one of your children
+            using the form below.</p>
 
         <form method="post" action="{{ action('ProcessController@processAddExpense') }}">
             <div class="form-group">

@@ -6,7 +6,7 @@
 
         <h3>Categories</h3>
 
-        <p class="lead">Categories summary for {{ $resource_name }}, select a
+        <p class="lead">Categories summary for the selected child, select a
             category to see the sub category break down.</p>
 
         <table class="table table-sm table-hover">
@@ -31,7 +31,7 @@
 
         <h3>Years</h3>
 
-        <p class="lead">Years summary for {{ $resource_name }}, select a
+        <p class="lead">Years summary for the selected child, select a
             year to see the monthly break down.</p>
 
         <table class="table table-sm table-hover">

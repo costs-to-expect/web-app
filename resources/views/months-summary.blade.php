@@ -5,7 +5,7 @@
         <h1 class="display-4">Summaries</h1>
 
         <p class="lead">The total sum of expenses in {{ $year }}
-            for {{ $resource_name }}.</p>
+            for the selected child.</p>
 
         <p><a href="{{ action('SummaryController@summaries') }}" class="btn btn-sm btn-outline-info">Return to summaries</a></p>
 

@@ -4,7 +4,7 @@
     <div class="col-12 col-sm-6 col-md-4 mt-2 mt-lg-2">
         <h1 class="display-4">Sign in</h1>
 
-        <p class="lead">Sign in below to start adding expenses for {{ $resource_name }}.</p>
+        <p class="lead">Sign in below to start adding expenses for your children.</p>
 
         <form method="post" action="{{ action('AuthenticationController@processSignIn') }}">
             <div class="form-group">
