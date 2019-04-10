@@ -2,6 +2,10 @@
 
 Full changelog for the Costs to Expect web app.
 
+## 2019-04-10 - v1.03.2
+
+* Switched to new API routes.
+
 ## 2018-11-20 - v1.03.1
 
 * Removed API category ids from config file, defined in env file.
