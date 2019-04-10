@@ -19,7 +19,8 @@ class ProcessController extends BaseController
             ->protected()
             ->redirectOnFailure('IndexController@recent')
             ->post(
-                Config::get('web.config.api_uri_items'),
+                Config::get('web.config.api_uri_resources') .
+                    $request->input('resource_id') . '/items',
                 [
                     'description' => $request->input('description'),
                     'effective_date' => $request->input('effective_date'),
@@ -34,7 +35,8 @@ class ProcessController extends BaseController
                 ->protected()
                 ->redirectOnFailure('IndexController@recent')
                 ->post(
-                    Config::get('web.config.api_uri_items') . '/' . $item['id'] . '/category',
+                    Config::get('web.config.api_uri_resources') .
+                    $request->input('resource_id') . '/items/' . $item['id'] . '/category',
                     [
                         'category_id' => $request->input('category_id')
                     ],
@@ -47,8 +49,9 @@ class ProcessController extends BaseController
                 ->protected()
                 ->redirectOnFailure('IndexController@recent')
                 ->post(
-                    Config::get('web.config.api_uri_items') . '/' .
-                    $item['id'] . '/category/' . $item_category['id'] . '/subcategory',
+                    Config::get('web.config.api_uri_resources') .
+                    $request->input('resource_id') . '/items/' . $item['id'] .
+                    '/category/' . $item_category['id'] . '/subcategory',
                     [
                         'sub_category_id' => $request->input('sub_category_id')
                     ],

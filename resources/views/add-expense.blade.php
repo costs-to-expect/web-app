@@ -9,6 +9,14 @@
 
         <form method="post" action="{{ action('ProcessController@processAddExpense') }}">
             <div class="form-group">
+                <label for="resource_id">Child:</label>
+                <select id="resource_id" name="resource_id" class="form-control form-control-sm" required>
+                    @foreach ($children as $child)
+                        <option value="{{ $child['id'] }}">{{ $child['name'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="item_description">Description:</label>
                 <input type="text" id="item_description" name="description" class="form-control form-control-sm" placeholder="Expense description" required autofocus />
             </div>

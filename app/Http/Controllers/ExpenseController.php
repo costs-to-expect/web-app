@@ -17,6 +17,11 @@ class ExpenseController extends BaseController
     {
         $this->nav_active = 'add-expense';
 
+        $children = Api::getInstance()
+            ->public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(Config::get('web.config.api_uri_resources'));
+
         $sub_categories = Api::getInstance()
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
@@ -35,7 +40,8 @@ class ExpenseController extends BaseController
                 'category_id_essentials' => Config::get('web.config.api_category_id_essentials'),
                 'category_id_non_essentials' => Config::get('web.config.api_category_id_non_essentials'),
                 'category_id_hobbies_and_interests' => Config::get('web.config.api_category_id_hobbies_and_interests'),
-                'sub_categories' => $sub_categories
+                'sub_categories' => $sub_categories,
+                'children' => $children
             ]
         );
     }
