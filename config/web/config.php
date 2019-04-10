@@ -20,15 +20,15 @@ return [
     'api_uri_items' => 'resource-types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
         env($key_api_resource_id, null) . '/items',
-    'api_uri_categories_summary' => 'resource-types/' .
+    'api_uri_categories_summary' => 'summary/resource-types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
-        env($key_api_resource_id, null) . '/summary/categories',
+        env($key_api_resource_id, null) . '/items',
     'api_uri_categories_tco' => 'summary/resource-types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
         env($key_api_resource_id, null) . '/items',
-    'api_uri_years_summary' => 'resource-types/' .
+    'api_uri_years_summary' => 'summary/resource-types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
-        env($key_api_resource_id, null) . '/summary/years',
+        env($key_api_resource_id, null) . '/items',
 
     'api_resource_name' => env($key_api_resource_name, '[RESOURCE_NAME]'),
 

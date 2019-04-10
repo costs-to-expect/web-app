@@ -23,7 +23,7 @@ class SummaryController extends BaseController
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
                 Config::get('web.config.api_uri_years_summary') .
-                '/' . $year_identifier . '/months'
+                '?year=' . $year_identifier . '&months=true'
             );
 
         if ($months !== null) {
@@ -51,14 +51,14 @@ class SummaryController extends BaseController
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
-                Config::get('web.config.api_uri_categories_summary')
+                Config::get('web.config.api_uri_categories_summary') . '?categories=true'
             );
 
         $years = Api::getInstance()
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
-                Config::get('web.config.api_uri_years_summary')
+                Config::get('web.config.api_uri_years_summary') . '?years=true'
             );
 
         if ($categories !== null && $years !== null) {
@@ -95,7 +95,7 @@ class SummaryController extends BaseController
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
                 Config::get('web.config.api_uri_categories_summary') .
-                '/' . $category_identifier . '/subcategories'
+                '?category=' . $category_identifier . '&subcategories=true'
             );
 
         if ($category === null || $sub_categories !== null) {
