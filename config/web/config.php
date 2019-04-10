@@ -14,21 +14,21 @@ return [
     'api_uri_sign_in' => 'auth/login',
     'api_uri_category' => 'categories',
     'api_uri_categories' => 'categories',
-    'api_uri_resource' => 'resource_types/' .
+    'api_uri_resource' => 'resource-types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
         env($key_api_resource_id, null),
-    'api_uri_items' => 'resource_types/' .
+    'api_uri_items' => 'resource-types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
         env($key_api_resource_id, null) . '/items',
-    'api_uri_categories_summary' => 'resource_types/' .
+    'api_uri_categories_summary' => 'summary/resource-types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
-        env($key_api_resource_id, null) . '/summary/categories',
-    'api_uri_categories_tco' => 'resource_types/' .
+        env($key_api_resource_id, null) . '/items',
+    'api_uri_categories_tco' => 'summary/resource-types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
-        env($key_api_resource_id, null) . '/summary/tco',
-    'api_uri_years_summary' => 'resource_types/' .
+        env($key_api_resource_id, null) . '/items',
+    'api_uri_years_summary' => 'summary/resource-types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
-        env($key_api_resource_id, null) . '/summary/years',
+        env($key_api_resource_id, null) . '/items',
 
     'api_resource_name' => env($key_api_resource_name, '[RESOURCE_NAME]'),
 
@@ -39,6 +39,6 @@ return [
     'api_category_id_non_essentials' => env($key_api_category_non_essentials, null),
     'api_category_id_hobbies_and_interests' => env($key_api_category_hobbies, null),
 
-    'version' => 'v1.03.1',
-    'release_date' => '20th November 2018'
+    'version' => 'v1.03.2',
+    'release_date' => '10th April 2019'
 ];

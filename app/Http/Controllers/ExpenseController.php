@@ -23,7 +23,7 @@ class ExpenseController extends BaseController
             ->get(
                 Config::get('web.config.api_uri_categories') .
                 '/' . Config::get('web.config.api_category_id_essentials') .
-                '/sub_categories'
+                '/subcategories'
             );
 
         return view(
@@ -76,7 +76,7 @@ class ExpenseController extends BaseController
                 ->get(
                     Config::get('web.config.api_uri_items') . '/' .
                     $expense_identifier . '/category/' . $category['id'] .
-                    '/sub_category'
+                    '/subcategory'
                 );
 
             if ($sub_category === null) {
@@ -146,7 +146,7 @@ class ExpenseController extends BaseController
                 ->get(
                     Config::get('web.config.api_uri_items') . '/' .
                     $expense_identifier . '/category/' . $category['id'] .
-                    '/sub_category'
+                    '/subcategory'
                 );
 
             if ($sub_category !== null) {
@@ -223,7 +223,7 @@ class ExpenseController extends BaseController
                             ->get(
                                 Config::get('web.config.api_uri_category') .
                                 '/' . $request_parameters['category'] .
-                                '/sub_categories/' . $value
+                                '/subcategories/' . $value
                             );
 
                         if ($sub_category !== null) {
