@@ -4,7 +4,7 @@
     <div class="col-12 col-sm-12 col-md-8 mt-2 mt-lg-2">
         <h1 class="display-4">Recent</h1>
 
-        <p class="lead">The last 10 expenses that have been entered for the selected child.</p>
+        <p class="lead">The last 10 expenses that have been entered for <strong>{{ $resource['name'] }}</strong>.</p>
 
         @if ($status !== null)
             @if ($status === 'expense-added')

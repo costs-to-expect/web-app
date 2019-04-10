@@ -16,7 +16,7 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="{{ action('IndexController@recent') }}">Costs-to-Expect.com</a>
+            <a class="navbar-brand" href="{{ action('IndexController@recent', ['resource_id' => 'Eq9g6BgJL0']) }}">Costs-to-Expect.com</a>
             @if ($display_navigation === true)
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -27,7 +27,7 @@
                         <a class="nav-link" href="{{ action('ExpenseController@addExpense') }}">Add expense</a>
                     </li>
                     <li class="nav-item @if ($nav_active === 'recent') active @endif">
-                        <a class="nav-link" href="{{ action('IndexController@recent') }}">Recent expenses</a>
+                        <a class="nav-link" href="{{ action('IndexController@recent', ['resource_id' => 'Eq9g6BgJL0']) }}">Recent expenses</a>
                     </li>
                     <li class="nav-item @if ($nav_active === 'tco-summary') active @endif">
                         <a class="nav-link" href="{{ action('SummaryController@categoriesTco') }}">Total expenses</a>

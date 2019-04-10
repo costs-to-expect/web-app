@@ -12,7 +12,7 @@ Route::group(
         ]
     ],
     function () {
-        Route::get('/recent', 'IndexController@recent');
+        Route::get('/recent/{resource_id}', 'IndexController@recent');
         Route::get('/summaries', 'SummaryController@summaries');
         Route::get('/sub-categories-summary/{category_identifier}', 'SummaryController@subCategoriesSummary');
         Route::get('/tco-summary', 'SummaryController@categoriesTco');
