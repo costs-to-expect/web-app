@@ -21,6 +21,8 @@ class IndexController extends BaseController
 
     public function recent(Request $request, string $resource_id)
     {
+        request()->session()->put('selected_resource_id', $resource_id);
+
         $expenses = Api::getInstance()
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')

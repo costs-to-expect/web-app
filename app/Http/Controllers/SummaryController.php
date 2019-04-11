@@ -110,16 +110,23 @@ class SummaryController extends BaseController
         }
     }
 
-    public function categoriesTco(Request $request)
+    public function categoriesTco(Request $request, string $resource_id)
     {
         $tco = null;
         $this->nav_active = 'tco-summary';
+
+        $resource = Api::getInstance()
+            ->public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(Config::get('web.config.api_uri_resources') .
+                $resource_id);
 
         $tco = Api::getInstance()
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
-                Config::get('web.config.api_uri_categories_tco')
+                Config::get('web.config.api_uri_resource_summary') .
+                $resource_id . '/items'
             );
 
         if ($tco !== null) {
@@ -129,7 +136,8 @@ class SummaryController extends BaseController
                     'display_navigation' => $this->display_navigation,
                     'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
-                    'tco' => $tco
+                    'tco' => $tco,
+                    'resource' => $resource
                 ]
             );
         }

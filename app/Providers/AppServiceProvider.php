@@ -30,6 +30,10 @@ class AppServiceProvider extends ServiceProvider
                     ->redirectOnFailure('ErrorController@requestStatus')
                     ->get(Config::get('web.config.api_uri_resources'))
             );
+            $view->with(
+                'selected_resource_id',
+                request()->session()->get('selected_resource_id')
+            );
         });
     }
 

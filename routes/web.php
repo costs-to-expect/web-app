@@ -15,7 +15,7 @@ Route::group(
         Route::get('/recent/{resource_id}', 'IndexController@recent');
         Route::get('/summaries', 'SummaryController@summaries');
         Route::get('/sub-categories-summary/{category_identifier}', 'SummaryController@subCategoriesSummary');
-        Route::get('/tco-summary', 'SummaryController@categoriesTco');
+        Route::get('/tco-summary/{resource_id}', 'SummaryController@categoriesTco');
         Route::get('/months-summary/{year_identifier}', 'SummaryController@monthsSummary');
         Route::get('/add-expense', 'ExpenseController@addExpense');
         Route::get('/sub-categories/{category_identifier}', 'IndexController@subCategories');

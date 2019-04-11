@@ -22,6 +22,8 @@ return [
     'api_uri_items' => 'resource-types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
         env($key_api_resource_id, null) . '/items',
+    'api_uri_resource_summary' => 'summary/resource-types/' .
+        env($key_api_resource_type_id, null) . '/resources/',
     'api_uri_categories_summary' => 'summary/resource-types/' .
         env($key_api_resource_type_id, null) . '/resources/' .
         env($key_api_resource_id, null) . '/items',
