@@ -185,7 +185,7 @@ class ExpenseController extends BaseController
         }
     }
 
-    public function expenses(Request $request)
+    public function expenses(Request $request, string $resource_id)
     {
         $expenses = null;
 

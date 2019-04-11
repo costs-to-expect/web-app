@@ -6,7 +6,7 @@
 
         <h3>Categories</h3>
 
-        <p class="lead">Categories summary for the selected child, select a
+        <p class="lead">Categories summary for <strong>{{ $resource['name'] }}</strong>, select a
             category to see the sub category break down.</p>
 
         <table class="table table-sm table-hover">
@@ -21,9 +21,9 @@
             <tbody>
                 @foreach ($categories as $category)
                 <tr>
-                    <td><strong><a href="{{ action('SummaryController@subCategoriesSummary', ['category_identifier' => $category['id']]) }}" class="text-info">{{ $category['name'] }}</a></strong></td>
+                    <td><strong><a href="{{ action('SummaryController@subCategoriesSummary', ['resource_id' => $resource['id'], 'category_identifier' => $category['id']]) }}" class="text-info">{{ $category['name'] }}</a></strong></td>
                     <td>&pound;{{ $category['total'] }}</td>
-                    <td><a href="{{ action('ExpenseController@expenses', ['category' => $category['id']]) }}" class="text-info"><i class="fas fa-list"></i></a></td>
+                    <td><a href="{{ action('ExpenseController@expenses', ['resource_id' => $resource['id'], 'category' => $category['id']]) }}" class="text-info"><i class="fas fa-list"></i></a></td>
                 </tr>
                 @endforeach
             </tbody>
@@ -31,7 +31,7 @@
 
         <h3>Years</h3>
 
-        <p class="lead">Years summary for the selected child, select a
+        <p class="lead">Years summary for <strong>{{ $resource['name'] }}</strong>, select a
             year to see the monthly break down.</p>
 
         <table class="table table-sm table-hover">
@@ -46,9 +46,9 @@
             <tbody>
             @foreach ($years as $year)
                 <tr>
-                    <td><strong><a href="{{ action('SummaryController@monthsSummary', ['year_identifier' => $year['id']]) }}" class="text-info">{{ $year['year'] }}</a></strong></td>
+                    <td><strong><a href="{{ action('SummaryController@monthsSummary', ['resource_id' => $resource['id'], 'year_identifier' => $year['id']]) }}" class="text-info">{{ $year['year'] }}</a></strong></td>
                     <td>&pound;{{ $year['total'] }}</td>
-                    <td><a href="{{ action('ExpenseController@expenses', ['year' => $year['id']]) }}" class="text-info"><i class="fas fa-list"></i></a></td>
+                    <td><a href="{{ action('ExpenseController@expenses', ['resource_id' => $resource['id'], 'year' => $year['id']]) }}" class="text-info"><i class="fas fa-list"></i></a></td>
                 </tr>
             @endforeach
             </tbody>

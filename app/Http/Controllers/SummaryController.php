@@ -13,7 +13,7 @@ class SummaryController extends BaseController
     protected $display_add_expense = true;
     protected $nav_active = 'recent';
 
-    public function monthsSummary(Request $request, string $year_identifier)
+    public function monthsSummary(Request $request, string $resource_id, string $year_identifier)
     {
         $months = null;
         $this->nav_active = 'summaries';
@@ -40,24 +40,32 @@ class SummaryController extends BaseController
         }
     }
 
-    public function summaries(Request $request)
+    public function summaries(Request $request, string $resource_id)
     {
         $categories = null;
         $years = null;
         $this->nav_active = 'summaries';
 
+        $resource = Api::getInstance()
+            ->public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(Config::get('web.config.api_uri_resources') .
+                $resource_id);
+
         $categories = Api::getInstance()
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
-                Config::get('web.config.api_uri_categories_summary') . '?categories=true'
+                Config::get('web.config.api_uri_resource_summary') .
+                $resource_id . '/items?categories=true'
             );
 
         $years = Api::getInstance()
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
-                Config::get('web.config.api_uri_years_summary') . '?years=true'
+                Config::get('web.config.api_uri_resource_summary') .
+                $resource_id . '/items?years=true'
             );
 
         if ($categories !== null && $years !== null) {
@@ -68,13 +76,14 @@ class SummaryController extends BaseController
                     'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'categories' => $categories,
-                    'years' => $years
+                    'years' => $years,
+                    'resource' => $resource
                 ]
             );
         }
     }
 
-    public function subCategoriesSummary(Request $request, string $category_identifier)
+    public function subCategoriesSummary(Request $request, string $resource_id, string $category_identifier)
     {
         $category = null;
         $sub_categories = null;

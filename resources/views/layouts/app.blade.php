@@ -40,7 +40,7 @@
                         <a class="nav-link" href="{{ action('SummaryController@categoriesTco', ['resource_id' => $selected_resource_id]) }}">Total expenses</a>
                     </li>
                     <li class="nav-item @if ($nav_active === 'summaries') active @endif">
-                        <a class="nav-link" href="{{ action('SummaryController@summaries') }}">Summaries</a>
+                        <a class="nav-link" href="{{ action('SummaryController@summaries', ['resource_id' => $selected_resource_id]) }}">Summaries</a>
                     </li>
                     <li class="nav-item @if ($nav_active === 'version-history') active @endif">
                         <a class="nav-link" href="{{ action('IndexController@versionHistory') }}">Version history</a>
