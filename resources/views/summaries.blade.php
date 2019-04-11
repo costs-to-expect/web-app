@@ -15,7 +15,7 @@
                 <tr class="bg-dark text-white">
                     <th scope="col">Category</th>
                     <th scope="col">Total</th>
-                    <th scope="col">&nbsp;</th>
+                    <!--<th scope="col">&nbsp;</th>-->
                 </tr>
             </thead>
             <tbody>
@@ -23,7 +23,7 @@
                 <tr>
                     <td><strong><a href="{{ action('SummaryController@subCategoriesSummary', ['resource_id' => $resource['id'], 'category_identifier' => $category['id']]) }}" class="text-info">{{ $category['name'] }}</a></strong></td>
                     <td>&pound;{{ $category['total'] }}</td>
-                    <td><a href="{{ action('ExpenseController@expenses', ['resource_id' => $resource['id'], 'category' => $category['id']]) }}" class="text-info"><i class="fas fa-list"></i></a></td>
+                    <!--<td><a href="{{ action('ExpenseController@expenses', ['resource_id' => $resource['id'], 'category' => $category['id']]) }}" class="text-info"><i class="fas fa-list"></i></a></td>-->
                 </tr>
                 @endforeach
             </tbody>
@@ -40,7 +40,7 @@
             <tr class="bg-dark text-white">
                 <th scope="col">Year</th>
                 <th scope="col">Total</th>
-                <th scope="col">&nbsp;</th>
+                <!--<th scope="col">&nbsp;</th>-->
             </tr>
             </thead>
             <tbody>
@@ -48,7 +48,7 @@
                 <tr>
                     <td><strong><a href="{{ action('SummaryController@monthsSummary', ['resource_id' => $resource['id'], 'year_identifier' => $year['id']]) }}" class="text-info">{{ $year['year'] }}</a></strong></td>
                     <td>&pound;{{ $year['total'] }}</td>
-                    <td><a href="{{ action('ExpenseController@expenses', ['resource_id' => $resource['id'], 'year' => $year['id']]) }}" class="text-info"><i class="fas fa-list"></i></a></td>
+                    <!--<td><a href="{{ action('ExpenseController@expenses', ['resource_id' => $resource['id'], 'year' => $year['id']]) }}" class="text-info"><i class="fas fa-list"></i></a></td>-->
                 </tr>
             @endforeach
             </tbody>
