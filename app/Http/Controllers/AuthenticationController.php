@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Request\Api;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -19,8 +20,7 @@ class AuthenticationController extends BaseController
             'sign-in',
             [
                 'display_navigation' => $this->display_navigation,
-                'display_add_expense' => $this->display_add_expense,
-                'resource_name' => Config::get('web.config.api_resource_name'),
+                'display_add_expense' => $this->display_add_expense
             ]
         );
     }
@@ -54,8 +54,15 @@ class AuthenticationController extends BaseController
             );
 
             if ($response->getStatusCode() === 200) {
+                $children = Api::getInstance()
+                    ->public()
+                    ->redirectOnFailure('ErrorController@requestStatus')
+                    ->get(Config::get('web.config.api_uri_resources'));
+
                 $request->session()->put('bearer', json_decode($response->getBody(), true)['token']);
-                return redirect()->action('IndexController@recent');
+                $request->session()->put('selected_resource_id', $children[0]['id']);
+
+                return redirect()->action('IndexController@recent', ['resource_id' => $children[0]['id']]);
             } else {
                 $request->session()->flush();
                 return redirect()->action('AuthenticationController@signIn');

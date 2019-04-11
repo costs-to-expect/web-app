@@ -13,17 +13,23 @@ class SummaryController extends BaseController
     protected $display_add_expense = true;
     protected $nav_active = 'recent';
 
-    public function monthsSummary(Request $request, string $year_identifier)
+    public function monthsSummary(Request $request, string $resource_id, string $year_identifier)
     {
         $months = null;
         $this->nav_active = 'summaries';
+
+        $resource = Api::getInstance()
+            ->public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(Config::get('web.config.api_uri_resources') .
+                $resource_id);
 
         $months = Api::getInstance()
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
-                Config::get('web.config.api_uri_years_summary') .
-                '?year=' . $year_identifier . '&months=true'
+                Config::get('web.config.api_uri_resource_summary') .
+                $resource_id . '/items?year=' . $year_identifier . '&months=true'
             );
 
         if ($months !== null) {
@@ -33,32 +39,40 @@ class SummaryController extends BaseController
                     'display_navigation' => $this->display_navigation,
                     'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
-                    'resource_name' => Config::get('web.config.api_resource_name'),
                     'months' => $months,
-                    'year' => $year_identifier
+                    'year' => $year_identifier,
+                    'resource' => $resource
                 ]
             );
         }
     }
 
-    public function summaries(Request $request)
+    public function summaries(Request $request, string $resource_id)
     {
         $categories = null;
         $years = null;
         $this->nav_active = 'summaries';
 
+        $resource = Api::getInstance()
+            ->public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(Config::get('web.config.api_uri_resources') .
+                $resource_id);
+
         $categories = Api::getInstance()
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
-                Config::get('web.config.api_uri_categories_summary') . '?categories=true'
+                Config::get('web.config.api_uri_resource_summary') .
+                $resource_id . '/items?categories=true'
             );
 
         $years = Api::getInstance()
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
-                Config::get('web.config.api_uri_years_summary') . '?years=true'
+                Config::get('web.config.api_uri_resource_summary') .
+                $resource_id . '/items?years=true'
             );
 
         if ($categories !== null && $years !== null) {
@@ -68,19 +82,25 @@ class SummaryController extends BaseController
                     'display_navigation' => $this->display_navigation,
                     'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
-                    'resource_name' => Config::get('web.config.api_resource_name'),
                     'categories' => $categories,
-                    'years' => $years
+                    'years' => $years,
+                    'resource' => $resource
                 ]
             );
         }
     }
 
-    public function subCategoriesSummary(Request $request, string $category_identifier)
+    public function subCategoriesSummary(Request $request, string $resource_id, string $category_identifier)
     {
         $category = null;
         $sub_categories = null;
         $this->nav_active = 'summaries';
+
+        $resource = Api::getInstance()
+            ->public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(Config::get('web.config.api_uri_resources') .
+                $resource_id);
 
         $category = Api::getInstance()
             ->public()
@@ -94,8 +114,9 @@ class SummaryController extends BaseController
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
-                Config::get('web.config.api_uri_categories_summary') .
-                '?category=' . $category_identifier . '&subcategories=true'
+                Config::get('web.config.api_uri_resource_summary') .
+                $resource_id . '/items?category=' . $category_identifier .
+                '&subcategories=true'
             );
 
         if ($category === null || $sub_categories !== null) {
@@ -105,24 +126,31 @@ class SummaryController extends BaseController
                     'display_navigation' => $this->display_navigation,
                     'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
-                    'resource_name' => Config::get('web.config.api_resource_name'),
                     'category' => $category,
-                    'sub_categories' => $sub_categories
+                    'sub_categories' => $sub_categories,
+                    'resource' => $resource
                 ]
             );
         }
     }
 
-    public function categoriesTco(Request $request)
+    public function categoriesTco(Request $request, string $resource_id)
     {
         $tco = null;
         $this->nav_active = 'tco-summary';
+
+        $resource = Api::getInstance()
+            ->public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(Config::get('web.config.api_uri_resources') .
+                $resource_id);
 
         $tco = Api::getInstance()
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
-                Config::get('web.config.api_uri_categories_tco')
+                Config::get('web.config.api_uri_resource_summary') .
+                $resource_id . '/items'
             );
 
         if ($tco !== null) {
@@ -132,8 +160,8 @@ class SummaryController extends BaseController
                     'display_navigation' => $this->display_navigation,
                     'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
-                    'resource_name' => Config::get('web.config.api_resource_name'),
-                    'tco' => $tco
+                    'tco' => $tco,
+                    'resource' => $resource
                 ]
             );
         }

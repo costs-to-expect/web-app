@@ -16,24 +16,31 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="{{ action('IndexController@recent') }}">Costs-to-Expect.com</a>
+            <a class="navbar-brand" href="{{ action('IndexController@recent', ['resource_id' => $selected_resource_id]) }}">Costs-to-Expect.com</a>
             @if ($display_navigation === true)
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav {{ $selected_resource_id }}">
+                    @foreach ($children as $child)
+                        @if ($selected_resource_id !== $child['id'])
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ action('IndexController@recent', ['resource_id'=>$child['id']]) }}">Switch to {{ $child['name'] }}</a>
+                        </li>
+                        @endif
+                    @endforeach
                     <li class="nav-item @if ($nav_active === 'add-expense') active @endif">
                         <a class="nav-link" href="{{ action('ExpenseController@addExpense') }}">Add expense</a>
                     </li>
                     <li class="nav-item @if ($nav_active === 'recent') active @endif">
-                        <a class="nav-link" href="{{ action('IndexController@recent') }}">Recent expenses</a>
+                        <a class="nav-link" href="{{ action('IndexController@recent', ['resource_id' => $selected_resource_id]) }}">Recent expenses</a>
                     </li>
                     <li class="nav-item @if ($nav_active === 'tco-summary') active @endif">
-                        <a class="nav-link" href="{{ action('SummaryController@categoriesTco') }}">Total expenses</a>
+                        <a class="nav-link" href="{{ action('SummaryController@categoriesTco', ['resource_id' => $selected_resource_id]) }}">Total expenses</a>
                     </li>
                     <li class="nav-item @if ($nav_active === 'summaries') active @endif">
-                        <a class="nav-link" href="{{ action('SummaryController@summaries') }}">Summaries</a>
+                        <a class="nav-link" href="{{ action('SummaryController@summaries', ['resource_id' => $selected_resource_id]) }}">Summaries</a>
                     </li>
                     <li class="nav-item @if ($nav_active === 'version-history') active @endif">
                         <a class="nav-link" href="{{ action('IndexController@versionHistory') }}">Version history</a>

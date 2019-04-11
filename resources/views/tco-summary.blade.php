@@ -5,6 +5,7 @@
         <h1 class="display-4">Total</h1>
 
         <p class="lead">To date, the total sum of expenses for
-            {{ $resource_name }} is <strong>&pound;{{ $tco['total'] }}</strong>.</p>
+            <strong>{{ $resource['name'] }}</strong> are <strong>&pound;{{ $tco['total'] }}</strong>,
+            Oh my god!</p>
     </div>
 @endsection

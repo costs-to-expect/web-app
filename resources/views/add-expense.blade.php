@@ -4,10 +4,18 @@
     <div class="col-12 col-sm-6 col-md-4 mt-2 mt-lg-2">
         <h1 class="display-4">Add expense</h1>
 
-        <p class="lead">You can add a new expense for {{ $resource_name }} using
-            the form below.</p>
+        <p class="lead">You can add a new expense for one of your children
+            using the form below.</p>
 
         <form method="post" action="{{ action('ProcessController@processAddExpense') }}">
+            <div class="form-group">
+                <label for="resource_id">Child:</label>
+                <select id="resource_id" name="resource_id" class="form-control form-control-sm" required>
+                    @foreach ($children as $child)
+                        <option value="{{ $child['id'] }}">{{ $child['name'] }}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="form-group">
                 <label for="item_description">Description:</label>
                 <input type="text" id="item_description" name="description" class="form-control form-control-sm" placeholder="Expense description" required autofocus />

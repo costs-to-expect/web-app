@@ -6,16 +6,16 @@
 
         @if ($limit !== 50)
             <p class="lead">All {{ $limit }} expenses that have been entered
-                for {{ $resource_name }} in {{ $filtering }}</p>
+                for the selected child in {{ $filtering }}</p>
         @else
             <p class="lead">The last {{ $limit }} expenses that have been entered
-                for {{ $resource_name }}, in {{ $filtering }}</p>
+                for the selected child, in {{ $filtering }}</p>
         @endif
 
         <p><a href="{{ action('SummaryController@summaries') }}" class="btn btn-sm btn-outline-info">Return to summaries</a></p>
 
         <table class="table table-sm">
-            <caption>Filtered recent expenses added for {{ $resource_name }}</caption>
+            <caption>Filtered recent expenses added for the listed child</caption>
             <thead>
                 <tr class="bg-dark text-white d-none d-sm-table-row">
                     <th scope="col">Description</th>

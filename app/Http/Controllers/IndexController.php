@@ -16,15 +16,24 @@ class IndexController extends BaseController
 
     public function index(Request $request)
     {
-        return redirect()->action('IndexController@recent');
+        return redirect()->action('IndexController@recent', [ 'resource_id' => 'Eq9g6BgJL0']);
     }
 
-    public function recent(Request $request)
+    public function recent(Request $request, string $resource_id)
     {
+        request()->session()->put('selected_resource_id', $resource_id);
+
         $expenses = Api::getInstance()
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
-            ->get(Config::get('web.config.api_uri_items') . '?limit=10');
+            ->get(Config::get('web.config.api_uri_resources') .
+                $resource_id . '/items?limit=10');
+
+        $resource = Api::getInstance()
+            ->public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(Config::get('web.config.api_uri_resources') .
+                $resource_id);
 
         if ($expenses !== null) {
             return view(
@@ -33,10 +42,10 @@ class IndexController extends BaseController
                     'display_navigation' => $this->display_navigation,
                     'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
-                    'resource_name' => Config::get('web.config.api_resource_name'),
                     'expenses' => $expenses,
                     'status' => $request->session()->get('status'),
-                    'status_line' => $request->session()->get('status-line')
+                    'status_line' => $request->session()->get('status-line'),
+                    'resource' => $resource
                 ]
             );
         }

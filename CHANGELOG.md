@@ -2,6 +2,12 @@
 
 Full changelog for the Costs to Expect web app.
 
+## 2019-04-11 - v1.04.0 [Final release, now deprecated]
+
+* Added ability to switch between children.
+* Removed summary lists, app now deprecated.
+* Updated sign-in behaviour, automatically chooses first child in list.
+
 ## 2019-04-10 - v1.03.2
 
 * Switched to new API routes.

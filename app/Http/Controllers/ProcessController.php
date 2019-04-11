@@ -19,7 +19,8 @@ class ProcessController extends BaseController
             ->protected()
             ->redirectOnFailure('IndexController@recent')
             ->post(
-                Config::get('web.config.api_uri_items'),
+                Config::get('web.config.api_uri_resources') .
+                    $request->input('resource_id') . '/items',
                 [
                     'description' => $request->input('description'),
                     'effective_date' => $request->input('effective_date'),
@@ -34,7 +35,8 @@ class ProcessController extends BaseController
                 ->protected()
                 ->redirectOnFailure('IndexController@recent')
                 ->post(
-                    Config::get('web.config.api_uri_items') . '/' . $item['id'] . '/category',
+                    Config::get('web.config.api_uri_resources') .
+                    $request->input('resource_id') . '/items/' . $item['id'] . '/category',
                     [
                         'category_id' => $request->input('category_id')
                     ],
@@ -47,8 +49,9 @@ class ProcessController extends BaseController
                 ->protected()
                 ->redirectOnFailure('IndexController@recent')
                 ->post(
-                    Config::get('web.config.api_uri_items') . '/' .
-                    $item['id'] . '/category/' . $item_category['id'] . '/subcategory',
+                    Config::get('web.config.api_uri_resources') .
+                    $request->input('resource_id') . '/items/' . $item['id'] .
+                    '/category/' . $item_category['id'] . '/subcategory',
                     [
                         'sub_category_id' => $request->input('sub_category_id')
                     ],
@@ -58,14 +61,14 @@ class ProcessController extends BaseController
 
         if ($item !== null && $item_category !== null && $item_sub_category !== null) {
             $request->session()->flash('status', 'expense-added');
-            return redirect()->action('IndexController@recent');
+            return redirect()->action('IndexController@recent', ['resource_id' => $request->input('resource_id')]);
         } else {
             $request->session()->flash('status', 'expense-not-added');
-            return redirect()->action('IndexController@recent');
+            return redirect()->action('IndexController@recent', ['resource_id' => $request->input('resource_id')]);
         }
     }
 
-    public function processDeleteExpense(Request $request)
+    public function processDeleteExpense(Request $request, string $resource_id)
     {
         $deleted_sub_category = false;
         $deleted_category = false;
@@ -79,9 +82,10 @@ class ProcessController extends BaseController
             $deleted_sub_category = Api::getInstance()
                 ->protected()
                 ->delete(
-                    Config::get('web.config.api_uri_items') . '/' .
-                    $expense_identifier . '/category/' . $expense_category_identifier .
-                    '/subcategory/' . $expense_sub_category_identifier
+                    Config::get('web.config.api_uri_resources') .
+                    $resource_id . '/items/' . $expense_identifier . '/category/' .
+                    $expense_category_identifier . '/subcategory/' .
+                    $expense_sub_category_identifier
                 );
         }
 
@@ -89,8 +93,9 @@ class ProcessController extends BaseController
             $deleted_category = Api::getInstance()
                 ->protected()
                 ->delete(
-                    Config::get('web.config.api_uri_items') . '/' .
-                    $expense_identifier . '/category/' . $expense_category_identifier
+                    Config::get('web.config.api_uri_resources') .
+                    $resource_id . '/items/' . $expense_identifier .
+                    '/category/' . $expense_category_identifier
                 );
         }
 
@@ -98,17 +103,17 @@ class ProcessController extends BaseController
             $deleted_expense = Api::getInstance()
                 ->protected()
                 ->delete(
-                    Config::get('web.config.api_uri_items') . '/' .
-                    $expense_identifier
+                    Config::get('web.config.api_uri_resources') .
+                    $resource_id . '/items/' . $expense_identifier
                 );
         }
 
         if ($deleted_expense === true && $deleted_category === true && $deleted_sub_category === true) {
             $request->session()->flash('status', 'expense-deleted');
-            return redirect()->action('IndexController@recent');
+            return redirect()->action('IndexController@recent', ['resource_id' => $resource_id]);
         } else {
             $request->session()->flash('status', 'expense-not-deleted');
-            return redirect()->action('ExpenseController@expense', ['expense_identifier' => $expense_identifier]);
+            return redirect()->action('ExpenseController@expense', ['resource_id' => $resource_id, 'expense_identifier' => $expense_identifier]);
         }
     }
 }
