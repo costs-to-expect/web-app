@@ -5,17 +5,17 @@
         <h1 class="display-4">Summaries</h1>
 
         <p class="lead">The total sum of expenses in {{ $year }}
-            for the selected child.</p>
+            for <strong>{{ $resource['name'] }}</strong>.</p>
 
-        <p><a href="{{ action('SummaryController@summaries') }}" class="btn btn-sm btn-outline-info">Return to summaries</a></p>
+        <p><a href="{{ action('SummaryController@summaries', ['resource_id' => $resource['id']]) }}" class="btn btn-sm btn-outline-info">Return to summaries</a></p>
 
         <table class="table table-sm">
-            <caption>Expenses summed by {{ $year }} month.</caption>
+            <caption>Expenses for {{ $year }} grouped by month.</caption>
             <thead>
                 <tr class="bg-dark text-white">
                     <th scope="col">Month</th>
                     <th scope="col">Total</th>
-                    <th scope="col">&nbsp;</th>
+                    <!--<th scope="col">&nbsp;</th>-->
                 </tr>
             </thead>
             <tbody>
@@ -23,7 +23,7 @@
                 <tr>
                     <td><strong>{{ $month['month'] }}</strong></td>
                     <td>&pound;{{ $month['total'] }}</td>
-                    <td><a href="{{ action('ExpenseController@expenses', ['year' => $year, 'month' => $month['id']]) }}" class="text-info"><i class="fas fa-list"></i></a></td>
+                    <!--<td><a href="{{ action('ExpenseController@expenses', ['year' => $year, 'month' => $month['id']]) }}" class="text-info"><i class="fas fa-list"></i></a></td>-->
                 </tr>
                 @endforeach
             </tbody>

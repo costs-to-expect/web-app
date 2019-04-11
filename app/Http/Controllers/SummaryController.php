@@ -18,12 +18,18 @@ class SummaryController extends BaseController
         $months = null;
         $this->nav_active = 'summaries';
 
+        $resource = Api::getInstance()
+            ->public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(Config::get('web.config.api_uri_resources') .
+                $resource_id);
+
         $months = Api::getInstance()
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
-                Config::get('web.config.api_uri_years_summary') .
-                '?year=' . $year_identifier . '&months=true'
+                Config::get('web.config.api_uri_resource_summary') .
+                $resource_id . '/items?year=' . $year_identifier . '&months=true'
             );
 
         if ($months !== null) {
@@ -34,7 +40,8 @@ class SummaryController extends BaseController
                     'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'months' => $months,
-                    'year' => $year_identifier
+                    'year' => $year_identifier,
+                    'resource' => $resource
                 ]
             );
         }
@@ -89,6 +96,12 @@ class SummaryController extends BaseController
         $sub_categories = null;
         $this->nav_active = 'summaries';
 
+        $resource = Api::getInstance()
+            ->public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(Config::get('web.config.api_uri_resources') .
+                $resource_id);
+
         $category = Api::getInstance()
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
@@ -101,8 +114,9 @@ class SummaryController extends BaseController
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
-                Config::get('web.config.api_uri_categories_summary') .
-                '?category=' . $category_identifier . '&subcategories=true'
+                Config::get('web.config.api_uri_resource_summary') .
+                $resource_id . '/items?category=' . $category_identifier .
+                '&subcategories=true'
             );
 
         if ($category === null || $sub_categories !== null) {
@@ -113,7 +127,8 @@ class SummaryController extends BaseController
                     'display_add_expense' => $this->display_add_expense,
                     'nav_active' => $this->nav_active,
                     'category' => $category,
-                    'sub_categories' => $sub_categories
+                    'sub_categories' => $sub_categories,
+                    'resource' => $resource
                 ]
             );
         }
