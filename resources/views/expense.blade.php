@@ -54,6 +54,6 @@
         </dl>
     </div>
     <div class="col-12 text-left">
-        <p><a href="{{ action('ExpenseController@deleteExpense', ['expense_identifier' => $expense['id']]) }}" class="btn btn-sm btn-outline-danger">Delete expense</a></p>
+        <p><a href="{{ action('ExpenseController@deleteExpense', ['resource_id' => $resource['id'], 'expense_identifier' => $expense['id']]) }}" class="btn btn-sm btn-outline-danger">Delete expense</a></p>
     </div>
 @endsection

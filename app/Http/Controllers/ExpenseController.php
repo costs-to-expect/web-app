@@ -116,7 +116,7 @@ class ExpenseController extends BaseController
         }
     }
 
-    public function deleteExpense(Request $request, string $expense_identifier)
+    public function deleteExpense(Request $request, string $resource_id, string $expense_identifier)
     {
         $expense = null;
         $category = null;
@@ -128,12 +128,18 @@ class ExpenseController extends BaseController
 
         $this->nav_active = 'recent';
 
+        $resource = Api::getInstance()
+            ->public()
+            ->redirectOnFailure('ErrorController@requestStatus')
+            ->get(Config::get('web.config.api_uri_resources') .
+                $resource_id);
+
         $expense = Api::getInstance()
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
-                Config::get('web.config.api_uri_items') . '/' .
-                $expense_identifier
+                Config::get('web.config.api_uri_resources') .
+                $resource_id . '/items/' . $expense_identifier
             );
 
         if ($expense !== null) {
@@ -144,8 +150,8 @@ class ExpenseController extends BaseController
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
-                Config::get('web.config.api_uri_items') . '/' .
-                $expense_identifier . '/category'
+                Config::get('web.config.api_uri_resources') .
+                $resource_id . '/items/' . $expense_identifier_id . '/category'
             );
 
         if ($category !== null) {
@@ -157,9 +163,9 @@ class ExpenseController extends BaseController
                 ->public()
                 ->redirectOnFailure('ErrorController@requestStatus')
                 ->get(
-                    Config::get('web.config.api_uri_items') . '/' .
-                    $expense_identifier . '/category/' . $category['id'] .
-                    '/subcategory'
+                    Config::get('web.config.api_uri_resources') .
+                    $resource_id . '/items/' . $expense_identifier .
+                    '/category/' . $category['id'] . '/subcategory'
                 );
 
             if ($sub_category !== null) {
@@ -179,7 +185,8 @@ class ExpenseController extends BaseController
                     'sub_category' => $sub_category,
                     'expense_identifier_id' => $expense_identifier_id,
                     'expense_category_identifier_id' => $expense_category_identifier_id,
-                    'expense_sub_category_identifier_id' => $expense_sub_category_identifier_id
+                    'expense_sub_category_identifier_id' => $expense_sub_category_identifier_id,
+                    'resource' => $resource
                 ]
             );
         }

@@ -21,8 +21,8 @@ Route::group(
         Route::get('/sub-categories/{category_identifier}', 'IndexController@subCategories');
         Route::get('/expense/{resource_id}/{expense_identifier}', 'ExpenseController@expense');
         Route::post('/add-expense', 'ProcessController@processAddExpense');
-        Route::get('/delete-expense/{expense_identifier}', 'ExpenseController@deleteExpense');
-        Route::post('/delete-expense', 'ProcessController@processDeleteExpense');
+        Route::get('/delete-expense/{resource_id}/{expense_identifier}', 'ExpenseController@deleteExpense');
+        Route::post('/delete-expense/{resource_id}', 'ProcessController@processDeleteExpense');
         Route::get('/version-history', 'IndexController@versionHistory');
         Route::get('/expenses/{resource_id}', 'ExpenseController@expenses');
         Route::get('/error-request-status', 'ErrorController@requestStatus');

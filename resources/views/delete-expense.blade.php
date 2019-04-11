@@ -4,9 +4,9 @@
     <div class="col-12 col-sm-12 col-md-8 mt-2 mt-lg-2">
         <h1 class="display-4">Delete</h1>
 
-        <p class="lead">Are you sure you want to delete this expense?</p>
+        <p class="lead">Are you sure you want to delete this expense for <strong>{{ $resource['name'] }}</strong>?</p>
 
-        <p><a href="{{ action('ExpenseController@expense', ['expense_identifier' => $expense['id']]) }}" class="btn btn-sm btn-outline-info">Return to expense</a></p>
+        <p><a href="{{ action('ExpenseController@expense', ['resource_id' => $resource['id'], 'expense_identifier' => $expense['id']]) }}" class="btn btn-sm btn-outline-info">Return to expense</a></p>
 
         <dl class="row">
             <dt class="col-4">Description:</dt>
@@ -36,7 +36,7 @@
         </dl>
     </div>
     <div class="col-12 text-left mt-2">
-        <form method="post" action="{{ action('ProcessController@processDeleteExpense') }}">
+        <form method="post" action="{{ action('ProcessController@processDeleteExpense', [ 'resource_id' => $resource['id']]) }}">
             <div class="form-group">
                 {{ csrf_field() }}
                 <input type="hidden" name="expense_identifier_id" value="{{ $expense_identifier_id }}" />
