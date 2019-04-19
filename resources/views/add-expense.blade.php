@@ -12,7 +12,7 @@
                 <label for="resource_id">Child:</label>
                 <select id="resource_id" name="resource_id" class="form-control form-control-sm" required>
                     @foreach ($children as $child)
-                        <option value="{{ $child['id'] }}">{{ $child['name'] }}</option>
+                        <option value="{{ $child['id'] }}" @if ($child['id'] === $resource_id) selected="selected" @endif>{{ $child['name'] }}</option>
                     @endforeach
                 </select>
             </div>

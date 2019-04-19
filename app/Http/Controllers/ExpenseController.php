@@ -41,7 +41,8 @@ class ExpenseController extends BaseController
                 'category_id_non_essentials' => Config::get('web.config.api_category_id_non_essentials'),
                 'category_id_hobbies_and_interests' => Config::get('web.config.api_category_id_hobbies_and_interests'),
                 'sub_categories' => $sub_categories,
-                'children' => $children
+                'children' => $children,
+                'resource_id' => request()->session()->get('selected_resource_id')
             ]
         );
     }
