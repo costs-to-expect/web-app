@@ -2,6 +2,11 @@
 
 Full changelog for the Costs to Expect web app.
 
+## 2019-04-19 - v1.04.1 
+
+* Child selector on add expense defaults to the `seleced` child.
+* On sign-in default to `Jack`.
+
 ## 2019-04-11 - v1.04.0 [Final release, now deprecated]
 
 * Added ability to switch between children.
