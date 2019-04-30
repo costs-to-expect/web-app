@@ -43,6 +43,6 @@ return [
     'api_category_id_non_essentials' => env($key_api_category_non_essentials, null),
     'api_category_id_hobbies_and_interests' => env($key_api_category_hobbies, null),
 
-    'version' => 'v1.04.0',
-    'release_date' => '11th April 2019'
+    'version' => 'v1.04.2',
+    'release_date' => '1st May 2019'
 ];
