@@ -62,7 +62,7 @@ class AuthenticationController extends BaseController
                 $request->session()->put('bearer', json_decode($response->getBody(), true)['token']);
                 $request->session()->put('selected_resource_id', $children[0]['id']);
 
-                return redirect()->action('IndexController@recent', ['resource_id' => $children[0]['id']]);
+                return redirect()->action('IndexController@recent', ['resource_id' => $children[1]['id']]);
             } else {
                 $request->session()->flush();
                 return redirect()->action('AuthenticationController@signIn');
