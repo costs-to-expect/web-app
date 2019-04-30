@@ -89,7 +89,7 @@ class ExpenseController extends BaseController
                 ->get(
                     Config::get('web.config.api_uri_resources') .
                     $resource_id . '/items/' . $expense_identifier .
-                    '/category/' . $category['id'] . '/subcategory'
+                    '/category/' . $category[0]['id'] . '/subcategory'
                 );
 
             if ($sub_category === null) {
@@ -98,7 +98,6 @@ class ExpenseController extends BaseController
         } else {
             $sub_category = null;
         }
-
 
         if ($expense !== null) {
             return view(

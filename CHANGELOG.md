@@ -2,6 +2,10 @@
 
 Full changelog for the Costs to Expect web app.
 
+## 2019-05-01 - v1.04.2 
+
+* Update app to work with v1.14.1 of the API.
+
 ## 2019-04-19 - v1.04.1 
 
 * Child selector on add expense defaults to the `seleced` child.
