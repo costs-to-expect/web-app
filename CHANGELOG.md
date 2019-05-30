@@ -2,6 +2,10 @@
 
 Full changelog for the Costs to Expect web app.
 
+## 2019-05-30 - v1.04.3
+
+* Updated FE dependencies, Jquery and Popper.
+
 ## 2019-05-01 - v1.04.2 
 
 * Update app to work with v1.14.1 of the API.
