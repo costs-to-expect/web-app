@@ -67,6 +67,7 @@ class Api
                 'Authorization' => 'Bearer ' . request()->session()->get('bearer'),
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
+                'X-Source' => 'legacy'
             ],
         ]);
 
@@ -88,6 +89,7 @@ class Api
             'headers' => [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
+                'X-Source' => 'legacy'
             ],
         ]);
 

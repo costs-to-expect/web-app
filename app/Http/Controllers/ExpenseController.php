@@ -154,26 +154,29 @@ class ExpenseController extends BaseController
                 $resource_id . '/items/' . $expense_identifier_id . '/category'
             );
 
-        if ($category !== null) {
-            $expense_category_identifier_id = $category['id'];
-        }
+        if ($category !== null && is_array($category) && count($category) === 1) {
 
-        if ($category !== null) {
+            $expense_category_identifier_id = $category[0]['id'];
+
             $sub_category = Api::getInstance()
                 ->public()
                 ->redirectOnFailure('ErrorController@requestStatus')
                 ->get(
                     Config::get('web.config.api_uri_resources') .
                     $resource_id . '/items/' . $expense_identifier .
-                    '/category/' . $category['id'] . '/subcategory'
+                    '/category/' . $expense_category_identifier_id . '/subcategory'
                 );
 
-            if ($sub_category !== null) {
-                $expense_sub_category_identifier_id = $sub_category['id'];
+            if ($sub_category !== null && is_array($sub_category) && count($sub_category) === 1) {
+                $expense_sub_category_identifier_id = $sub_category[0]['id'];
+            } else {
+                $sub_category = null;
             }
+        } else {
+            $category = null;
         }
 
-        if ($expense !== null) {
+        if ($expense !== null && $category !== null && $sub_category !== null) {
             return view(
                 'delete-expense',
                 [
@@ -181,8 +184,8 @@ class ExpenseController extends BaseController
                     'display_add_expense' => false,
                     'nav_active' => $this->nav_active,
                     'expense' => $expense,
-                    'category' => $category,
-                    'sub_category' => $sub_category,
+                    'category' => $category[0],
+                    'sub_category' => $sub_category[0],
                     'expense_identifier_id' => $expense_identifier_id,
                     'expense_category_identifier_id' => $expense_category_identifier_id,
                     'expense_sub_category_identifier_id' => $expense_sub_category_identifier_id,
