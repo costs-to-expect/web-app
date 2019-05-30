@@ -5,6 +5,8 @@ Full changelog for the Costs to Expect web app.
 ## 2019-05-30 - v1.04.3
 
 * Updated FE dependencies, Jquery and Popper.
+* Set X-Source request header for API request logging.
+* Unable to delete an expense.
 
 ## 2019-05-01 - v1.04.2 
 
