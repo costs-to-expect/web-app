@@ -309,7 +309,8 @@ class Api
                         'method' => $method,
                         'expected_status_code' => $expected_status_code,
                         'returned_status_code' => $returned_status_code,
-                        'request_uri' => $request_uri
+                        'request_uri' => $request_uri,
+                        'source' => 'legacy'
                     ]
                 ]
             );
