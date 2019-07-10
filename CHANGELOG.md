@@ -2,6 +2,10 @@
 
 Full changelog for the Costs to Expect web app.
 
+## 2019-07-10 - v1.04.4
+
+* Updated the `postError` request, sends the `source` field which is required for the API ^=1.16.1. 
+
 ## 2019-05-30 - v1.04.3
 
 * Updated FE dependencies, Jquery and Popper.
