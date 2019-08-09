@@ -2,6 +2,11 @@
 
 Full changelog for the Costs to Expect web app.
 
+## 2019-08-09 - 1.04.5
+
+* Added `collection` parameter to the subcategories request to override pagination.
+* Added `dockerignore` so the build ignores the `vendor` directory.
+
 ## 2019-07-10 - v1.04.4
 
 * Updated the `postError` request, sends the `source` field which is required for the API ^=1.16.1. 
