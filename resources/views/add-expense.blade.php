@@ -63,7 +63,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="item_sub_category_id">Sub category:</label>
+                <label for="item_sub_category_id">Subcategory:</label>
                 <select id="item_sub_category_id" name="sub_category_id" class="form-control form-control-sm" required>
                     @foreach ($sub_categories as $category)
                         <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
