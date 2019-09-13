@@ -53,7 +53,7 @@ class ProcessController extends BaseController
                     $request->input('resource_id') . '/items/' . $item['id'] .
                     '/category/' . $item_category['id'] . '/subcategory',
                     [
-                        'sub_category_id' => $request->input('sub_category_id')
+                        'subcategory_id' => $request->input('sub_category_id')
                     ],
                     'expense-not-added-item-sub-category'
                 );
