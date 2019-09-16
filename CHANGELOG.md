@@ -2,7 +2,7 @@
 
 Full changelog for the Costs to Expect web app.
 
-## 2019-09-15 - v1.04.6
+## 2019-09-17 - v1.04.6
 
 - Connect to version 2 of the Costs to Expect API.
 - Correct a field name.
