@@ -9,7 +9,7 @@ $key_api_category_non_essentials = 'API_CATEGORY_ID_NON_ESSENTIALS';
 $key_api_category_hobbies = 'API_CATEGORY_ID_HOBBIES';
 
 return [
-    'api_base_url' => 'https://api.costs-to-expect.com/v1/',
+    'api_base_url' => 'https://api.costs-to-expect.com/v2/',
 
     'api_uri_sign_in' => 'auth/login',
     'api_uri_category' => 'categories',
@@ -43,6 +43,6 @@ return [
     'api_category_id_non_essentials' => env($key_api_category_non_essentials, null),
     'api_category_id_hobbies_and_interests' => env($key_api_category_hobbies, null),
 
-    'version' => 'v1.04.5',
-    'release_date' => '9th August 2019'
+    'version' => 'v1.04.6',
+    'release_date' => '17th September 2019'
 ];

@@ -46,10 +46,10 @@
             @endif
 
             @if ($sub_category !== null)
-            <dt class="col-4">Sub category:</dt>
-            <dd class="col-8">{{ $sub_category[0]['sub_category']['name'] }}</dd>
+            <dt class="col-4">Subcategory:</dt>
+            <dd class="col-8">{{ $sub_category[0]['subcategory']['name'] }}</dd>
             <dt class="col-4">Description:</dt>
-            <dd class="col-8"><p>{{ $sub_category[0]['sub_category']['description'] }}</p></dd>
+            <dd class="col-8"><p>{{ $sub_category[0]['subcategory']['description'] }}</p></dd>
             @endif
         </dl>
     </div>
