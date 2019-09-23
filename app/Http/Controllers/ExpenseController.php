@@ -231,7 +231,7 @@ class ExpenseController extends BaseController
                             ->public()
                             ->redirectOnFailure('ErrorController@requestStatus')
                             ->get(
-                                Config::get('web.config.api_uri_category') .
+                                Config::get('web.config.api_uri_categories') .
                                 '/' . $value
                             );
 
@@ -244,7 +244,7 @@ class ExpenseController extends BaseController
                             ->public()
                             ->redirectOnFailure('ErrorController@requestStatus')
                             ->get(
-                                Config::get('web.config.api_uri_category') .
+                                Config::get('web.config.api_uri_categories') .
                                 '/' . $request_parameters['category'] .
                                 '/subcategories/' . $value
                             );

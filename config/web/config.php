@@ -12,8 +12,7 @@ return [
     'api_base_url' => 'https://api.costs-to-expect.com/v2/',
 
     'api_uri_sign_in' => 'auth/login',
-    'api_uri_category' => 'categories',
-    'api_uri_categories' => 'categories',
+    'api_uri_categories' => 'resource-types/' . env($key_api_resource_type_id, null) . '/categories',
     'api_uri_resources' => 'resource-types/' .
         env($key_api_resource_type_id, null) . '/resources/',
     'api_uri_resource' => 'resource-types/' .
@@ -43,6 +42,6 @@ return [
     'api_category_id_non_essentials' => env($key_api_category_non_essentials, null),
     'api_category_id_hobbies_and_interests' => env($key_api_category_hobbies, null),
 
-    'version' => 'v1.04.6',
-    'release_date' => '17th September 2019'
+    'version' => 'v1.04.7',
+    'release_date' => '23rd September 2019'
 ];
