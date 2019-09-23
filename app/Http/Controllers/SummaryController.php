@@ -106,7 +106,7 @@ class SummaryController extends BaseController
             ->public()
             ->redirectOnFailure('ErrorController@requestStatus')
             ->get(
-                Config::get('web.config.api_uri_category') . '/' .
+                Config::get('web.config.api_uri_categories') . '/' .
                 $category_identifier
             );
 

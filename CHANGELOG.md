@@ -2,6 +2,12 @@
 
 Full changelog for the Costs to Expect web app.
 
+## 2019-09-23 - v1.04.7
+
+- Category routes have moved in the API, updated calls.
+- Removed an unnecessary config value.
+- Confirmation page for deleting an expense throwing an error.
+
 ## 2019-09-17 - v1.04.6
 
 - Connect to version 2 of the Costs to Expect API.

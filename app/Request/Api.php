@@ -2,9 +2,9 @@
 
 namespace App\Request;
 
-use Config;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Config;
 
 /**
  * Request helper class for connecting to the Costs to Expect API
