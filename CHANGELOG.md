@@ -2,6 +2,10 @@
 
 Full changelog for the Costs to Expect web app.
 
+## 2019-09-24 - v1.04.8
+
+- Minor update as the format of an expense has changed in the API.
+
 ## 2019-09-23 - v1.04.7
 
 - Category routes have moved in the API, updated calls.
