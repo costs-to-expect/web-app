@@ -18,16 +18,16 @@
             <caption>Filtered recent expenses added for the listed child</caption>
             <thead>
                 <tr class="bg-dark text-white d-none d-sm-table-row">
-                    <th scope="col">Description</th>
-                    <th scope="col">When</th>
                     <th scope="col">Expense</th>
+                    <th scope="col">When</th>
+                    <th scope="col">Total</th>
                     <th scope="col">&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($expenses as $expense)
                 <tr class="d-table-row d-sm-none">
-                    <td colspan="4"><strong><a href="{{ action('ExpenseController@expense', ['expense_identifier' => $expense['id']]) }}" class="text-info">{{ $expense['description'] }}</a></strong></td>
+                    <td colspan="4"><strong><a href="{{ action('ExpenseController@expense', ['expense_identifier' => $expense['id']]) }}" class="text-info">{{ $expense['name'] }}</a></strong></td>
                 </tr>
                 <tr class="d-table-row d-sm-none">
                     <td colspan="2">{{ date('jS F Y', strtotime($expense['effective_date'])) }}</td>
@@ -35,7 +35,7 @@
                     <td>&nbsp;</td>
                 </tr>
                 <tr class="d-none d-sm-table-row">
-                    <td><strong><a href="{{ action('ExpenseController@expense', ['expense_identifier' => $expense['id']]) }}" class="text-info">{{ $expense['description'] }}</a></strong></td>
+                    <td><strong><a href="{{ action('ExpenseController@expense', ['expense_identifier' => $expense['id']]) }}" class="text-info">{{ $expense['name'] }}</a></strong></td>
                     <td>{{ date('jS M', strtotime($expense['effective_date'])) }}</td>
                     <td>&pound;{{ $expense['actualised_total'] }}</td>
                     <td>&nbsp;</td>

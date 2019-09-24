@@ -9,9 +9,9 @@
         <p><a href="{{ action('ExpenseController@expense', ['resource_id' => $resource['id'], 'expense_identifier' => $expense['id']]) }}" class="btn btn-sm btn-outline-info">Return to expense</a></p>
 
         <dl class="row">
-            <dt class="col-4">Description:</dt>
-            <dd class="col-8">{{ $expense['description'] }}</dd>
             <dt class="col-4">Expense:</dt>
+            <dd class="col-8">{{ $expense['name'] }}</dd>
+            <dt class="col-4">Total expense:</dt>
             <dd class="col-8">&pound;{{ $expense['total'] }}</dd>
             <dt class="col-4">Allocation:</dt>
             <dd class="col-8">{{ $expense['percentage'] }}%</dd>
