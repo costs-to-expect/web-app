@@ -22,7 +22,7 @@ class ProcessController extends BaseController
                 Config::get('web.config.api_uri_resources') .
                     $request->input('resource_id') . '/items',
                 [
-                    'description' => $request->input('description'),
+                    'name' => $request->input('description'),
                     'effective_date' => $request->input('effective_date'),
                     'total' => $request->input('total'),
                     'percentage' => $request->input('allocation')
