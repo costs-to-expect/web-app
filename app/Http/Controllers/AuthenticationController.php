@@ -53,7 +53,7 @@ class AuthenticationController extends BaseController
                 ]
             );
 
-            if ($response->getStatusCode() === 200) {
+            if ($response->getStatusCode() === 201) {
                 $children = Api::getInstance()
                     ->public()
                     ->redirectOnFailure('ErrorController@requestStatus')

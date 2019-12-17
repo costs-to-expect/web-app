@@ -2,6 +2,10 @@
 
 Full changelog for the Costs to Expect web app.
 
+## 2019-12-17 - v1.04.8
+
+- Expected status code for sign-in should be 201, bearer created.
+
 ## 2019-09-23 - v1.04.7
 
 - Category routes have moved in the API, updated calls.
