@@ -43,5 +43,5 @@ return [
     'api_category_id_hobbies_and_interests' => env($key_api_category_hobbies, null),
 
     'version' => 'v1.04.8',
-    'release_date' => '24th September 2019'
+    'release_date' => '17th December 2019'
 ];
